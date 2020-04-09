@@ -6,15 +6,19 @@ defmodule QuizBuzz.QuizzesTest do
 
   describe "QuizBuzz.Quizzes.add_team/2" do
     test "adds a new team with the supplied name" do
-      quiz = Factory.new_quiz() |> Quizzes.add_team("My team")
-      assert [%Team{name: "My team"}] = quiz.teams
+      quiz =
+        Factory.new_quiz() |> Factory.with_team("Existing team") |> Quizzes.add_team("My team")
+
+      assert [%Team{name: "My team"}, %Team{name: "Existing team"}] = quiz.teams
     end
   end
 
   describe "QuizBuzz.Quizzes.join_quiz/2" do
     test "adds a new unaffiliated player with the supplied name" do
-      quiz = Factory.new_quiz() |> Quizzes.join_quiz("Joe Bloggs")
-      assert [%Player{name: "Joe Bloggs"}] = quiz.players
+      quiz =
+        Factory.new_quiz() |> Factory.with_player("Jane Doe") |> Quizzes.join_quiz("Joe Bloggs")
+
+      assert [%Player{name: "Joe Bloggs"}, %Player{name: "Jane Doe"}] = quiz.players
     end
   end
 end
