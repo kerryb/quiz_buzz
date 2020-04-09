@@ -14,17 +14,41 @@ defmodule QuizBuzz.Quizzes.SetupTest do
       {:ok, quiz} = quiz |> Setup.add_team("My team")
       assert [%Team{name: "My team"}, %Team{name: "Existing team"}] = quiz.teams
     end
+
+    test "rejects blank names", %{quiz: quiz} do
+      assert {:error, _} = quiz |> Setup.add_team("")
+    end
+
+    test "rejects duplicate names", %{quiz: quiz} do
+      assert {:error, _} = quiz |> Setup.add_team("Existing team")
+    end
   end
 
   describe "QuizBuzz.Quizzes.Setup.join_quiz/2" do
     setup do
-      quiz = Factory.new_quiz() |> Factory.with_player("Jane Doe")
+      quiz =
+        Factory.new_quiz()
+        |> Factory.with_player("Jane Doe")
+        |> Factory.with_team("Existing team", ["Bob Smith"])
+
       {:ok, quiz: quiz}
     end
 
     test "adds a new unaffiliated player with the supplied name", %{quiz: quiz} do
       {:ok, quiz} = quiz |> Setup.join_quiz("Joe Bloggs")
       assert [%Player{name: "Joe Bloggs"}, %Player{name: "Jane Doe"}] = quiz.players
+    end
+
+    test "rejects blank names", %{quiz: quiz} do
+      assert {:error, _} = quiz |> Setup.join_quiz("")
+    end
+
+    test "rejects duplicate names", %{quiz: quiz} do
+      assert {:error, _} = quiz |> Setup.join_quiz("Jane Doe")
+    end
+
+    test "rejects duplicate names within teams", %{quiz: quiz} do
+      assert {:error, _} = quiz |> Setup.join_quiz("Bob Smith")
     end
   end
 

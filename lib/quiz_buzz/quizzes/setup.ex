@@ -1,14 +1,28 @@
 defmodule QuizBuzz.Quizzes.Setup do
   alias QuizBuzz.Quizzes.{Player, Team}
 
+  def add_team(_quiz, ""), do: {:error, "Name must not be blank"}
+
   def add_team(quiz, name) do
-    quiz = %{quiz | teams: [Team.new(name) | quiz.teams]}
-    {:ok, quiz}
+    if quiz.teams |> Enum.any?(&(&1.name == name)) do
+      {:error, "That name has already been taken"}
+    else
+      quiz = %{quiz | teams: [Team.new(name) | quiz.teams]}
+      {:ok, quiz}
+    end
   end
 
+  def join_quiz(_quiz, ""), do: {:error, "Name must not be blank"}
+
   def join_quiz(quiz, name) do
-    quiz = %{quiz | players: [Player.new(name) | quiz.players]}
-    {:ok, quiz}
+    team_players = quiz.teams |> Enum.flat_map(& &1.players)
+
+    if (quiz.players ++ team_players) |> Enum.any?(&(&1.name == name)) do
+      {:error, "That name has already been taken"}
+    else
+      quiz = %{quiz | players: [Player.new(name) | quiz.players]}
+      {:ok, quiz}
+    end
   end
 
   def join_team(quiz, team, player) do
