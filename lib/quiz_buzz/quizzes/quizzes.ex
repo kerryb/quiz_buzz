@@ -2,19 +2,23 @@ defmodule QuizBuzz.Quizzes do
   alias QuizBuzz.Quizzes.{Player, Team}
 
   def add_team(quiz, name) do
-    %{quiz | teams: [Team.new(name) | quiz.teams]}
+    quiz = %{quiz | teams: [Team.new(name) | quiz.teams]}
+    {:ok, quiz}
   end
 
   def join_quiz(quiz, name) do
-    %{quiz | players: [Player.new(name) | quiz.players]}
+    quiz = %{quiz | players: [Player.new(name) | quiz.players]}
+    {:ok, quiz}
   end
 
   def join_team(quiz, team, player) do
-    %{
+    quiz = %{
       quiz
       | teams: add_player_to_team(quiz.teams, team, player),
         players: remove_player(quiz.players, player)
     }
+
+    {:ok, quiz}
   end
 
   defp add_player_to_team(teams, team, player) do
