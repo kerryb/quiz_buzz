@@ -1,7 +1,7 @@
 defmodule QuizBuzz.Quizzes.Team do
-  defstruct [:name]
+  defstruct [:name, :players]
 
   def new(name) do
-    %__MODULE__{name: name}
+    %__MODULE__{name: name, players: []}
   end
 end

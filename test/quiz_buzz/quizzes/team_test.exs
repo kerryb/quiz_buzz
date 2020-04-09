@@ -5,7 +5,7 @@ defmodule QuizBuzz.Quizzes.TeamTest do
 
   describe "QuizBuzz.Quizzes.Team.new/1" do
     test "builds a new team with the specified name" do
-      assert Team.new("My team") == %Team{name: "My team"}
+      assert Team.new("My team") == %Team{name: "My team", players: []}
     end
   end
 end
