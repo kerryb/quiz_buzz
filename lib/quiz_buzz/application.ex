@@ -8,10 +8,8 @@ defmodule QuizBuzz.Application do
   def start(_type, _args) do
     # List all child processes to be supervised
     children = [
-      # Start the endpoint when the application starts
-      QuizBuzzWeb.Endpoint
-      # Starts a worker by calling: QuizBuzz.Worker.start_link(arg)
-      # {QuizBuzz.Worker, arg},
+      QuizBuzzWeb.Endpoint,
+      QuizBuzz.Quizzes.RandomIDGenerator
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html
