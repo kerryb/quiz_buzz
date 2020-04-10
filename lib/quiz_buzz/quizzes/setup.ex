@@ -54,4 +54,11 @@ defmodule QuizBuzz.Quizzes.Setup do
   defp remove_player(players, player) do
     players |> Enum.reject(&(&1 == player))
   end
+
+  def start(%{state: :setup} = quiz) do
+    quiz = %{quiz | state: :active}
+    {:ok, quiz}
+  end
+
+  def start(_quiz), do: {:error, "The quiz has already started"}
 end

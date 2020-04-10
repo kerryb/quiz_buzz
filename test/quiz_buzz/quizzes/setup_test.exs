@@ -93,4 +93,21 @@ defmodule QuizBuzz.Quizzes.SetupTest do
       assert {:error, _} = quiz |> Setup.join_team(team, player)
     end
   end
+
+  describe "QuizBuzz.Quizzes.Setup.start/1" do
+    setup do
+      quiz = Factory.new_quiz()
+      {:ok, quiz: quiz}
+    end
+
+    test "sets the state to :active", %{quiz: quiz} do
+      {:ok, quiz} = quiz |> Setup.start()
+      assert quiz.state == :active
+    end
+
+    test "fails unless the quiz is in the setup state", %{quiz: quiz} do
+      quiz = %{quiz | state: :active}
+      assert {:error, _} = quiz |> Setup.start()
+    end
+  end
 end
