@@ -1,4 +1,8 @@
 defmodule QuizBuzz.Factory do
+  @moduledoc """
+  Test helpers to build quizzes and associated structs.
+  """
+
   alias QuizBuzz.Quizzes.{Player, Quiz, RandomIDGenerator, Team}
 
   def new_quiz do

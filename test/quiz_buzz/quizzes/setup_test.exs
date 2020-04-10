@@ -72,11 +72,13 @@ defmodule QuizBuzz.Quizzes.SetupTest do
       jane_doe = Player.new("Jane Doe")
       bob_smith = Player.new("Bob Smith")
       existing_team = Team.new("Existing team") |> with_player(bob_smith)
+      another_team = Team.new("Another team")
 
       quiz =
         new_quiz()
         |> with_player(jane_doe)
         |> with_team(existing_team)
+        |> with_team(another_team)
 
       {:ok, quiz: quiz, existing_team: existing_team, player: jane_doe}
     end
@@ -87,7 +89,7 @@ defmodule QuizBuzz.Quizzes.SetupTest do
       player: player
     } do
       {:ok, quiz} = quiz |> Setup.join_team(existing_team, player)
-      %{teams: [team]} = quiz
+      team = quiz.teams |> Enum.find(&(&1.name == existing_team.name))
       assert [player, _] = team.players
     end
 

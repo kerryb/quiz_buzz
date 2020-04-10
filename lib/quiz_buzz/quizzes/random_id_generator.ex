@@ -1,4 +1,9 @@
 defmodule QuizBuzz.Quizzes.RandomIDGenerator do
+  @moduledoc """
+  An agent responsible for providing unique random four-character IDs for
+  quizzes. When started it will seed itself randomly.
+  """
+
   use Agent
 
   @alphabet "ABCDEFGHJKLMNPQRSTUVWZYZ23456789"
@@ -12,7 +17,7 @@ defmodule QuizBuzz.Quizzes.RandomIDGenerator do
     )
   end
 
-  def next() do
+  def next do
     Agent.get_and_update(__MODULE__, fn %{hashids: hashids, index: index} = state ->
       {Hashids.encode(hashids, index), %{state | index: index + 1}}
     end)

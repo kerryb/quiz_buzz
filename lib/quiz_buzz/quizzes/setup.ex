@@ -1,4 +1,8 @@
 defmodule QuizBuzz.Quizzes.Setup do
+  @moduledoc """
+  Functions for setting up the quiz with players and teams, before it starts.
+  """
+
   alias QuizBuzz.Quizzes.{Player, Team}
 
   def add_team(_quiz, ""), do: {:error, "Name must not be blank"}
@@ -18,8 +22,9 @@ defmodule QuizBuzz.Quizzes.Setup do
 
   def join_quiz(%{state: :setup} = quiz, name) do
     team_players = quiz.teams |> Enum.flat_map(& &1.players)
+    players = quiz.players ++ team_players
 
-    if (quiz.players ++ team_players) |> Enum.any?(&(&1.name == name)) do
+    if players |> Enum.any?(&(&1.name == name)) do
       {:error, "That name has already been taken"}
     else
       quiz = %{quiz | players: [Player.new(name) | quiz.players]}

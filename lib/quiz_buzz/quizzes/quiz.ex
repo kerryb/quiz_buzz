@@ -1,4 +1,13 @@
 defmodule QuizBuzz.Quizzes.Quiz do
+  @moduledoc """
+  Top level struct (token) for a quiz. Contains the following:
+
+  * a random ID
+  * a list of `QuizBuzz.Quizzes.Team`s
+  * a list of `QuizBuzz.Quizzes.Player`s who are yet to join a team
+  * a state (:setup or :active)
+  """
+
   defstruct [:id, :teams, :players, :state]
 
   def new(id_generator) do
