@@ -3,7 +3,7 @@ defmodule QuizBuzz.Quizzes.Setup do
 
   def add_team(_quiz, ""), do: {:error, "Name must not be blank"}
 
-  def add_team(quiz, name) do
+  def add_team(%{state: :setup} = quiz, name) do
     if quiz.teams |> Enum.any?(&(&1.name == name)) do
       {:error, "That name has already been taken"}
     else
@@ -12,9 +12,11 @@ defmodule QuizBuzz.Quizzes.Setup do
     end
   end
 
+  def add_team(_quiz, _), do: {:error, "The quiz has already started"}
+
   def join_quiz(_quiz, ""), do: {:error, "Name must not be blank"}
 
-  def join_quiz(quiz, name) do
+  def join_quiz(%{state: :setup} = quiz, name) do
     team_players = quiz.teams |> Enum.flat_map(& &1.players)
 
     if (quiz.players ++ team_players) |> Enum.any?(&(&1.name == name)) do
@@ -25,7 +27,9 @@ defmodule QuizBuzz.Quizzes.Setup do
     end
   end
 
-  def join_team(quiz, team, player) do
+  def join_quiz(_quiz, _), do: {:error, "The quiz has already started"}
+
+  def join_team(%{state: :setup} = quiz, team, player) do
     quiz = %{
       quiz
       | teams: add_player_to_team(quiz.teams, team, player),
@@ -34,6 +38,8 @@ defmodule QuizBuzz.Quizzes.Setup do
 
     {:ok, quiz}
   end
+
+  def join_team(_quiz, _, _), do: {:error, "The quiz has already started"}
 
   defp add_player_to_team(teams, team, player) do
     teams |> Enum.map(&update_team_if_matches(&1, team, player))

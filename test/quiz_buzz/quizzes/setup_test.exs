@@ -22,6 +22,11 @@ defmodule QuizBuzz.Quizzes.SetupTest do
     test "rejects duplicate names", %{quiz: quiz} do
       assert {:error, _} = quiz |> Setup.add_team("Existing team")
     end
+
+    test "fails unless the quiz is in the setup state", %{quiz: quiz} do
+      quiz = %{quiz | state: :active}
+      assert {:error, _} = quiz |> Setup.add_team("My team")
+    end
   end
 
   describe "QuizBuzz.Quizzes.Setup.join_quiz/2" do
@@ -50,6 +55,11 @@ defmodule QuizBuzz.Quizzes.SetupTest do
     test "rejects duplicate names within teams", %{quiz: quiz} do
       assert {:error, _} = quiz |> Setup.join_quiz("Bob Smith")
     end
+
+    test "fails unless the quiz is in the setup state", %{quiz: quiz} do
+      quiz = %{quiz | state: :active}
+      assert {:error, _} = quiz |> Setup.join_quiz("Joe Bloggs")
+    end
   end
 
   describe "QuizBuzz.Quizzes.Setup.join_team/2" do
@@ -74,6 +84,13 @@ defmodule QuizBuzz.Quizzes.SetupTest do
       {:ok, quiz} = quiz |> Setup.join_team(team, player)
       %{players: players} = quiz
       assert players == []
+    end
+
+    test "fails unless the quiz is in the setup state", %{
+      quiz: %{teams: [team], players: [player]} = quiz
+    } do
+      quiz = %{quiz | state: :active}
+      assert {:error, _} = quiz |> Setup.join_team(team, player)
     end
   end
 end
