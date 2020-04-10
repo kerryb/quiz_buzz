@@ -5,13 +5,11 @@ defmodule QuizBuzz.Factory do
     Quiz.new(&RandomIDGenerator.next/0)
   end
 
-  def with_team(quiz, name, player_names \\ []) do
-    players = player_names |> Enum.map(&Player.new/1)
-    team = %{Team.new(name) | players: players}
-    %{quiz | teams: [team]}
+  def with_team(quiz, team) do
+    %{quiz | teams: [team | quiz.teams]}
   end
 
-  def with_player(quiz, name) do
-    %{quiz | players: [Player.new(name)]}
+  def with_player(quiz_or_team, player) do
+    %{quiz_or_team | players: [player | quiz_or_team.players]}
   end
 end

@@ -1,12 +1,13 @@
 defmodule QuizBuzz.Quizzes.SetupTest do
   use ExUnit.Case, async: true
 
-  alias QuizBuzz.Factory
+  import QuizBuzz.Factory
   alias QuizBuzz.Quizzes.{Player, Setup, Team}
 
   describe "QuizBuzz.Quizzes.Setup.add_team/2" do
     setup do
-      quiz = Factory.new_quiz() |> Factory.with_team("Existing team")
+      existing_team = Team.new("Existing team")
+      quiz = new_quiz() |> with_team(existing_team)
       {:ok, quiz: quiz}
     end
 
@@ -31,10 +32,14 @@ defmodule QuizBuzz.Quizzes.SetupTest do
 
   describe "QuizBuzz.Quizzes.Setup.join_quiz/2" do
     setup do
+      jane_doe = Player.new("Jane Doe")
+      bob_smith = Player.new("Bob Smith")
+      existing_team = Team.new("Existing team") |> with_player(bob_smith)
+
       quiz =
-        Factory.new_quiz()
-        |> Factory.with_player("Jane Doe")
-        |> Factory.with_team("Existing team", ["Bob Smith"])
+        new_quiz()
+        |> with_player(jane_doe)
+        |> with_team(existing_team)
 
       {:ok, quiz: quiz}
     end
@@ -64,40 +69,50 @@ defmodule QuizBuzz.Quizzes.SetupTest do
 
   describe "QuizBuzz.Quizzes.Setup.join_team/2" do
     setup do
-      quiz =
-        Factory.new_quiz()
-        |> Factory.with_team("Existing team", ["Jane Doe"])
-        |> Factory.with_player("Joe Bloggs")
+      jane_doe = Player.new("Jane Doe")
+      bob_smith = Player.new("Bob Smith")
+      existing_team = Team.new("Existing team") |> with_player(bob_smith)
 
-      {:ok, quiz: quiz}
+      quiz =
+        new_quiz()
+        |> with_player(jane_doe)
+        |> with_team(existing_team)
+
+      {:ok, quiz: quiz, existing_team: existing_team, player: jane_doe}
     end
 
-    test "adds the player to the team", %{quiz: %{teams: [team], players: [player]} = quiz} do
-      {:ok, quiz} = quiz |> Setup.join_team(team, player)
+    test "adds the player to the team", %{
+      quiz: quiz,
+      existing_team: existing_team,
+      player: player
+    } do
+      {:ok, quiz} = quiz |> Setup.join_team(existing_team, player)
       %{teams: [team]} = quiz
-      assert [%Player{name: "Joe Bloggs"}, %Player{name: "Jane Doe"}] = team.players
+      assert [player, _] = team.players
     end
 
     test "removes the player from  the unaffiliated list", %{
-      quiz: %{teams: [team], players: [player]} = quiz
+      quiz: quiz,
+      existing_team: existing_team,
+      player: player
     } do
-      {:ok, quiz} = quiz |> Setup.join_team(team, player)
-      %{players: players} = quiz
-      assert players == []
+      {:ok, quiz} = quiz |> Setup.join_team(existing_team, player)
+      assert quiz.players == []
     end
 
     test "fails unless the quiz is in the setup state", %{
-      quiz: %{teams: [team], players: [player]} = quiz
+      quiz: quiz,
+      existing_team: existing_team,
+      player: player
     } do
       quiz = %{quiz | state: :active}
-      assert {:error, _} = quiz |> Setup.join_team(team, player)
+      assert {:error, _} = quiz |> Setup.join_team(existing_team, player)
     end
   end
 
   describe "QuizBuzz.Quizzes.Setup.start/1" do
     setup do
-      quiz = Factory.new_quiz()
-      {:ok, quiz: quiz}
+      {:ok, quiz: new_quiz()}
     end
 
     test "sets the state to :active", %{quiz: quiz} do
