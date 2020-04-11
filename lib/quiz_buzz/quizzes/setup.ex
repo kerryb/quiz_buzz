@@ -19,7 +19,7 @@ defmodule QuizBuzz.Quizzes.Setup do
 
   def add_team(_quiz, _name), do: {:error, "The quiz has already started"}
 
-  @spec join_quiz(Quiz.t(), String.t()) :: {:ok, Quiz.t()} | {:error, String.t()}
+  @spec join_quiz(Quiz.t(), String.t()) :: {:ok, Quiz.t(), Player.t()} | {:error, String.t()}
   def join_quiz(_quiz, ""), do: {:error, "Name must not be blank"}
 
   def join_quiz(%{state: :setup} = quiz, name) do
@@ -29,8 +29,9 @@ defmodule QuizBuzz.Quizzes.Setup do
     if Enum.any?(players, &(&1.name == name)) do
       {:error, "That name has already been taken"}
     else
-      quiz = %{quiz | players: [Player.new(name) | quiz.players]}
-      {:ok, quiz}
+      player = Player.new(name)
+      quiz = %{quiz | players: [player | quiz.players]}
+      {:ok, quiz, player}
     end
   end
 

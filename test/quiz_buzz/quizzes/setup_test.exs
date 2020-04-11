@@ -46,9 +46,12 @@ defmodule QuizBuzz.Quizzes.SetupTest do
       {:ok, quiz: quiz}
     end
 
-    test "adds a new unaffiliated player with the supplied name", %{quiz: quiz} do
-      {:ok, quiz} = quiz |> Setup.join_quiz("Joe Bloggs")
-      assert [%Player{name: "Joe Bloggs"}, %Player{name: "Jane Doe"}] = quiz.players
+    test "adds a new unaffiliated player with the supplied name, returning quiz and player", %{
+      quiz: quiz
+    } do
+      {:ok, quiz, player} = quiz |> Setup.join_quiz("Joe Bloggs")
+      assert player == %Player{name: "Joe Bloggs"}
+      assert [^player, %Player{name: "Jane Doe"}] = quiz.players
     end
 
     test "rejects blank names", %{quiz: quiz} do
