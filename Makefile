@@ -4,6 +4,6 @@ test:
 	mix coveralls.html
 style:
 	mix format --check-formatted
-	mix credo --strict
+	mix credo
 dialyzer:
 	mix dialyzer
