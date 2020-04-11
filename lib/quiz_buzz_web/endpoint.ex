@@ -1,3 +1,4 @@
+# credo:disable-for-this-file Credo.Check.Refactor.ModuleDependencies
 defmodule QuizBuzzWeb.Endpoint do
   use Phoenix.Endpoint, otp_app: :quiz_buzz
 
