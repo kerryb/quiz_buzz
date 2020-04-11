@@ -6,4 +6,4 @@ style:
 	mix format --check-formatted
 	mix credo --strict
 dialyzer:
-	mix dialyzer --halt-exit-status
+	mix dialyzer
