@@ -1,0 +1,13 @@
+{
+  "skip_files": [
+    "^test/",
+    "^lib/quiz_buzz.ex",
+    "^lib/quiz_buzz/application.ex",
+    "^lib/quiz_buzz_web.ex",
+    "^lib/quiz_buzz_web/channels/user_socket.ex",
+    "^lib/quiz_buzz_web/endpoint.ex",
+    "^lib/quiz_buzz_web/gettext.ex",
+    "^lib/quiz_buzz_web/router.ex",
+    "^lib/quiz_buzz_web/views/error_helpers.ex"
+  ]
+}
