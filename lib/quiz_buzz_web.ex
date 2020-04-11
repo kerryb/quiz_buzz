@@ -1,3 +1,5 @@
+# credo:disable-for-this-file Credo.Check.Consistency.MultiAliasImportRequireUse
+
 defmodule QuizBuzzWeb do
   @moduledoc """
   The entrypoint for defining your web interface, such
