@@ -1,4 +1,5 @@
 # credo:disable-for-this-file Credo.Check.Consistency.MultiAliasImportRequireUse
+# credo:disable-for-this-file Credo.Check.Readability.AliasAs
 
 defmodule QuizBuzzWeb do
   @moduledoc """
