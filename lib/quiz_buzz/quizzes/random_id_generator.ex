@@ -26,6 +26,6 @@ defmodule QuizBuzz.Quizzes.RandomIDGenerator do
   end
 
   defp initial_salt do
-    :crypto.strong_rand_bytes(16) |> Base.url_encode64() |> binary_part(0, 16)
+    16 |> :crypto.strong_rand_bytes() |> Base.url_encode64() |> binary_part(0, 16)
   end
 end

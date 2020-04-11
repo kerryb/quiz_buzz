@@ -36,7 +36,7 @@ defmodule QuizBuzz.Quizzes.SetupTest do
     setup do
       jane_doe = Player.new("Jane Doe")
       bob_smith = Player.new("Bob Smith")
-      existing_team = Team.new("Existing team") |> with_player(bob_smith)
+      existing_team = "Existing team" |> Team.new() |> with_player(bob_smith)
 
       quiz =
         new_quiz()
@@ -73,7 +73,7 @@ defmodule QuizBuzz.Quizzes.SetupTest do
     setup do
       jane_doe = Player.new("Jane Doe")
       bob_smith = Player.new("Bob Smith")
-      existing_team = Team.new("Existing team") |> with_player(bob_smith)
+      existing_team = "Existing team" |> Team.new() |> with_player(bob_smith)
       another_team = Team.new("Another team")
 
       quiz =
