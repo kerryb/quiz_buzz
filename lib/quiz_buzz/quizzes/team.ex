@@ -3,9 +3,9 @@ defmodule QuizBuzz.Quizzes.Team do
   A team belongs to a `QuizBuzz.Quizzes.Quiz`, and has a list of `QuizBuzz.Quizzes.Player`s.
   """
 
-  defstruct [:name, :players]
-
   alias QuizBuzz.Quizzes.Player
+
+  defstruct [:name, :players]
 
   @type t :: %__MODULE__{name: String.t(), players: [Player.t()]}
 

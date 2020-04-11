@@ -8,9 +8,9 @@ defmodule QuizBuzz.Quizzes.Quiz do
   * a state (:setup or :active)
   """
 
-  defstruct [:id, :teams, :players, :state]
-
   alias QuizBuzz.Quizzes.{Player, Team}
+
+  defstruct [:id, :teams, :players, :state]
 
   @type t :: %__MODULE__{id: String.t(), teams: [Team.t()], players: [Player.t()], state: state()}
   @type state :: :setup | :active
