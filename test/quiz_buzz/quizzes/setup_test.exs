@@ -1,3 +1,5 @@
+# credo:disable-for-this-file Credo.Check.Readability.SinglePipe
+
 defmodule QuizBuzz.Quizzes.SetupTest do
   use ExUnit.Case, async: true
 

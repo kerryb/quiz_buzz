@@ -10,7 +10,7 @@ defmodule QuizBuzz.Quizzes.RandomIDGeneratorTest do
 
   describe "QuizBuzz.Quizzes.RandomIDGenerator.next/0" do
     test "returns successive different IDs" do
-      ids = 1..3 |> Enum.map(fn _i -> RandomIDGenerator.next() end)
+      ids = Enum.map(1..3, fn _i -> RandomIDGenerator.next() end)
       assert ids |> Enum.uniq() |> length() == 3
     end
   end
