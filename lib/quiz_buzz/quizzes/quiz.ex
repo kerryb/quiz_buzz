@@ -10,6 +10,12 @@ defmodule QuizBuzz.Quizzes.Quiz do
 
   defstruct [:id, :teams, :players, :state]
 
+  alias QuizBuzz.Quizzes.{Player, Team}
+
+  @type t :: %__MODULE__{id: String.t(), teams: [Team.t()], players: [Player.t()], state: state()}
+  @type state :: :setup | :active
+
+  @spec new((() -> String.t())) :: t()
   def new(id_generator) do
     %__MODULE__{id: id_generator.(), teams: [], players: [], state: :setup}
   end

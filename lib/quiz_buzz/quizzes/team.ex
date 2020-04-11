@@ -5,6 +5,11 @@ defmodule QuizBuzz.Quizzes.Team do
 
   defstruct [:name, :players]
 
+  alias QuizBuzz.Quizzes.Player
+
+  @type t :: %__MODULE__{name: String.t(), players: [Player.t()]}
+
+  @spec new(String.t()) :: t()
   def new(name) do
     %__MODULE__{name: name, players: []}
   end

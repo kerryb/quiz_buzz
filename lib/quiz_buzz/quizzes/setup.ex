@@ -3,8 +3,9 @@ defmodule QuizBuzz.Quizzes.Setup do
   Functions for setting up the quiz with players and teams, before it starts.
   """
 
-  alias QuizBuzz.Quizzes.{Player, Team}
+  alias QuizBuzz.Quizzes.{Player, Quiz, Team}
 
+  @spec add_team(Quiz.t(), String.t()) :: {:ok, Quiz.t()} | {:error, String.t()}
   def add_team(_quiz, ""), do: {:error, "Name must not be blank"}
 
   def add_team(%{state: :setup} = quiz, name) do
@@ -18,6 +19,7 @@ defmodule QuizBuzz.Quizzes.Setup do
 
   def add_team(_quiz, _), do: {:error, "The quiz has already started"}
 
+  @spec join_quiz(Quiz.t(), String.t()) :: {:ok, Quiz.t()} | {:error, String.t()}
   def join_quiz(_quiz, ""), do: {:error, "Name must not be blank"}
 
   def join_quiz(%{state: :setup} = quiz, name) do
@@ -34,6 +36,7 @@ defmodule QuizBuzz.Quizzes.Setup do
 
   def join_quiz(_quiz, _), do: {:error, "The quiz has already started"}
 
+  @spec join_team(Quiz.t(), Team.t(), Player.t()) :: {:ok, Quiz.t()} | {:error, String.t()}
   def join_team(%{state: :setup} = quiz, team, player) do
     quiz = %{
       quiz
@@ -60,6 +63,7 @@ defmodule QuizBuzz.Quizzes.Setup do
     players |> Enum.reject(&(&1 == player))
   end
 
+  @spec start(Quiz.t()) :: {:ok, Quiz.t()} | {:error, String.t()}
   def start(%{state: :setup} = quiz) do
     quiz = %{quiz | state: :active}
     {:ok, quiz}

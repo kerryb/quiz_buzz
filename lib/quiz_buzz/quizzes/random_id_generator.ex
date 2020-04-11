@@ -8,6 +8,7 @@ defmodule QuizBuzz.Quizzes.RandomIDGenerator do
 
   @alphabet "ABCDEFGHJKLMNPQRSTUVWZYZ23456789"
 
+  @spec start_link(any()) :: Agent.on_start()
   def start_link(_) do
     Agent.start_link(
       fn ->
@@ -17,6 +18,7 @@ defmodule QuizBuzz.Quizzes.RandomIDGenerator do
     )
   end
 
+  @spec next() :: String.t()
   def next do
     Agent.get_and_update(__MODULE__, fn %{hashids: hashids, index: index} = state ->
       {Hashids.encode(hashids, index), %{state | index: index + 1}}
