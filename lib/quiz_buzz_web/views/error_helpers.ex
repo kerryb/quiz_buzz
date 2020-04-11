@@ -1,3 +1,5 @@
+# credo:disable-for-this-file Credo.Check.Readability.Specs
+
 defmodule QuizBuzzWeb.ErrorHelpers do
   @moduledoc """
   Conveniences for translating and building error messages.

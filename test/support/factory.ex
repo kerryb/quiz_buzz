@@ -1,3 +1,5 @@
+# credo:disable-for-this-file Credo.Check.Readability.Specs
+
 defmodule QuizBuzz.Factory do
   @moduledoc """
   Test helpers to build quizzes and associated structs.
