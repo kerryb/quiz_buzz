@@ -9,7 +9,7 @@ defmodule QuizBuzz.Quizzes.RandomIDGenerator do
   @alphabet "ABCDEFGHJKLMNPQRSTUVWZYZ23456789"
 
   @spec start_link(any()) :: Agent.on_start()
-  def start_link(_) do
+  def start_link(_arg) do
     Agent.start_link(
       fn ->
         %{hashids: Hashids.new(salt: initial_salt(), min_len: 4, alphabet: @alphabet), index: 0}

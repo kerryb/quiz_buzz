@@ -158,7 +158,7 @@
         #
         {Credo.Check.Readability.StrictModuleLayout, []},
         {Credo.Check.Consistency.MultiAliasImportRequireUse, []},
-        {Credo.Check.Consistency.UnusedVariableNames, false},
+        {Credo.Check.Consistency.UnusedVariableNames, []},
         {Credo.Check.Design.DuplicatedCode, []},
         {Credo.Check.Readability.AliasAs, false},
         {Credo.Check.Readability.MultiAlias, false},
