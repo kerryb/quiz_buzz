@@ -11,6 +11,10 @@ defmodule QuizBuzz.Factory do
     Quiz.new(&RandomIDGenerator.next/0)
   end
 
+  def active_quiz do
+    %{new_quiz | state: :active}
+  end
+
   def with_team(quiz, team) do
     %{quiz | teams: [team | quiz.teams]}
   end

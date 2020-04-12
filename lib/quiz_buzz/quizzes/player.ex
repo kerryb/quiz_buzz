@@ -3,9 +3,9 @@ defmodule QuizBuzz.Quizzes.Player do
   A player in the quiz.
   """
 
-  defstruct [:name]
+  defstruct name: nil, buzzed?: false
 
-  @type t :: %__MODULE__{name: String.t()}
+  @type t :: %__MODULE__{name: String.t(), buzzed?: boolean()}
 
   @spec new(String.t()) :: t()
   def new(name) do
