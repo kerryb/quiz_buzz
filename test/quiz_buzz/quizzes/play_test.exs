@@ -32,4 +32,28 @@ defmodule QuizBuzz.Quizzes.PlayTest do
       assert {:error, _} = Play.buzz(quiz, jane_doe)
     end
   end
+
+  describe "QuizBuzz.Quizzes.Play.reset_buzzers/1" do
+    setup do
+      jane_doe = %{Player.new("Jane Doe") | buzzed?: true}
+      joe_bloggs = Player.new("Joe Bloggs")
+      quiz = buzzed_quiz() |> with_player(jane_doe) |> with_player(joe_bloggs)
+      {:ok, quiz: quiz}
+    end
+
+    test "marks all players as not having buzzed", %{quiz: quiz} do
+      {:ok, quiz} = Play.reset_buzzers(quiz)
+      refute Enum.any?(quiz.players, & &1.buzzed?)
+    end
+
+    test "updates the quiz state to active", %{quiz: quiz} do
+      {:ok, quiz} = Play.reset_buzzers(quiz)
+      assert quiz.state == :active
+    end
+
+    test "fails unless the quiz is in the buzzed state", %{quiz: quiz} do
+      quiz = %{quiz | state: :active}
+      assert {:error, _} = Play.reset_buzzers(quiz)
+    end
+  end
 end

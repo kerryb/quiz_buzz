@@ -12,7 +12,11 @@ defmodule QuizBuzz.Factory do
   end
 
   def active_quiz do
-    %{new_quiz | state: :active}
+    %{new_quiz() | state: :active}
+  end
+
+  def buzzed_quiz do
+    %{new_quiz() | state: :buzzed}
   end
 
   def with_team(quiz, team) do

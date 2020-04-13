@@ -19,4 +19,16 @@ defmodule QuizBuzz.Quizzes.Play do
 
   defp buzzed_if_matched(player, player), do: %{player | buzzed?: true}
   defp buzzed_if_matched(player, _player), do: player
+
+  @spec reset_buzzers(Quiz.t()) :: {:ok, Quiz.t()} | {:error, String.t()}
+  def reset_buzzers(%{state: :buzzed} = quiz) do
+    quiz = %{quiz | players: mark_all_as_not_buzzed(quiz.players), state: :active}
+    {:ok, quiz}
+  end
+
+  def reset_buzzers(_quiz), do: {:error, "No-one has buzzed"}
+
+  defp mark_all_as_not_buzzed(players) do
+    Enum.map(players, &%{&1 | buzzed?: false})
+  end
 end
