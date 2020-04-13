@@ -13,6 +13,7 @@ defmodule QuizBuzz.MixProject do
       preferred_cli_env: preferred_cli_env(),
       test_coverage: [tool: ExCoveralls],
       dialyzer: dialyzer(),
+      docs: docs(),
       deps: deps()
     ]
   end
@@ -49,6 +50,14 @@ defmodule QuizBuzz.MixProject do
     ]
   end
 
+  defp docs do
+    [
+      main: "README",
+      extras: ~w(README.md),
+      source_url_pattern: "https://github.com/kerryb/quiz_buzz/blob/master/%{path}#L%{line}"
+    ]
+  end
+
   # Specifies your project dependencies.
   #
   # Type `mix help deps` for examples and options.
@@ -57,6 +66,7 @@ defmodule QuizBuzz.MixProject do
       {:credo, "~> 1.3", only: [:dev, :test]},
       {:dialyxir, "~> 1.0", only: :dev, runtime: false},
       {:excoveralls, "~> 0.10", only: :test},
+      {:ex_doc, "~> 0.21", only: :dev},
       {:hashids, "~> 2.0"},
       {:phoenix, "~> 1.4.16"},
       {:phoenix_pubsub, "~> 1.1"},
