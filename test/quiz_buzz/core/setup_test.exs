@@ -2,8 +2,21 @@ defmodule QuizBuzz.Core.SetupTest do
   use ExUnit.Case, async: true
 
   import QuizBuzz.Factory
-  alias QuizBuzz.Core.Setup
+  alias QuizBuzz.Core.{RandomIDGenerator, Setup}
   alias QuizBuzz.Schema.{Player, Team}
+
+  describe "QuizBuzz.Core.Setup.new_quiz/0" do
+    setup do
+      RandomIDGenerator.start_link([])
+      :ok
+    end
+
+    test "creates a quiz with a random ID" do
+      {:ok, quiz_1} = Setup.new_quiz()
+      {:ok, quiz_2} = Setup.new_quiz()
+      refute quiz_1.id == quiz_2.id
+    end
+  end
 
   describe "QuizBuzz.Core.Setup.add_team/2" do
     setup do

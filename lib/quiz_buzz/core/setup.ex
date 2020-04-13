@@ -3,7 +3,14 @@ defmodule QuizBuzz.Core.Setup do
   Functions for setting up the quiz with players and teams, before it starts.
   """
 
+  alias QuizBuzz.Core.RandomIDGenerator
   alias QuizBuzz.Schema.{Player, Quiz, Team}
+
+  @spec new_quiz :: Quiz.t()
+  def new_quiz do
+    quiz = Quiz.new(&RandomIDGenerator.next/0)
+    {:ok, quiz}
+  end
 
   @spec add_team(Quiz.t(), String.t()) :: {:ok, Quiz.t()} | {:error, String.t()}
   def add_team(_quiz, ""), do: {:error, "Name must not be blank"}
