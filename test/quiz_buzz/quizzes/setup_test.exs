@@ -79,14 +79,14 @@ defmodule QuizBuzz.Quizzes.SetupTest do
     end
 
     test "sets the player's team", %{quiz: quiz, team: team, player: player} do
-      {:ok, quiz} = quiz |> Setup.join_team(team, player)
+      {:ok, quiz} = quiz |> Setup.join_team(player, team)
       [player] = quiz.players
       assert player.team == team
     end
 
     test "fails unless the quiz is in the setup state", %{quiz: quiz, team: team, player: player} do
       quiz = %{quiz | state: :active}
-      assert {:error, _} = quiz |> Setup.join_team(team, player)
+      assert {:error, _} = quiz |> Setup.join_team(player, team)
     end
   end
 

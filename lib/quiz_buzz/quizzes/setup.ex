@@ -34,22 +34,21 @@ defmodule QuizBuzz.Quizzes.Setup do
 
   def join_quiz(_quiz, _name), do: {:error, "The quiz has already started"}
 
-  @spec join_team(Quiz.t(), Team.t(), Player.t()) :: {:ok, Quiz.t()} | {:error, String.t()}
-  def join_team(%{state: :setup} = quiz, team, player) do
-    player = %{player | team: team}
-    quiz = %{quiz | players: replace_player(quiz.players, player)}
+  @spec join_team(Quiz.t(), Player.t(), Team.t()) :: {:ok, Quiz.t()} | {:error, String.t()}
+  def join_team(%{state: :setup} = quiz, player, team) do
+    quiz = %{quiz | players: find_and_update_player_team(quiz.players, player, team)}
 
     {:ok, quiz}
   end
 
-  def join_team(_quiz, _team, _player), do: {:error, "The quiz has already started"}
+  def join_team(_quiz, _player, _team), do: {:error, "The quiz has already started"}
 
-  defp replace_player(players, player) do
-    Enum.map(players, &replace_if_name_matches(&1, player))
+  defp find_and_update_player_team(players, player, team) do
+    Enum.map(players, &update_player_team(&1, player, team))
   end
 
-  defp replace_if_name_matches(%{name: name}, %{name: name} = new_player), do: new_player
-  defp replace_if_name_matches(player, _new_player), do: player
+  defp update_player_team(player, player, team), do: %{player | team: team}
+  defp update_player_team(player, _player_to_update, _team), do: player
 
   @spec start(Quiz.t()) :: {:ok, Quiz.t()} | {:error, String.t()}
   def start(%{state: :setup} = quiz) do
