@@ -3,13 +3,15 @@ defmodule QuizBuzz.Quizzes.Player do
   A player in the quiz.
   """
 
-  @enforce_keys [:name, :buzzed?]
-  defstruct [:name, buzzed?: false]
+  alias QuizBuzz.Quizzes.Team
 
-  @type t :: %__MODULE__{name: String.t(), buzzed?: boolean()}
+  @enforce_keys [:name, :buzzed?]
+  defstruct [:name, :team, buzzed?: false]
+
+  @type t :: %__MODULE__{name: String.t(), team: Team.t() | nil, buzzed?: boolean()}
 
   @spec new(String.t()) :: t()
   def new(name) do
-    %__MODULE__{name: name, buzzed?: false}
+    %__MODULE__{name: name, team: nil, buzzed?: false}
   end
 end

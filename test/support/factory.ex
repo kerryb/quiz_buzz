@@ -19,7 +19,7 @@ defmodule QuizBuzz.Factory do
     %{quiz | teams: [team | quiz.teams]}
   end
 
-  def with_player(quiz_or_team, player) do
-    %{quiz_or_team | players: [player | quiz_or_team.players]}
+  def with_player(quiz, player) do
+    %{quiz | players: [player | quiz.players]}
   end
 end
