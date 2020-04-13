@@ -6,9 +6,11 @@ defmodule QuizBuzz.Quizzes.Play do
   alias QuizBuzz.Quizzes.{Player, Quiz}
 
   @spec buzz(Quiz.t(), Player.t()) :: Quiz.t()
-  def buzz(quiz, player) do
-    %{quiz | players: mark_as_buzzed(quiz.players, player)}
+  def buzz(%{state: :active} = quiz, player) do
+    %{quiz | players: mark_as_buzzed(quiz.players, player), state: :buzzed}
   end
+
+  def buzz(_quiz, _player), do: {:error, "Buzzers are not currently active"}
 
   defp mark_as_buzzed(players, player) do
     Enum.map(players, &buzzed_if_matched(&1, player))

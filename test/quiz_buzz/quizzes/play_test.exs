@@ -21,5 +21,15 @@ defmodule QuizBuzz.Quizzes.PlayTest do
                {"Jane Doe", true}
              ]
     end
+
+    test "updates the quiz state to buzzed", %{quiz: quiz, jane_doe: jane_doe} do
+      quiz = Play.buzz(quiz, jane_doe)
+      assert quiz.state == :buzzed
+    end
+
+    test "fails unless the quiz is in the active state", %{quiz: quiz, jane_doe: jane_doe} do
+      quiz = %{quiz | state: :buzzed}
+      assert {:error, _} = Play.buzz(quiz, jane_doe)
+    end
   end
 end

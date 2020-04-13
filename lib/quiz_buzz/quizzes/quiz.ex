@@ -14,7 +14,7 @@ defmodule QuizBuzz.Quizzes.Quiz do
   defstruct [:id, teams: [], players: [], state: []]
 
   @type t :: %__MODULE__{id: String.t(), teams: [Team.t()], players: [Player.t()], state: state()}
-  @type state :: :setup | :active
+  @type state :: :setup | :active | :buzzed
 
   @spec new((() -> String.t())) :: t()
   def new(id_generator) do
