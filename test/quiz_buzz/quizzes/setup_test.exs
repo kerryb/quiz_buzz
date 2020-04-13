@@ -1,5 +1,3 @@
-# credo:disable-for-this-file Credo.Check.Readability.SinglePipe
-
 defmodule QuizBuzz.Quizzes.SetupTest do
   use ExUnit.Case, async: true
 
@@ -9,26 +7,27 @@ defmodule QuizBuzz.Quizzes.SetupTest do
   describe "QuizBuzz.Quizzes.Setup.add_team/2" do
     setup do
       existing_team = Team.new("Existing team")
+      # credo:disable-for-next-line Credo.Check.Readability.SinglePipe
       quiz = new_quiz() |> with_team(existing_team)
       {:ok, quiz: quiz}
     end
 
     test "adds a new team with the supplied name", %{quiz: quiz} do
-      {:ok, quiz} = quiz |> Setup.add_team("My team")
+      {:ok, quiz} = Setup.add_team(quiz, "My team")
       assert [%Team{name: "My team"}, %Team{name: "Existing team"}] = quiz.teams
     end
 
     test "rejects blank names", %{quiz: quiz} do
-      assert {:error, _} = quiz |> Setup.add_team("")
+      assert {:error, _} = Setup.add_team(quiz, "")
     end
 
     test "rejects duplicate names", %{quiz: quiz} do
-      assert {:error, _} = quiz |> Setup.add_team("Existing team")
+      assert {:error, _} = Setup.add_team(quiz, "Existing team")
     end
 
     test "fails unless the quiz is in the setup state", %{quiz: quiz} do
       quiz = %{quiz | state: :active}
-      assert {:error, _} = quiz |> Setup.add_team("My team")
+      assert {:error, _} = Setup.add_team(quiz, "My team")
     end
   end
 
@@ -46,22 +45,22 @@ defmodule QuizBuzz.Quizzes.SetupTest do
     end
 
     test "adds a new player with the supplied name, returning quiz and player", %{quiz: quiz} do
-      {:ok, quiz, player} = quiz |> Setup.join_quiz("Joe Bloggs")
+      {:ok, quiz, player} = Setup.join_quiz(quiz, "Joe Bloggs")
       assert player.name == "Joe Bloggs"
       assert [^player, %{name: "Jane Doe"}] = quiz.players
     end
 
     test "rejects blank names", %{quiz: quiz} do
-      assert {:error, _} = quiz |> Setup.join_quiz("")
+      assert {:error, _} = Setup.join_quiz(quiz, "")
     end
 
     test "rejects duplicate names", %{quiz: quiz} do
-      assert {:error, _} = quiz |> Setup.join_quiz("Jane Doe")
+      assert {:error, _} = Setup.join_quiz(quiz, "Jane Doe")
     end
 
     test "fails unless the quiz is in the setup state", %{quiz: quiz} do
       quiz = %{quiz | state: :active}
-      assert {:error, _} = quiz |> Setup.join_quiz("Joe Bloggs")
+      assert {:error, _} = Setup.join_quiz(quiz, "Joe Bloggs")
     end
   end
 
@@ -79,14 +78,14 @@ defmodule QuizBuzz.Quizzes.SetupTest do
     end
 
     test "sets the player's team", %{quiz: quiz, team: team, player: player} do
-      {:ok, quiz} = quiz |> Setup.join_team(player, team)
+      {:ok, quiz} = Setup.join_team(quiz, player, team)
       [player] = quiz.players
       assert player.team == team
     end
 
     test "fails unless the quiz is in the setup state", %{quiz: quiz, team: team, player: player} do
       quiz = %{quiz | state: :active}
-      assert {:error, _} = quiz |> Setup.join_team(player, team)
+      assert {:error, _} = Setup.join_team(quiz, player, team)
     end
   end
 
@@ -96,13 +95,13 @@ defmodule QuizBuzz.Quizzes.SetupTest do
     end
 
     test "sets the state to :active", %{quiz: quiz} do
-      {:ok, quiz} = quiz |> Setup.start()
+      {:ok, quiz} = Setup.start(quiz)
       assert quiz.state == :active
     end
 
     test "fails unless the quiz is in the setup state", %{quiz: quiz} do
       quiz = %{quiz | state: :active}
-      assert {:error, _} = quiz |> Setup.start()
+      assert {:error, _} = Setup.start(quiz)
     end
   end
 end
