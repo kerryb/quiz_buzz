@@ -14,7 +14,7 @@ defmodule QuizBuzz.Quizzes.PlayTest do
     end
 
     test "marks the correct player as having buzzed", %{quiz: quiz, jane_doe: jane_doe} do
-      quiz = Play.buzz(quiz, jane_doe)
+      {:ok, quiz} = Play.buzz(quiz, jane_doe)
 
       assert Enum.map(quiz.players, &{&1.name, &1.buzzed?}) == [
                {"Joe Bloggs", false},
@@ -23,7 +23,7 @@ defmodule QuizBuzz.Quizzes.PlayTest do
     end
 
     test "updates the quiz state to buzzed", %{quiz: quiz, jane_doe: jane_doe} do
-      quiz = Play.buzz(quiz, jane_doe)
+      {:ok, quiz} = Play.buzz(quiz, jane_doe)
       assert quiz.state == :buzzed
     end
 

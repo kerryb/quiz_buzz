@@ -5,9 +5,10 @@ defmodule QuizBuzz.Quizzes.Play do
 
   alias QuizBuzz.Quizzes.{Player, Quiz}
 
-  @spec buzz(Quiz.t(), Player.t()) :: Quiz.t()
+  @spec buzz(Quiz.t(), Player.t()) :: {:ok, Quiz.t()} | {:error, String.t()}
   def buzz(%{state: :active} = quiz, player) do
-    %{quiz | players: mark_as_buzzed(quiz.players, player), state: :buzzed}
+    quiz = %{quiz | players: mark_as_buzzed(quiz.players, player), state: :buzzed}
+    {:ok, quiz}
   end
 
   def buzz(_quiz, _player), do: {:error, "Buzzers are not currently active"}
