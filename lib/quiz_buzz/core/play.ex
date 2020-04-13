@@ -1,9 +1,9 @@
-defmodule QuizBuzz.Quizzes.Play do
+defmodule QuizBuzz.Core.Play do
   @moduledoc """
   Functions for playing the quiz.
   """
 
-  alias QuizBuzz.Quizzes.{Player, Quiz}
+  alias QuizBuzz.Schema.{Player, Quiz}
 
   @spec buzz(Quiz.t(), Player.t()) :: {:ok, Quiz.t()} | {:error, String.t()}
   def buzz(%{state: :active} = quiz, player) do

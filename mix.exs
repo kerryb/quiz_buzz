@@ -45,7 +45,7 @@ defmodule QuizBuzz.MixProject do
 
   defp dialyzer do
     [
-      plt_add_deps: :transitive,
+      plt_add_deps: :app_tree,
       ignore_warnings: "config/dialyzer.ignore-warnings"
     ]
   end

@@ -1,6 +1,6 @@
-defmodule QuizBuzz.Quizzes.Team do
+defmodule QuizBuzz.Schema.Team do
   @moduledoc """
-  A team belongs to a `QuizBuzz.Quizzes.Quiz`, and has a list of `QuizBuzz.Quizzes.Player`s.
+  A team belongs to a `QuizBuzz.Schema.Quiz`.
   """
 
   @enforce_keys [:name]

@@ -1,10 +1,11 @@
-defmodule QuizBuzz.Quizzes.SetupTest do
+defmodule QuizBuzz.Core.SetupTest do
   use ExUnit.Case, async: true
 
   import QuizBuzz.Factory
-  alias QuizBuzz.Quizzes.{Player, Setup, Team}
+  alias QuizBuzz.Core.Setup
+  alias QuizBuzz.Schema.{Player, Team}
 
-  describe "QuizBuzz.Quizzes.Setup.add_team/2" do
+  describe "QuizBuzz.Core.Setup.add_team/2" do
     setup do
       existing_team = Team.new("Existing team")
       # credo:disable-for-next-line Credo.Check.Readability.SinglePipe
@@ -31,7 +32,7 @@ defmodule QuizBuzz.Quizzes.SetupTest do
     end
   end
 
-  describe "QuizBuzz.Quizzes.Setup.join_quiz/2" do
+  describe "QuizBuzz.Core.Setup.join_quiz/2" do
     setup do
       jane_doe = Player.new("Jane Doe")
       existing_team = Team.new("Existing team")
@@ -64,7 +65,7 @@ defmodule QuizBuzz.Quizzes.SetupTest do
     end
   end
 
-  describe "QuizBuzz.Quizzes.Setup.join_team/3" do
+  describe "QuizBuzz.Core.Setup.join_team/3" do
     setup do
       jane_doe = Player.new("Jane Doe")
       team = Team.new("A team")
@@ -89,7 +90,7 @@ defmodule QuizBuzz.Quizzes.SetupTest do
     end
   end
 
-  describe "QuizBuzz.Quizzes.Setup.start/1" do
+  describe "QuizBuzz.Core.Setup.start/1" do
     setup do
       {:ok, quiz: new_quiz()}
     end

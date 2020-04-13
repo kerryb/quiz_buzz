@@ -1,9 +1,9 @@
-defmodule QuizBuzz.Quizzes do
+defmodule QuizBuzz.Core do
   @moduledoc """
-  Entry point for the Quizzes context.
+  Entry point for the Core context.
   """
 
-  alias QuizBuzz.Quizzes.Setup
+  alias QuizBuzz.Core.Setup
 
   defdelegate add_team(quiz, name), to: Setup
   defdelegate join_quiz(quiz, name), to: Setup

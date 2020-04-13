@@ -1,14 +1,14 @@
-defmodule QuizBuzz.Quizzes.Quiz do
+defmodule QuizBuzz.Schema.Quiz do
   @moduledoc """
   Top level struct (token) for a quiz. Contains the following:
 
   * a random ID
-  * a list of `QuizBuzz.Quizzes.Team`s
-  * a list of `QuizBuzz.Quizzes.Player`s who are yet to join a team
+  * a list of `QuizBuzz.Schema.Team`s
+  * a list of `QuizBuzz.Schema.Player`s who are yet to join a team
   * a state (:setup or :active)
   """
 
-  alias QuizBuzz.Quizzes.{Player, Team}
+  alias QuizBuzz.Schema.{Player, Team}
 
   @enforce_keys [:id, :teams, :players, :state]
   defstruct [:id, teams: [], players: [], state: []]

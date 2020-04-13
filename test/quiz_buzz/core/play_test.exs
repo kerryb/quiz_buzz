@@ -1,11 +1,12 @@
-defmodule QuizBuzz.Quizzes.PlayTest do
+defmodule QuizBuzz.Core.PlayTest do
   use ExUnit.Case, async: true
 
   import QuizBuzz.Factory
 
-  alias QuizBuzz.Quizzes.{Play, Player}
+  alias QuizBuzz.Core.Play
+  alias QuizBuzz.Schema.Player
 
-  describe "QuizBuzz.Quizzes.Play.buzz/2" do
+  describe "QuizBuzz.Core.Play.buzz/2" do
     setup do
       jane_doe = Player.new("Jane Doe")
       joe_bloggs = Player.new("Joe Bloggs")
@@ -33,7 +34,7 @@ defmodule QuizBuzz.Quizzes.PlayTest do
     end
   end
 
-  describe "QuizBuzz.Quizzes.Play.reset_buzzers/1" do
+  describe "QuizBuzz.Core.Play.reset_buzzers/1" do
     setup do
       jane_doe = %{Player.new("Jane Doe") | buzzed?: true}
       joe_bloggs = Player.new("Joe Bloggs")

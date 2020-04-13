@@ -1,9 +1,9 @@
-defmodule QuizBuzz.Quizzes.Setup do
+defmodule QuizBuzz.Core.Setup do
   @moduledoc """
   Functions for setting up the quiz with players and teams, before it starts.
   """
 
-  alias QuizBuzz.Quizzes.{Player, Quiz, Team}
+  alias QuizBuzz.Schema.{Player, Quiz, Team}
 
   @spec add_team(Quiz.t(), String.t()) :: {:ok, Quiz.t()} | {:error, String.t()}
   def add_team(_quiz, ""), do: {:error, "Name must not be blank"}

@@ -1,4 +1,4 @@
-defmodule QuizBuzz.Quizzes.RandomIDGenerator do
+defmodule QuizBuzz.Core.RandomIDGenerator do
   @moduledoc """
   An agent responsible for providing unique random four-character IDs for
   quizzes. When started it will seed itself randomly.

@@ -5,7 +5,8 @@ defmodule QuizBuzz.Factory do
   Test helpers to build quizzes and associated structs.
   """
 
-  alias QuizBuzz.Quizzes.{Quiz, RandomIDGenerator}
+  alias QuizBuzz.Core.RandomIDGenerator
+  alias QuizBuzz.Schema.Quiz
 
   def new_quiz do
     Quiz.new(&RandomIDGenerator.next/0)

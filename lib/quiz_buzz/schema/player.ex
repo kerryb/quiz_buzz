@@ -1,9 +1,10 @@
-defmodule QuizBuzz.Quizzes.Player do
+defmodule QuizBuzz.Schema.Player do
   @moduledoc """
-  A player in the quiz.
+  A player in the quiz. They may have an association with a
+  `QuizBuzz.Schema.Team`, and may be marked at any point as having buzzed.
   """
 
-  alias QuizBuzz.Quizzes.Team
+  alias QuizBuzz.Schema.Team
 
   @enforce_keys [:name, :buzzed?]
   defstruct [:name, :team, buzzed?: false]
