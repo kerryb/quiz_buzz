@@ -64,7 +64,7 @@ defmodule QuizBuzz.Quizzes.SetupTest do
     end
   end
 
-  describe "QuizBuzz.Quizzes.Setup.join_team/2" do
+  describe "QuizBuzz.Quizzes.Setup.join_team/3" do
     setup do
       jane_doe = Player.new("Jane Doe")
       team = Team.new("A team")
