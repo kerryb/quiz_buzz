@@ -1,5 +1,13 @@
 # QuizBuzz
 
+A web-based quiz buzzer app, for remote quizzes on Zoom etc. Consists of three main layers (working outwards):
+
+* A functional core, with a set of functions all operating on a common `QuizBuzz.Quizzes.Quiz` token
+* A `QuizBuzz.Registry`, handling persistence of quizzes and the external API
+* A Phoenix Live View app, providing the UI
+
+## Phoenix boilerplate
+
 To start your Phoenix server:
 
   * Install dependencies with `mix deps.get`
