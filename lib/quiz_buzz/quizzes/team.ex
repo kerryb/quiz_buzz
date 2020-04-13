@@ -5,7 +5,8 @@ defmodule QuizBuzz.Quizzes.Team do
 
   alias QuizBuzz.Quizzes.Player
 
-  defstruct [:name, :players]
+  @enforce_keys [:name, :players]
+  defstruct [:name, players: []]
 
   @type t :: %__MODULE__{name: String.t(), players: [Player.t()]}
 

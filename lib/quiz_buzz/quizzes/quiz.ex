@@ -10,7 +10,8 @@ defmodule QuizBuzz.Quizzes.Quiz do
 
   alias QuizBuzz.Quizzes.{Player, Team}
 
-  defstruct [:id, :teams, :players, :state]
+  @enforce_keys [:id, :teams, :players, :state]
+  defstruct [:id, teams: [], players: [], state: []]
 
   @type t :: %__MODULE__{id: String.t(), teams: [Team.t()], players: [Player.t()], state: state()}
   @type state :: :setup | :active

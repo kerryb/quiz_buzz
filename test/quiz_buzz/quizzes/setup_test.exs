@@ -50,8 +50,8 @@ defmodule QuizBuzz.Quizzes.SetupTest do
       quiz: quiz
     } do
       {:ok, quiz, player} = quiz |> Setup.join_quiz("Joe Bloggs")
-      assert player == %Player{name: "Joe Bloggs"}
-      assert [^player, %Player{name: "Jane Doe"}] = quiz.players
+      assert player.name == "Joe Bloggs"
+      assert [^player, %{name: "Jane Doe"}] = quiz.players
     end
 
     test "rejects blank names", %{quiz: quiz} do

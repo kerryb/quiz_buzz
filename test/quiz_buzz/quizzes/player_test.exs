@@ -4,8 +4,8 @@ defmodule QuizBuzz.Quizzes.PlayerTest do
   alias QuizBuzz.Quizzes.Player
 
   describe "QuizBuzz.Quizzes.Player.new/1" do
-    test "builds a new player with the specified name" do
-      assert Player.new("Joe Bloggs") == %Player{name: "Joe Bloggs"}
+    test "builds a new player with the specified name, with buzzed? set to false" do
+      assert Player.new("Joe Bloggs") == %Player{name: "Joe Bloggs", buzzed?: false}
     end
   end
 end
