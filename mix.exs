@@ -52,7 +52,7 @@ defmodule QuizBuzz.MixProject do
 
   defp docs do
     [
-      main: "README",
+      main: "readme",
       extras: ~w(README.md),
       source_url_pattern: "https://github.com/kerryb/quiz_buzz/blob/master/%{path}#L%{line}"
     ]
