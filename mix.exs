@@ -69,6 +69,7 @@ defmodule QuizBuzz.MixProject do
       {:ex_doc, "~> 0.21", only: :dev},
       {:hashids, "~> 2.0"},
       {:phoenix, "~> 1.4.16"},
+      {:phoenix_live_view, "~> 0.11"},
       {:phoenix_pubsub, "~> 1.1"},
       {:phoenix_html, "~> 2.11"},
       {:phoenix_live_reload, "~> 1.2", only: :dev},

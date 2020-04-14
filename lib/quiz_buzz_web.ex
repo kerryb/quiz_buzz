@@ -25,6 +25,7 @@ defmodule QuizBuzzWeb do
     quote do
       use Phoenix.Controller, namespace: QuizBuzzWeb
 
+      import Phoenix.LiveView.Controller
       import Plug.Conn
       import QuizBuzzWeb.Gettext
       alias QuizBuzzWeb.Router.Helpers, as: Routes
@@ -45,6 +46,7 @@ defmodule QuizBuzzWeb do
 
       import QuizBuzzWeb.ErrorHelpers
       import QuizBuzzWeb.Gettext
+      import Phoenix.LiveView.Helpers
       alias QuizBuzzWeb.Router.Helpers, as: Routes
     end
   end
@@ -52,6 +54,7 @@ defmodule QuizBuzzWeb do
   def router do
     quote do
       use Phoenix.Router
+      import Phoenix.LiveView.Router
       import Plug.Conn
       import Phoenix.Controller
     end
