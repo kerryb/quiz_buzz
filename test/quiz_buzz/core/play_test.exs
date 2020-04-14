@@ -11,11 +11,11 @@ defmodule QuizBuzz.Core.PlayTest do
       jane_doe = Player.new("Jane Doe")
       joe_bloggs = Player.new("Joe Bloggs")
       quiz = active_quiz() |> with_player(jane_doe) |> with_player(joe_bloggs)
-      {:ok, quiz: quiz, jane_doe: jane_doe}
+      {:ok, quiz: quiz}
     end
 
-    test "marks the correct player as having buzzed", %{quiz: quiz, jane_doe: jane_doe} do
-      {:ok, quiz} = Play.buzz(quiz, jane_doe)
+    test "marks the correct player as having buzzed", %{quiz: quiz} do
+      {:ok, quiz} = Play.buzz(quiz, "Jane Doe")
 
       assert Enum.map(quiz.players, &{&1.name, &1.buzzed?}) == [
                {"Joe Bloggs", false},
@@ -23,14 +23,14 @@ defmodule QuizBuzz.Core.PlayTest do
              ]
     end
 
-    test "updates the quiz state to buzzed", %{quiz: quiz, jane_doe: jane_doe} do
-      {:ok, quiz} = Play.buzz(quiz, jane_doe)
+    test "updates the quiz state to buzzed", %{quiz: quiz} do
+      {:ok, quiz} = Play.buzz(quiz, "Jane Doe")
       assert quiz.state == :buzzed
     end
 
-    test "fails unless the quiz is in the active state", %{quiz: quiz, jane_doe: jane_doe} do
+    test "fails unless the quiz is in the active state", %{quiz: quiz} do
       quiz = %{quiz | state: :buzzed}
-      assert {:error, _} = Play.buzz(quiz, jane_doe)
+      assert {:error, _} = Play.buzz(quiz, "Jane Doe")
     end
   end
 

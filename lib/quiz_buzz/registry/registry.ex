@@ -47,6 +47,33 @@ defmodule QuizBuzz.Registry do
     end
   end
 
+  @spec start_quiz(String.t()) :: :ok | {:error, String.t()}
+  def start_quiz(id) do
+    with quiz <- get_quiz(id),
+         {:ok, quiz} <- Core.start(quiz),
+         :ok <- update_quiz(id, quiz) do
+      :ok
+    end
+  end
+
+  @spec buzz(String.t(), String.t()) :: :ok | {:error, String.t()}
+  def buzz(id, player_name) do
+    with quiz <- get_quiz(id),
+         {:ok, quiz} <- Core.buzz(quiz, player_name),
+         :ok <- update_quiz(id, quiz) do
+      :ok
+    end
+  end
+
+  @spec reset_buzzers(String.t()) :: :ok | {:error, String.t()}
+  def reset_buzzers(id) do
+    with quiz <- get_quiz(id),
+         {:ok, quiz} <- Core.reset_buzzers(quiz),
+         :ok <- update_quiz(id, quiz) do
+      :ok
+    end
+  end
+
   defp register_quiz(quiz) do
     Agent.update(__MODULE__, &Map.put_new(&1, quiz.id, quiz))
   end
@@ -56,6 +83,7 @@ defmodule QuizBuzz.Registry do
   end
 
   defp update_quiz(id, quiz) do
+    Phoenix.PubSub.broadcast(QuizBuzz.PubSub, "quiz_updates", {:quiz, quiz})
     Agent.update(__MODULE__, &Map.put(&1, id, quiz))
   end
 end
