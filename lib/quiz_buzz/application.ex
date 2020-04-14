@@ -11,7 +11,8 @@ defmodule QuizBuzz.Application do
     # List all child processes to be supervised
     children = [
       QuizBuzzWeb.Endpoint,
-      QuizBuzz.Core.RandomIDGenerator
+      QuizBuzz.Core.RandomIDGenerator,
+      QuizBuzz.Registry
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html

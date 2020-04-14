@@ -58,10 +58,9 @@ defmodule QuizBuzz.Core.SetupTest do
       {:ok, quiz: quiz}
     end
 
-    test "adds a new player with the supplied name, returning quiz and player", %{quiz: quiz} do
-      {:ok, quiz, player} = Setup.join_quiz(quiz, "Joe Bloggs")
-      assert player.name == "Joe Bloggs"
-      assert [^player, %{name: "Jane Doe"}] = quiz.players
+    test "adds a new player with the supplied name", %{quiz: quiz} do
+      {:ok, quiz} = Setup.join_quiz(quiz, "Joe Bloggs")
+      assert [%{name: "Joe Bloggs"}, %{name: "Jane Doe"}] = quiz.players
     end
 
     test "rejects blank names", %{quiz: quiz} do
@@ -91,15 +90,15 @@ defmodule QuizBuzz.Core.SetupTest do
       {:ok, quiz: quiz, team: team, player: jane_doe}
     end
 
-    test "sets the player's team", %{quiz: quiz, team: team, player: player} do
-      {:ok, quiz} = Setup.join_team(quiz, player, team)
+    test "sets the player's team", %{quiz: quiz} do
+      {:ok, quiz} = Setup.join_team(quiz, "Jane Doe", "A team")
       [player] = quiz.players
-      assert player.team == team
+      assert player.team.name == "A team"
     end
 
-    test "fails unless the quiz is in the setup state", %{quiz: quiz, team: team, player: player} do
+    test "fails unless the quiz is in the setup state", %{quiz: quiz} do
       quiz = %{quiz | state: :active}
-      assert {:error, _} = Setup.join_team(quiz, player, team)
+      assert {:error, _} = Setup.join_team(quiz, "Jane Doe", "A team")
     end
   end
 
