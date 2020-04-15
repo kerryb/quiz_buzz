@@ -1,0 +1,15 @@
+<form phx-change="form-change">
+  <div class="row">
+    <div class="column">
+      <input type="text" name="id" autofocus="true" placeholder="Quiz ID">
+    </div>
+    <div class="column">
+      <button <%= unless @id_valid, do: "disabled" %> phx-click="join">Join quiz</button>
+    </div>
+  </div>
+</form>
+<p>
+  Or
+  <%# <a href="/quizmaster">start a new quiz</a> %>
+  <%= live_redirect "start a new quiz", to: Routes.live_path(@socket, QuizmasterLive) %>
+</p>

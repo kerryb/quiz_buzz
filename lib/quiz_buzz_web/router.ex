@@ -7,6 +7,7 @@ defmodule QuizBuzzWeb.Router do
     plug :fetch_live_flash
     plug :protect_from_forgery
     plug :put_secure_browser_headers
+    plug :put_root_layout, {QuizBuzzWeb.LayoutView, :root}
   end
 
   pipeline :api do
@@ -16,7 +17,9 @@ defmodule QuizBuzzWeb.Router do
   scope "/", QuizBuzzWeb do
     pipe_through :browser
 
-    get "/", PageController, :index
+    live "/", HomeLive
+    live "/quiz/:id", QuizLive
+    live "/quizmaster", QuizmasterLive
   end
 
   # Other scopes may use custom stacks.
