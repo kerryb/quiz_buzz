@@ -3,7 +3,8 @@ defmodule QuizBuzzWeb.QuizmasterLive do
   LiveView for the quizmaster view of a quiz.
   """
 
-  use Phoenix.{HTML, LiveView}
+  use Phoenix.HTML
+  use Phoenix.LiveView, layout: {QuizBuzzWeb.LayoutView, "live.html"}
 
   alias QuizBuzz.Registry
   alias QuizBuzzWeb.QuizLive

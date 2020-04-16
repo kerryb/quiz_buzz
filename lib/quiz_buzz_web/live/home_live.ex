@@ -3,7 +3,7 @@ defmodule QuizBuzzWeb.HomeLive do
   LiveView for the home page.
   """
 
-  use Phoenix.LiveView
+  use Phoenix.LiveView, layout: {QuizBuzzWeb.LayoutView, "live.html"}
 
   alias QuizBuzzWeb.{QuizLive, QuizmasterLive}
   # credo:disable-for-next-line Credo.Check.Readability.AliasAs

@@ -9,11 +9,7 @@
     <%= csrf_meta_tag() %>
   </head>
   <body>
-    <main role="main" class="container">
-      <p><%= live_flash(@flash, :notice) %></p>
-      <p><%= live_flash(@flash, :error) %></p>
-      <%= @inner_content %>
-    </main>
+    <%= @inner_content %>
     <script type="text/javascript" src="<%= Routes.static_path(@conn, "/js/app.js") %>"></script>
   </body>
 </html>
