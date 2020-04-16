@@ -5,7 +5,7 @@ defmodule QuizBuzzWeb.HomeLiveTest do
 
   @endpoint QuizBuzzWeb.Endpoint
 
-  describe "QuizBuzzWeb.HomeLiveTest" do
+  describe "QuizBuzzWeb.HomeLive" do
     test "disables the 'join quiz' button when the ID has fewer than four characters", %{
       conn: conn
     } do
