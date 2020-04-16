@@ -5,11 +5,9 @@ defmodule QuizBuzzWeb.HomeLive do
 
   use Phoenix.LiveView
 
-  import Phoenix.LiveView.Helpers
-
+  alias QuizBuzzWeb.{QuizLive, QuizmasterLive}
   # credo:disable-for-next-line Credo.Check.Readability.AliasAs
   alias QuizBuzzWeb.Router.Helpers, as: Routes
-  alias QuizBuzzWeb.{QuizLive, QuizmasterLive}
 
   @impl true
   def mount(_params, _session, socket) do

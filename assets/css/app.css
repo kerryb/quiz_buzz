@@ -2,6 +2,7 @@
 
 @import "./phoenix.css";
 
-.text-center {
-  text-align: center;
+.qb-id {
+  font-weight: bold;
+  color: #00C;
 }
