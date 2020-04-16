@@ -1,13 +1,22 @@
 defmodule QuizBuzzWeb.HomeLive do
+  @moduledoc """
+  LiveView for the home page.
+  """
+
   use Phoenix.LiveView
+
   import Phoenix.LiveView.Helpers
+
+  # credo:disable-for-next-line Credo.Check.Readability.AliasAs
   alias QuizBuzzWeb.Router.Helpers, as: Routes
   alias QuizBuzzWeb.{QuizLive, QuizmasterLive}
 
+  @impl true
   def mount(_params, _session, socket) do
     {:ok, assign(socket, id_valid: false)}
   end
 
+  @impl true
   def handle_event("join", _params, socket) do
     {:noreply, redirect(socket, to: Routes.live_path(socket, QuizLive, socket.assigns.id))}
   end
