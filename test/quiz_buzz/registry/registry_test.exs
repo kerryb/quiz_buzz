@@ -12,6 +12,17 @@ defmodule QuizBuzz.RegistryTest do
     :ok = Phoenix.PubSub.subscribe(QuizBuzz.PubSub, "quiz_updates")
   end
 
+  describe "QuizBuzz.Registry.valid_id?/1" do
+    test "returns true if a quiz exists with the supplied ID" do
+      {:ok, id} = Registry.new_quiz()
+      assert Registry.valid_id?(id)
+    end
+
+    test "returns false if no quiz exists with the supplied IDs" do
+      refute Registry.valid_id?("XXXX")
+    end
+  end
+
   test "a quiz can be set up and run" do
     quizmaster_creates_quiz()
     |> quizmaster_adds_team("Team one")

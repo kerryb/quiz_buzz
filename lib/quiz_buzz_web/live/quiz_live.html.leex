@@ -1,1 +1,10 @@
-<%= @id %>
+<form phx-change="form-change">
+  <div class="row">
+    <div class="column">
+      <input type="text" name="name" autofocus="true" placeholder="Your name">
+    </div>
+    <div class="column">
+      <button <%= unless @name_valid, do: "disabled" %> phx-click="join">Join quiz</button>
+    </div>
+  </div>
+</form>

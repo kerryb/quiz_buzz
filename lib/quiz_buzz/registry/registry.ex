@@ -12,6 +12,14 @@ defmodule QuizBuzz.Registry do
     Agent.start_link(fn -> %{} end, name: __MODULE__)
   end
 
+  @spec valid_id?(String.t()) :: boolean()
+  def valid_id?(id) do
+    case Agent.get(__MODULE__, &Map.fetch(&1, id)) do
+      {:ok, _quiz} -> true
+      :error -> false
+    end
+  end
+
   @spec new_quiz :: {:ok, String.t()} | {:error, String.t()}
   def new_quiz do
     with {:ok, quiz} <- Core.new_quiz() do
