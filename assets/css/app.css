@@ -2,7 +2,7 @@
 
 @import "./phoenix.css";
 
-.qb-id {
+.qb-id, .qb-quiz-url {
   font-weight: bold;
   color: #00C;
 }
