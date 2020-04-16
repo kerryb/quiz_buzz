@@ -67,6 +67,7 @@ defmodule QuizBuzz.MixProject do
       {:dialyxir, "~> 1.0", only: :dev, runtime: false},
       {:excoveralls, "~> 0.10", only: :test},
       {:ex_doc, "~> 0.21", only: :dev},
+      {:floki, "~> 0.26", only: :test},
       {:hashids, "~> 2.0"},
       {:phoenix, "~> 1.4.16"},
       {:phoenix_live_view, "~> 0.11"},
