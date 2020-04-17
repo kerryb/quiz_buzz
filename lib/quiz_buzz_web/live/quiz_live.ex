@@ -14,17 +14,28 @@ defmodule QuizBuzzWeb.QuizLive do
   @impl true
   def mount(params, _session, socket) do
     unless Registry.valid_id?(params["id"]), do: raise(InvalidQuizdIdError)
-    {:ok, assign(socket, id: params["id"], name_valid: false)}
+    if connected?(socket), do: Phoenix.PubSub.subscribe(QuizBuzz.PubSub, "quiz_updates")
+    {:ok, assign(socket, id: params["id"], quiz: nil, state: :joining, name_valid: false)}
   end
 
   @impl true
   def handle_event("form-change", %{"name" => name}, socket) do
     case Registry.validate_player_name(socket.assigns.id, name) do
       :ok ->
-        {:noreply, assign(socket, name_valid: true)}
+        {:noreply, socket |> assign(name: name, name_valid: true) |> clear_flash()}
 
       {:error, message} ->
         {:noreply, socket |> assign(name_valid: false) |> put_flash(:error, message)}
     end
+  end
+
+  def handle_event("join-quiz", _params, socket) do
+    :ok = Registry.join_quiz(socket.assigns.id, socket.assigns.name)
+    {:noreply, assign(socket, state: :setup)}
+  end
+
+  @impl true
+  def handle_info({:quiz, quiz}, socket) do
+    {:noreply, assign(socket, :quiz, quiz)}
   end
 end

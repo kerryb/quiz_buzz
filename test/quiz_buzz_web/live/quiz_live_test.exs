@@ -42,5 +42,36 @@ defmodule QuizBuzzWeb.QuizLiveTest do
       assert Floki.attribute(dom, "button", "disabled") == ["disabled"]
       [{_, _, ["Name must not be blank"]}] = Floki.find(dom, ".alert-danger")
     end
+
+    test "enables the join button and removes the flash if the name is valid", %{conn: conn} do
+      {:ok, id} = Registry.new_quiz()
+      :ok = Registry.join_quiz(id, "Alice")
+      {:ok, view, _html} = live(conn, "/quiz/#{id}")
+      render_change(view, "form-change", %{"name" => "Alice"})
+      html = render_change(view, "form-change", %{"name" => "Bob"})
+      {:ok, dom} = Floki.parse_document(html)
+      assert Floki.attribute(dom, "button", "disabled") == []
+      [{_, _, []}] = Floki.find(dom, ".alert-danger")
+    end
+
+    test "shows a message after joining until the quiz starts", %{conn: conn} do
+      {:ok, id} = Registry.new_quiz()
+      {:ok, view, _html} = live(conn, "/quiz/#{id}")
+      render_change(view, "form-change", %{"name" => "Alice"})
+      html = render_click(view, "join-quiz")
+      assert html =~ ~r/The quiz has not yet started/
+    end
+
+    test "shows each player's name", %{conn: conn} do
+      {:ok, id} = Registry.new_quiz()
+      :ok = Registry.join_quiz(id, "Alice")
+      {:ok, view, _html} = live(conn, "/quiz/#{id}")
+      render_change(view, "form-change", %{"name" => "Bob"})
+      render_click(view, "join-quiz")
+      #  Re-render to catch the update from the pubsub message
+      html = render(view)
+      {:ok, dom} = Floki.parse_document(html)
+      [{_, _, ["Bob"]}, {_, _, ["Alice"]}] = Floki.find(dom, ".qb-player")
+    end
   end
 end

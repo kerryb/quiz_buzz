@@ -1,10 +1,22 @@
-<form phx-change="form-change">
-  <div class="row">
-    <div class="column">
-      <input type="text" name="name" autofocus="true" placeholder="Your name">
-    </div>
-    <div class="column">
-      <button <%= unless @name_valid, do: "disabled" %> phx-click="join">Join quiz</button>
-    </div>
-  </div>
-</form>
+<%= case @state do %>
+  <% :joining -> %>
+    <form onSubmit="return false;" phx-change="form-change">
+      <div class="row">
+        <div class="column">
+          <input type="text" name="name" autofocus="true" placeholder="Your name">
+        </div>
+        <div class="column">
+          <button <%= unless @name_valid, do: "disabled" %> phx-click="join-quiz">Join quiz</button>
+        </div>
+      </div>
+    </form>
+    <% :setup -> %>
+      <p>The quiz has not yet started.</p>
+      <%= if @quiz do %>
+        <div class="qb-players">
+          <%= for player <- @quiz.players do %>
+            <div class="qb-player"><%= player.name %></div>
+          <% end %>
+        </div>
+      <% end %>
+<% end %>
