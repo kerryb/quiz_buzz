@@ -46,6 +46,13 @@ defmodule QuizBuzz.Registry do
     end
   end
 
+  @spec validate_player_name(String.t(), String.t()) :: :ok | {:error, String.t()}
+  def validate_player_name(id, name) do
+    with quiz <- get_quiz(id) do
+      Core.validate_player_name(quiz, name)
+    end
+  end
+
   @spec join_team(String.t(), String.t(), String.t()) :: :ok | {:error, String.t()}
   def join_team(id, team_name, player_name) do
     with quiz <- get_quiz(id),

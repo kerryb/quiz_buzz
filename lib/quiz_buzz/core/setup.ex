@@ -26,13 +26,20 @@ defmodule QuizBuzz.Core.Setup do
 
   def add_team(_quiz, _name), do: {:error, "The quiz has already started"}
 
-  @spec join_quiz(Quiz.t(), String.t()) :: {:ok, Quiz.t()} | {:error, String.t()}
-  def join_quiz(_quiz, ""), do: {:error, "Name must not be blank"}
+  @spec validate_player_name(Quiz.t(), String.t()) :: :ok | {:error, String.t()}
+  def validate_player_name(_quiz, ""), do: {:error, "Name must not be blank"}
 
-  def join_quiz(%{state: :setup} = quiz, name) do
+  def validate_player_name(quiz, name) do
     if Enum.any?(quiz.players, &(&1.name == name)) do
       {:error, "That name has already been taken"}
     else
+      :ok
+    end
+  end
+
+  @spec join_quiz(Quiz.t(), String.t()) :: {:ok, Quiz.t()} | {:error, String.t()}
+  def join_quiz(%{state: :setup} = quiz, name) do
+    with :ok <- validate_player_name(quiz, name) do
       player = Player.new(name)
       quiz = %{quiz | players: [player | quiz.players]}
       {:ok, quiz}

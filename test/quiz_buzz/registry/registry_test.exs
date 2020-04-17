@@ -23,6 +23,26 @@ defmodule QuizBuzz.RegistryTest do
     end
   end
 
+  describe "QuizBuzz.Registry.validate_player_name/2" do
+    test "returns :ok if the name is valid" do
+      {:ok, id} = Registry.new_quiz()
+      assert Registry.validate_player_name(id, "Alice") == :ok
+    end
+
+    test "returns an error if the name is blank" do
+      {:ok, id} = Registry.new_quiz()
+      assert Registry.validate_player_name(id, "") == {:error, "Name must not be blank"}
+    end
+
+    test "returns an error if the name is already in use" do
+      {:ok, id} = Registry.new_quiz()
+      :ok = Registry.join_quiz(id, "Alice")
+
+      assert Registry.validate_player_name(id, "Alice") ==
+               {:error, "That name has already been taken"}
+    end
+  end
+
   test "a quiz can be set up and run" do
     quizmaster_creates_quiz()
     |> quizmaster_adds_team("Team one")

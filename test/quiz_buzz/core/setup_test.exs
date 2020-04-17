@@ -45,6 +45,28 @@ defmodule QuizBuzz.Core.SetupTest do
     end
   end
 
+  describe "QuizBuzz.Core.Setup.validate_player_name/2" do
+    setup do
+      jane_doe = Player.new("Jane Doe")
+      # credo:disable-for-next-line Credo.Check.Readability.SinglePipe
+      quiz = new_quiz() |> with_player(jane_doe)
+      {:ok, quiz: quiz}
+    end
+
+    test "rejects blank names", %{quiz: quiz} do
+      assert {:error, "Name must not be blank"} = Setup.validate_player_name(quiz, "")
+    end
+
+    test "rejects duplicate names", %{quiz: quiz} do
+      assert {:error, "That name has already been taken"} =
+               Setup.validate_player_name(quiz, "Jane Doe")
+    end
+
+    test "accepts unique, non-blank names", %{quiz: quiz} do
+      assert :ok = Setup.validate_player_name(quiz, "Joe Bloggs")
+    end
+  end
+
   describe "QuizBuzz.Core.Setup.join_quiz/2" do
     setup do
       jane_doe = Player.new("Jane Doe")

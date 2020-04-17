@@ -29,4 +29,9 @@ defmodule QuizBuzzWeb.QuizmasterLive do
   defp init(socket) do
     assign(socket, id: nil)
   end
+
+  @impl true
+  def handle_event("form-change", %{"name" => _name}, socket) do
+    {:noreply, socket}
+  end
 end

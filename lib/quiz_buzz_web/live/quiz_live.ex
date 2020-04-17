@@ -16,4 +16,15 @@ defmodule QuizBuzzWeb.QuizLive do
     unless Registry.valid_id?(params["id"]), do: raise(InvalidQuizdIdError)
     {:ok, assign(socket, id: params["id"], name_valid: false)}
   end
+
+  @impl true
+  def handle_event("form-change", %{"name" => name}, socket) do
+    case Registry.validate_player_name(socket.assigns.id, name) do
+      :ok ->
+        {:noreply, assign(socket, name_valid: true)}
+
+      {:error, message} ->
+        {:noreply, socket |> assign(name_valid: false) |> put_flash(:error, message)}
+    end
+  end
 end
