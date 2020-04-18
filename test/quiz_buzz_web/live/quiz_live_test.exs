@@ -68,5 +68,16 @@ defmodule QuizBuzzWeb.QuizLiveTest do
       assert has_element?(view, ".qb-player", "Alice")
       assert has_element?(view, ".qb-player", "Bob")
     end
+
+    test "shows each team", %{conn: conn} do
+      {:ok, id} = Registry.new_quiz()
+      :ok = Registry.add_team(id, "Team one")
+      :ok = Registry.add_team(id, "Team two")
+      {:ok, view, _html} = live(conn, "/quiz/#{id}")
+      render_change(view, "form-change", %{"name" => "Bob"})
+      render_click(view, "join-quiz")
+      assert has_element?(view, ".qb-team", "Team one")
+      assert has_element?(view, ".qb-team", "Team two")
+    end
   end
 end
