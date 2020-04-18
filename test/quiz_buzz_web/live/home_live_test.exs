@@ -10,25 +10,22 @@ defmodule QuizBuzzWeb.HomeLiveTest do
       conn: conn
     } do
       {:ok, view, _html} = live(conn, "/")
-      html = render_change(view, "form-change", %{"id" => "A12"})
-      {:ok, dom} = Floki.parse_document(html)
-      assert Floki.attribute(dom, "button", "disabled") == ["disabled"]
+      render_change(view, "form-change", %{"id" => "A12"})
+      assert has_element?(view, "button[disabled=disabled]")
     end
 
     test "disables the 'join quiz' button when the ID has more than four characters", %{
       conn: conn
     } do
       {:ok, view, _html} = live(conn, "/")
-      html = render_change(view, "form-change", %{"id" => "A123Z"})
-      {:ok, dom} = Floki.parse_document(html)
-      assert Floki.attribute(dom, "button", "disabled") == ["disabled"]
+      render_change(view, "form-change", %{"id" => "A123Z"})
+      assert has_element?(view, "button[disabled=disabled]")
     end
 
     test "enables the 'join quiz' button when the ID has exactly four characters", %{conn: conn} do
       {:ok, view, _html} = live(conn, "/")
-      html = render_change(view, "form-change", %{"id" => "A123"})
-      {:ok, dom} = Floki.parse_document(html)
-      assert Floki.attribute(dom, "button", :disabled) == []
+      render_change(view, "form-change", %{"id" => "A123"})
+      assert has_element?(view, "button:not([disabled])")
     end
 
     test "redirects to the quiz view when the join button is pressed", %{conn: conn} do
