@@ -8,7 +8,7 @@ defmodule QuizBuzzWeb.QuizmasterLiveTest do
   describe "QuizBuzzWeb.QuizmasterLive" do
     test "Displays the quiz ID", %{conn: conn} do
       {:ok, view, _html} = live(conn, "/quizmaster")
-      assert has_element?(view, ".qb-id", ~r/.{4}/)
+      assert has_element?(view, ".qb-quiz_id", ~r/.{4}/)
     end
 
     test "Includes a link to the the quiz", %{conn: conn} do

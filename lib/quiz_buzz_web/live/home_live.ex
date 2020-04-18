@@ -11,15 +11,15 @@ defmodule QuizBuzzWeb.HomeLive do
 
   @impl true
   def mount(_params, _session, socket) do
-    {:ok, assign(socket, id_valid: false)}
+    {:ok, assign(socket, quiz_id_valid: false)}
   end
 
   @impl true
-  def handle_event("form-change", %{"id" => id}, socket) do
-    {:noreply, assign(socket, id: id, id_valid: String.length(id) == 4)}
+  def handle_event("form-change", %{"quiz_id" => quiz_id}, socket) do
+    {:noreply, assign(socket, quiz_id: quiz_id, quiz_id_valid: String.length(quiz_id) == 4)}
   end
 
   def handle_event("join", _params, socket) do
-    {:noreply, redirect(socket, to: Routes.live_path(socket, QuizLive, socket.assigns.id))}
+    {:noreply, redirect(socket, to: Routes.live_path(socket, QuizLive, socket.assigns.quiz_id))}
   end
 end

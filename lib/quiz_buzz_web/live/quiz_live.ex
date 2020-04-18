@@ -7,20 +7,22 @@ defmodule QuizBuzzWeb.QuizLive do
 
   alias QuizBuzz.Registry
 
-  defmodule InvalidQuizdIdError do
-    defexception message: "invalid quiz ID", plug_status: 404
+  defmodule InvalidQuizIDError do
+    defexception message: "Invalid quiz ID", plug_status: 404
   end
 
   @impl true
   def mount(params, _session, socket) do
-    unless Registry.valid_id?(params["id"]), do: raise(InvalidQuizdIdError)
+    unless Registry.valid_id?(params["quiz_id"]), do: raise(InvalidQuizIDError)
     if connected?(socket), do: Phoenix.PubSub.subscribe(QuizBuzz.PubSub, "quiz_updates")
-    {:ok, assign(socket, id: params["id"], quiz: nil, state: :joining, name_valid: false)}
+
+    {:ok,
+     assign(socket, quiz_id: params["quiz_id"], quiz: nil, state: :joining, name_valid: false)}
   end
 
   @impl true
   def handle_event("form-change", %{"name" => name}, socket) do
-    case Registry.validate_player_name(socket.assigns.id, name) do
+    case Registry.validate_player_name(socket.assigns.quiz_id, name) do
       :ok ->
         {:noreply, socket |> assign(name: name, name_valid: true) |> clear_flash()}
 
@@ -30,7 +32,7 @@ defmodule QuizBuzzWeb.QuizLive do
   end
 
   def handle_event("join-quiz", _params, socket) do
-    :ok = Registry.join_quiz(socket.assigns.id, socket.assigns.name)
+    :ok = Registry.join_quiz(socket.assigns.quiz_id, socket.assigns.name)
     {:noreply, assign(socket, state: :setup)}
   end
 

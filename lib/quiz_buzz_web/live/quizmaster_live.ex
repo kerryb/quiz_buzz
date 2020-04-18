@@ -17,17 +17,17 @@ defmodule QuizBuzzWeb.QuizmasterLive do
   end
 
   defp init(%{connected?: true} = socket) do
-    {:ok, id} = Registry.new_quiz()
+    {:ok, quiz_id} = Registry.new_quiz()
 
     assign(socket,
-      id: id,
-      quiz_url: Routes.live_url(socket, QuizLive, id),
-      page_title: "QuizzBuzz: #{id} (master)"
+      quiz_id: quiz_id,
+      quiz_url: Routes.live_url(socket, QuizLive, quiz_id),
+      page_title: "QuizzBuzz: #{quiz_id} (master)"
     )
   end
 
   defp init(socket) do
-    assign(socket, id: nil)
+    assign(socket, quiz_id: nil)
   end
 
   @impl true

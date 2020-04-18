@@ -1,10 +1,10 @@
 <form phx-change="form-change">
   <div class="row">
     <div class="column">
-      <input type="text" name="id" autofocus="true" placeholder="Quiz ID">
+      <input type="text" name="quiz_id" autofocus="true" placeholder="Quiz ID">
     </div>
     <div class="column">
-      <button <%= unless @id_valid, do: "disabled" %> phx-click="join-quiz">Join quiz</button>
+      <button <%= unless @quiz_id_valid, do: "disabled" %> phx-click="join-quiz">Join quiz</button>
     </div>
   </div>
 </form>

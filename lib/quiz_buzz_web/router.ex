@@ -18,7 +18,7 @@ defmodule QuizBuzzWeb.Router do
     pipe_through :browser
 
     live "/", HomeLive
-    live "/quiz/:id", QuizLive
+    live "/quiz/:quiz_id", QuizLive
     live "/quizmaster", QuizmasterLive
   end
 
