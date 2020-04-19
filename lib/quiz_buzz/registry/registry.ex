@@ -6,6 +6,7 @@ defmodule QuizBuzz.Registry do
   use Agent
 
   alias QuizBuzz.Core
+  alias QuizBuzz.Schema.Quiz
 
   @spec start_link(any()) :: Agent.on_start()
   def start_link(_arg) do
@@ -20,12 +21,11 @@ defmodule QuizBuzz.Registry do
     end
   end
 
-  @spec new_quiz :: {:ok, String.t()} | {:error, String.t()}
+  @spec new_quiz :: {:ok, Quiz.t()} | {:error, String.t()}
   def new_quiz do
     with {:ok, quiz} <- Core.new_quiz() do
       register_quiz(quiz)
-      :ok = update_quiz(quiz.id, quiz)
-      {:ok, quiz.id}
+      {:ok, quiz}
     end
   end
 
@@ -99,7 +99,7 @@ defmodule QuizBuzz.Registry do
   end
 
   defp update_quiz(id, quiz) do
-    Phoenix.PubSub.broadcast(QuizBuzz.PubSub, "quiz_updates", {:quiz, quiz})
+    Phoenix.PubSub.broadcast(QuizBuzz.PubSub, "quiz:#{quiz.id}", {:quiz, quiz})
     Agent.update(__MODULE__, &Map.put(&1, id, quiz))
   end
 end

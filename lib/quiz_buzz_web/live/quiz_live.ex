@@ -14,7 +14,9 @@ defmodule QuizBuzzWeb.QuizLive do
   @impl true
   def mount(params, _session, socket) do
     unless Registry.valid_id?(params["quiz_id"]), do: raise(InvalidQuizIDError)
-    if connected?(socket), do: Phoenix.PubSub.subscribe(QuizBuzz.PubSub, "quiz_updates")
+
+    if connected?(socket),
+      do: Phoenix.PubSub.subscribe(QuizBuzz.PubSub, "quiz:#{params["quiz_id"]}")
 
     {:ok,
      assign(socket, quiz_id: params["quiz_id"], quiz: nil, state: :joining, name_valid: false)}

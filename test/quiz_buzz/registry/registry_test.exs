@@ -8,14 +8,10 @@ defmodule QuizBuzz.RegistryTest do
     :ok
   end
 
-  setup do
-    :ok = Phoenix.PubSub.subscribe(QuizBuzz.PubSub, "quiz_updates")
-  end
-
   describe "QuizBuzz.Registry.valid_id?/1" do
     test "returns true if a quiz exists with the supplied ID" do
-      {:ok, id} = Registry.new_quiz()
-      assert Registry.valid_id?(id)
+      {:ok, quiz} = Registry.new_quiz()
+      assert Registry.valid_id?(quiz.id)
     end
 
     test "returns false if no quiz exists with the supplied IDs" do
@@ -25,20 +21,20 @@ defmodule QuizBuzz.RegistryTest do
 
   describe "QuizBuzz.Registry.validate_player_name/2" do
     test "returns :ok if the name is valid" do
-      {:ok, id} = Registry.new_quiz()
-      assert Registry.validate_player_name(id, "Alice") == :ok
+      {:ok, quiz} = Registry.new_quiz()
+      assert Registry.validate_player_name(quiz.id, "Alice") == :ok
     end
 
     test "returns an error if the name is blank" do
-      {:ok, id} = Registry.new_quiz()
-      assert Registry.validate_player_name(id, "") == {:error, "Name must not be blank"}
+      {:ok, quiz} = Registry.new_quiz()
+      assert Registry.validate_player_name(quiz.id, "") == {:error, "Name must not be blank"}
     end
 
     test "returns an error if the name is already in use" do
-      {:ok, id} = Registry.new_quiz()
-      :ok = Registry.join_quiz(id, "Alice")
+      {:ok, quiz} = Registry.new_quiz()
+      :ok = Registry.join_quiz(quiz.id, "Alice")
 
-      assert Registry.validate_player_name(id, "Alice") ==
+      assert Registry.validate_player_name(quiz.id, "Alice") ==
                {:error, "That name has already been taken"}
     end
   end
@@ -64,8 +60,9 @@ defmodule QuizBuzz.RegistryTest do
   end
 
   defp quizmaster_creates_quiz do
-    {:ok, id} = Registry.new_quiz()
-    id
+    {:ok, quiz} = Registry.new_quiz()
+    :ok = Phoenix.PubSub.subscribe(QuizBuzz.PubSub, "quiz:#{quiz.id}")
+    quiz.id
   end
 
   defp quizmaster_adds_team(id, team_name) do

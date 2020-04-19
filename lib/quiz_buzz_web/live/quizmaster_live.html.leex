@@ -1,6 +1,6 @@
 <%= if @quiz do %>
   <p>
-    Quiz ID: <span class="qb-quiz-id"><%= @quiz_id %></span>
+    Quiz ID: <span class="qb-quiz-id"><%= @quiz.id %></span>
     (direct people to <%= link @quiz_url, to: @quiz_url, class: "qb-quiz-url" %>)
   </p>
 

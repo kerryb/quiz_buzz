@@ -13,18 +13,17 @@ defmodule QuizBuzzWeb.QuizmasterLive do
 
   @impl true
   def mount(_params, _session, socket) do
-    if connected?(socket), do: Phoenix.PubSub.subscribe(QuizBuzz.PubSub, "quiz_updates")
     {:ok, init(socket)}
   end
 
   defp init(%{connected?: true} = socket) do
-    {:ok, quiz_id} = Registry.new_quiz()
+    {:ok, quiz} = Registry.new_quiz()
+    Phoenix.PubSub.subscribe(QuizBuzz.PubSub, "quiz:#{quiz.id}")
 
     assign(socket,
-      quiz_id: quiz_id,
-      quiz: nil,
-      quiz_url: Routes.live_url(socket, QuizLive, quiz_id),
-      page_title: "QuizzBuzz: #{quiz_id} (master)"
+      quiz: quiz,
+      quiz_url: Routes.live_url(socket, QuizLive, quiz.id),
+      page_title: "QuizzBuzz: #{quiz.id} (master)"
     )
   end
 
