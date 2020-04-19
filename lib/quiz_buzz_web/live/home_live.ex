@@ -19,7 +19,7 @@ defmodule QuizBuzzWeb.HomeLive do
     {:noreply, assign(socket, quiz_id: quiz_id, quiz_id_valid: String.length(quiz_id) == 4)}
   end
 
-  def handle_event("join", _params, socket) do
+  def handle_event("join-quiz", _params, socket) do
     {:noreply, redirect(socket, to: Routes.live_path(socket, QuizLive, socket.assigns.quiz_id))}
   end
 end
