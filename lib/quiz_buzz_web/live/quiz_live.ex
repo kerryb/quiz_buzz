@@ -38,6 +38,11 @@ defmodule QuizBuzzWeb.QuizLive do
     {:noreply, assign(socket, state: :setup)}
   end
 
+  def handle_event("join-team", %{"team" => team}, socket) do
+    :ok = Registry.join_team(socket.assigns.quiz_id, team, socket.assigns.name)
+    {:noreply, assign(socket, state: :setup)}
+  end
+
   @impl true
   def handle_info({:quiz, quiz}, socket) do
     {:noreply, assign(socket, :quiz, quiz)}

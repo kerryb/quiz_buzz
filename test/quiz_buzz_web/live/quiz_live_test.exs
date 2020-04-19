@@ -79,5 +79,18 @@ defmodule QuizBuzzWeb.QuizLiveTest do
       assert has_element?(view, ".qb-team", "Team one")
       assert has_element?(view, ".qb-team", "Team two")
     end
+
+    test "moves the player's name to a team when they join one", %{conn: conn} do
+      {:ok, quiz} = Registry.new_quiz()
+      :ok = Registry.add_team(quiz.id, "Team one")
+      {:ok, view, _html} = live(conn, "/quiz/#{quiz.id}")
+      view |> element("form") |> render_change(%{"name" => "Bob"})
+      view |> element("form") |> render_submit()
+      view |> element("button", "Join Team one") |> render_click()
+      #  Re-render to catch the update from the pubsub message
+      render(view)
+      assert has_element?(view, ".qb-team-player", "Bob")
+      refute has_element?(view, ".qb-player", "Bob")
+    end
   end
 end
