@@ -12,5 +12,5 @@
     </form>
   <% :setup -> %>
     <p>The quiz has not yet started. Please join a team now if you wish.</p>
-    <%= live_component @socket, QuizBuzzWeb.SetupComponent, quiz: @quiz %>      
+    <%= live_component @socket, QuizBuzzWeb.SetupComponent, quiz: @quiz, player_name: @player_name %>      
 <% end %>

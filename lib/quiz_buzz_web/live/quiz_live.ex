@@ -26,7 +26,7 @@ defmodule QuizBuzzWeb.QuizLive do
   def handle_event("form-change", %{"name" => name}, socket) do
     case Registry.validate_player_name(socket.assigns.quiz_id, name) do
       :ok ->
-        {:noreply, socket |> assign(name: name, name_valid: true) |> clear_flash()}
+        {:noreply, socket |> assign(player_name: name, name_valid: true) |> clear_flash()}
 
       {:error, message} ->
         {:noreply, socket |> assign(name_valid: false) |> put_flash(:error, message)}
@@ -34,12 +34,12 @@ defmodule QuizBuzzWeb.QuizLive do
   end
 
   def handle_event("join-quiz", _params, socket) do
-    :ok = Registry.join_quiz(socket.assigns.quiz_id, socket.assigns.name)
+    :ok = Registry.join_quiz(socket.assigns.quiz_id, socket.assigns.player_name)
     {:noreply, assign(socket, state: :setup)}
   end
 
   def handle_event("join-team", %{"team" => team}, socket) do
-    :ok = Registry.join_team(socket.assigns.quiz_id, team, socket.assigns.name)
+    :ok = Registry.join_team(socket.assigns.quiz_id, team, socket.assigns.player_name)
     {:noreply, assign(socket, state: :setup)}
   end
 

@@ -57,7 +57,7 @@ defmodule QuizBuzzWeb.QuizLiveTest do
       assert html =~ ~r/The quiz has not yet started/
     end
 
-    test "shows each player's name", %{conn: conn} do
+    test "shows each player's name, with 'me' highlighted", %{conn: conn} do
       {:ok, quiz} = Registry.new_quiz()
       :ok = Registry.join_quiz(quiz.id, "Alice")
       {:ok, view, _html} = live(conn, "/quiz/#{quiz.id}")
@@ -66,7 +66,7 @@ defmodule QuizBuzzWeb.QuizLiveTest do
       #  Re-render to catch the update from the pubsub message
       render(view)
       assert has_element?(view, ".qb-player", "Alice")
-      assert has_element?(view, ".qb-player", "Bob")
+      assert has_element?(view, ".qb-player.qb-me", "Bob")
     end
 
     test "shows each team", %{conn: conn} do
@@ -89,7 +89,7 @@ defmodule QuizBuzzWeb.QuizLiveTest do
       view |> element("button", "Join Team one") |> render_click()
       #  Re-render to catch the update from the pubsub message
       render(view)
-      assert has_element?(view, ".qb-team-player", "Bob")
+      assert has_element?(view, ".qb-team-player.qb-me", "Bob")
       refute has_element?(view, ".qb-player", "Bob")
     end
   end
