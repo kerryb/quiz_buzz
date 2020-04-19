@@ -19,17 +19,23 @@ defmodule QuizBuzzWeb.QuizLive do
       do: Phoenix.PubSub.subscribe(QuizBuzz.PubSub, "quiz:#{params["quiz_id"]}")
 
     {:ok,
-     assign(socket, quiz_id: params["quiz_id"], quiz: nil, state: :joining, name_valid: false)}
+     assign(socket,
+       quiz_id: params["quiz_id"],
+       quiz: nil,
+       state: :joining,
+       player_name_valid: false
+     )}
   end
 
   @impl true
-  def handle_event("form-change", %{"name" => name}, socket) do
-    case Registry.validate_player_name(socket.assigns.quiz_id, name) do
+  def handle_event("form-change", %{"player_name" => player_name}, socket) do
+    case Registry.validate_player_name(socket.assigns.quiz_id, player_name) do
       :ok ->
-        {:noreply, socket |> assign(player_name: name, name_valid: true) |> clear_flash()}
+        {:noreply,
+         socket |> assign(player_name: player_name, player_name_valid: true) |> clear_flash()}
 
       {:error, message} ->
-        {:noreply, socket |> assign(name_valid: false) |> put_flash(:error, message)}
+        {:noreply, socket |> assign(player_name_valid: false) |> put_flash(:error, message)}
     end
   end
 

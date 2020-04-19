@@ -22,26 +22,26 @@ defmodule QuizBuzzWeb.QuizLiveTest do
 
     test "prompts for the player's name, with the join button initially disabled, if they have not yet joined",
          %{view: view} do
-      assert has_element?(view, "input[name=name]")
+      assert has_element?(view, "input[name=player_name]")
       assert has_element?(view, "button[disabled=disabled]")
     end
 
     test "disables the join button and shows a flash if the name is already taken", %{view: view} do
-      view |> element("form") |> render_change(%{"name" => "Alice"})
+      view |> element("form") |> render_change(%{"player_name" => "Alice"})
       assert has_element?(view, "button[disabled=disabled]")
       assert has_element?(view, ".alert-danger", "That name has already been taken")
     end
 
     test "disables the join button and shows a flash if the name is reset to blank", %{view: view} do
-      view |> element("form") |> render_change(%{"name" => "Bob"})
-      view |> element("form") |> render_change(%{"name" => ""})
+      view |> element("form") |> render_change(%{"player_name" => "Bob"})
+      view |> element("form") |> render_change(%{"player_name" => ""})
       assert has_element?(view, "button[disabled=disabled]")
       assert has_element?(view, ".alert-danger", "Name must not be blank")
     end
 
     test "enables the join button and removes the flash if the name is valid", %{view: view} do
-      view |> element("form") |> render_change(%{"name" => "Alice"})
-      view |> element("form") |> render_change(%{"name" => "Bob"})
+      view |> element("form") |> render_change(%{"player_name" => "Alice"})
+      view |> element("form") |> render_change(%{"player_name" => "Bob"})
       assert has_element?(view, "button:not([disabled])")
       refute has_element?(view, ".alert-danger", ~r/./)
     end
@@ -54,7 +54,7 @@ defmodule QuizBuzzWeb.QuizLiveTest do
       :ok = Registry.add_team(quiz.id, "Team one")
       :ok = Registry.add_team(quiz.id, "Team two")
       {:ok, view, _html} = live(conn, "/quiz/#{quiz.id}")
-      view |> element("form") |> render_change(%{"name" => "Bob"})
+      view |> element("form") |> render_change(%{"player_name" => "Bob"})
       view |> element("form") |> render_submit()
       #  Re-render to catch the update from the pubsub message
       render(view)

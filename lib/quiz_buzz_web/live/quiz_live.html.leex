@@ -3,10 +3,10 @@
     <form phx-change="form-change" phx-submit="join-quiz">
       <div class="row">
         <div class="column">
-          <input type="text" name="name" autofocus="true" placeholder="Your name">
+          <input type="text" name="player_name" autofocus="true" placeholder="Your name">
         </div>
         <div class="column">
-          <button <%= unless @name_valid, do: "disabled" %>>Join quiz</button>
+          <button <%= unless @player_name_valid, do: "disabled" %>>Join quiz</button>
         </div>
       </div>
     </form>

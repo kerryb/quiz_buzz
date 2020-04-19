@@ -14,6 +14,13 @@ defmodule QuizBuzzWeb.QuizmasterLiveTest do
       quiz_id =
         view |> element(".qb-quiz-id") |> render() |> String.replace(~r/.*>(.*)<.*/, "\\1")
 
+      :ok = Registry.add_team(quiz_id, "Team one")
+      :ok = Registry.add_team(quiz_id, "Team two")
+      :ok = Registry.join_quiz(quiz_id, "Alice")
+      :ok = Registry.join_quiz(quiz_id, "Bob")
+      :ok = Registry.join_team(quiz_id, "Team one", "Alice")
+      #  Re-render to catch the update from the pubsub message
+      render(view)
       {:ok, view: view, quiz_id: quiz_id}
     end
 
@@ -25,32 +32,33 @@ defmodule QuizBuzzWeb.QuizmasterLiveTest do
       assert has_element?(view, "a.qb-quiz-url", quiz_id)
     end
 
-    test "shows each player's name", %{view: view, quiz_id: quiz_id} do
-      :ok = Registry.join_quiz(quiz_id, "Alice")
-      :ok = Registry.join_quiz(quiz_id, "Bob")
-      #  Re-render to catch the update from the pubsub message
-      render(view)
-      assert has_element?(view, ".qb-player", "Alice")
+    test "shows each individual player's name", %{view: view} do
       assert has_element?(view, ".qb-player", "Bob")
     end
 
-    test "shows each team", %{view: view, quiz_id: quiz_id} do
-      :ok = Registry.add_team(quiz_id, "Team one")
-      :ok = Registry.add_team(quiz_id, "Team two")
-      #  Re-render to catch the update from the pubsub message
-      render(view)
+    test "shows each team", %{view: view} do
       assert has_element?(view, ".qb-team", "Team one")
       assert has_element?(view, ".qb-team", "Team two")
     end
 
-    test "show the players in each team", %{view: view, quiz_id: quiz_id} do
-      :ok = Registry.join_quiz(quiz_id, "Alice")
-      :ok = Registry.add_team(quiz_id, "Team one")
-      :ok = Registry.join_team(quiz_id, "Team one", "Alice")
-      #  Re-render to catch the update from the pubsub message
-      render(view)
+    test "allows teams to be added", %{view: view} do
+      view |> element("form") |> render_change(%{"team_name" => "Team three"})
+      view |> element("form") |> render_submit()
+      assert has_element?(view, ".qb-team", "Team three")
+    end
+
+    test "disables the add team button if the name is blank", %{view: view} do
+      view |> element("form") |> render_change(%{"team_name" => ""})
+      assert has_element?(view, "button[disabled=disabled]", "Add team")
+    end
+
+    test "disables the add team button if the name is already taken", %{view: view} do
+      view |> element("form") |> render_change(%{"team_name" => "Team one"})
+      assert has_element?(view, "button[disabled=disabled]", "Add team")
+    end
+
+    test "show the players in each team", %{view: view} do
       assert has_element?(view, ".qb-team-player", "Alice")
-      refute has_element?(view, ".qb-player", "Alice")
     end
   end
 end

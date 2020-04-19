@@ -6,7 +6,18 @@
 
   <%= case @quiz.state do %>
     <% :setup -> %>
-      <p>The quiz has not yet started.</p>
+      <p>The quiz has not yet started. You can add teams here, then start the quiz once
+         the players have all joined and (optionally) picked teams.</p>
+      <form phx-change="form-change" phx-submit="add-team">
+        <div class="row">
+          <div class="column column-50">
+            <input type="text" name="team_name" autofocus="true" placeholder="Team name">
+          </div>
+          <div class="column">
+            <button <%= unless @team_name_valid, do: "disabled" %>>Add team</button>
+          </div>
+        </div>
+      </form>
       <%= live_component @socket, QuizBuzzWeb.SetupComponent, quiz: @quiz %>      
   <% end %>
 <% end %>

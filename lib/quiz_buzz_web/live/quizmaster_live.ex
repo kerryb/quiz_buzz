@@ -23,6 +23,7 @@ defmodule QuizBuzzWeb.QuizmasterLive do
     assign(socket,
       quiz: quiz,
       quiz_url: Routes.live_url(socket, QuizLive, quiz.id),
+      team_name_valid: false,
       page_title: "QuizzBuzz: #{quiz.id} (master)"
     )
   end
@@ -32,8 +33,17 @@ defmodule QuizBuzzWeb.QuizmasterLive do
   end
 
   @impl true
-  def handle_event("form-change", %{"name" => _name}, socket) do
-    {:noreply, socket}
+  def handle_event("form-change", %{"team_name" => team_name}, socket) do
+    {:noreply,
+     assign(socket,
+       team_name: team_name,
+       team_name_valid: not (team_name in ["" | Enum.map(socket.assigns.quiz.teams, & &1.name)])
+     )}
+  end
+
+  def handle_event("add-team", _params, socket) do
+    :ok = Registry.add_team(socket.assigns.quiz.id, socket.assigns.team_name)
+    {:noreply, assign(socket, state: :setup)}
   end
 
   @impl true
