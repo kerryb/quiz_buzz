@@ -24,6 +24,7 @@ defmodule QuizBuzz.Registry do
   def new_quiz do
     with {:ok, quiz} <- Core.new_quiz() do
       register_quiz(quiz)
+      :ok = update_quiz(quiz.id, quiz)
       {:ok, quiz.id}
     end
   end
