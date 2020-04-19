@@ -19,7 +19,7 @@ defmodule QuizBuzzWeb.QuizmasterLiveTest do
       :ok = Registry.join_quiz(quiz_id, "Alice")
       :ok = Registry.join_quiz(quiz_id, "Bob")
       :ok = Registry.join_team(quiz_id, "Team one", "Alice")
-      #  Re-render to catch the update from the pubsub message
+      #  Re-render to catch the update from the pubsub messages
       render(view)
       {:ok, view: view, quiz_id: quiz_id}
     end
@@ -59,6 +59,14 @@ defmodule QuizBuzzWeb.QuizmasterLiveTest do
 
     test "show the players in each team", %{view: view} do
       assert has_element?(view, ".qb-team-player", "Alice")
+    end
+
+    test "allows the quiz to be started", %{view: view} do
+      assert render(view) =~ ~r/The quiz has not yet started/
+      view |> element("button", "Start quiz") |> render_click()
+      #  Re-render to catch the update from the pubsub message
+      html = render(view)
+      refute html =~ ~r/The quiz has not yet started/
     end
   end
 end

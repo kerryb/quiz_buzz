@@ -22,7 +22,6 @@ defmodule QuizBuzzWeb.QuizLive do
      assign(socket,
        quiz_id: params["quiz_id"],
        quiz: nil,
-       state: :joining,
        player_name_valid: false
      )}
   end
@@ -41,12 +40,12 @@ defmodule QuizBuzzWeb.QuizLive do
 
   def handle_event("join-quiz", _params, socket) do
     :ok = Registry.join_quiz(socket.assigns.quiz_id, socket.assigns.player_name)
-    {:noreply, assign(socket, state: :setup)}
+    {:noreply, socket}
   end
 
   def handle_event("join-team", %{"team" => team}, socket) do
     :ok = Registry.join_team(socket.assigns.quiz_id, team, socket.assigns.player_name)
-    {:noreply, assign(socket, state: :setup)}
+    {:noreply, socket}
   end
 
   @impl true

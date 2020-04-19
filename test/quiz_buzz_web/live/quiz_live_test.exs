@@ -56,7 +56,7 @@ defmodule QuizBuzzWeb.QuizLiveTest do
       {:ok, view, _html} = live(conn, "/quiz/#{quiz.id}")
       view |> element("form") |> render_change(%{"player_name" => "Bob"})
       view |> element("form") |> render_submit()
-      #  Re-render to catch the update from the pubsub message
+      #  Re-render to catch the update from the pubsub messages
       render(view)
       {:ok, view: view, quiz_id: quiz.id}
     end

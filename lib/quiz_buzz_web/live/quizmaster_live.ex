@@ -43,7 +43,12 @@ defmodule QuizBuzzWeb.QuizmasterLive do
 
   def handle_event("add-team", _params, socket) do
     :ok = Registry.add_team(socket.assigns.quiz.id, socket.assigns.team_name)
-    {:noreply, assign(socket, state: :setup)}
+    {:noreply, socket}
+  end
+
+  def handle_event("start-quiz", _params, socket) do
+    :ok = Registry.start_quiz(socket.assigns.quiz.id)
+    {:noreply, socket}
   end
 
   @impl true
