@@ -53,7 +53,7 @@ defmodule QuizBuzzWeb.QuizLiveTest do
       {:ok, quiz_id} = Registry.new_quiz()
       {:ok, view, _html} = live(conn, "/quiz/#{quiz_id}")
       view |> element("form") |> render_change(%{"name" => "Alice"})
-      html = view |> element("button", "Join quiz") |> render_click()
+      html = view |> element("form") |> render_submit()
       assert html =~ ~r/The quiz has not yet started/
     end
 
@@ -62,7 +62,7 @@ defmodule QuizBuzzWeb.QuizLiveTest do
       :ok = Registry.join_quiz(quiz_id, "Alice")
       {:ok, view, _html} = live(conn, "/quiz/#{quiz_id}")
       view |> element("form") |> render_change(%{"name" => "Bob"})
-      view |> element("button", "Join quiz") |> render_click()
+      view |> element("form") |> render_submit()
       #  Re-render to catch the update from the pubsub message
       render(view)
       assert has_element?(view, ".qb-player", "Alice")
@@ -75,7 +75,7 @@ defmodule QuizBuzzWeb.QuizLiveTest do
       :ok = Registry.add_team(quiz_id, "Team two")
       {:ok, view, _html} = live(conn, "/quiz/#{quiz_id}")
       view |> element("form") |> render_change(%{"name" => "Bob"})
-      view |> element("button", "Join quiz") |> render_click()
+      view |> element("form") |> render_submit()
       assert has_element?(view, ".qb-team", "Team one")
       assert has_element?(view, ".qb-team", "Team two")
     end

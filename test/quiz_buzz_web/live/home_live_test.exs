@@ -31,7 +31,7 @@ defmodule QuizBuzzWeb.HomeLiveTest do
     test "redirects to the quiz view when the join button is pressed", %{conn: conn} do
       {:ok, view, _html} = live(conn, "/")
       view |> element("form") |> render_change(%{"quiz_id" => "A123"})
-      view |> element("button", "Join quiz") |> render_click()
+      view |> element("form") |> render_submit()
       assert_redirect(view, "/quiz/A123")
     end
   end
