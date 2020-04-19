@@ -8,84 +8,74 @@ defmodule QuizBuzzWeb.QuizLiveTest do
 
   @endpoint QuizBuzzWeb.Endpoint
 
-  describe "QuizBuzzWeb.QuizLive" do
+  describe "QuizBuzzWeb.QuizLive, in the joining phase" do
+    setup %{conn: conn} do
+      {:ok, quiz} = Registry.new_quiz()
+      :ok = Registry.join_quiz(quiz.id, "Alice")
+      {:ok, view, _html} = live(conn, "/quiz/#{quiz.id}")
+      {:ok, view: view, quiz_id: quiz.id}
+    end
+
     test "404s if the quiz does not exist", %{conn: conn} do
       assert_raise InvalidQuizIDError, fn -> live(conn, "/quiz/XXXX") end
     end
 
     test "prompts for the player's name, with the join button initially disabled, if they have not yet joined",
-         %{conn: conn} do
-      {:ok, quiz} = Registry.new_quiz()
-      {:ok, view, _html} = live(conn, "/quiz/#{quiz.id}")
+         %{view: view} do
       assert has_element?(view, "input[name=name]")
       assert has_element?(view, "button[disabled=disabled]")
     end
 
-    test "disables the join button and shows a flash if the name is already taken", %{conn: conn} do
-      {:ok, quiz} = Registry.new_quiz()
-      :ok = Registry.join_quiz(quiz.id, "Alice")
-      {:ok, view, _html} = live(conn, "/quiz/#{quiz.id}")
+    test "disables the join button and shows a flash if the name is already taken", %{view: view} do
       view |> element("form") |> render_change(%{"name" => "Alice"})
       assert has_element?(view, "button[disabled=disabled]")
       assert has_element?(view, ".alert-danger", "That name has already been taken")
     end
 
-    test "disables the join button and shows a flash if the name is reset to blank", %{conn: conn} do
-      {:ok, quiz} = Registry.new_quiz()
-      {:ok, view, _html} = live(conn, "/quiz/#{quiz.id}")
-      view |> element("form") |> render_change(%{"name" => "Alice"})
+    test "disables the join button and shows a flash if the name is reset to blank", %{view: view} do
+      view |> element("form") |> render_change(%{"name" => "Bob"})
       view |> element("form") |> render_change(%{"name" => ""})
       assert has_element?(view, "button[disabled=disabled]")
       assert has_element?(view, ".alert-danger", "Name must not be blank")
     end
 
-    test "enables the join button and removes the flash if the name is valid", %{conn: conn} do
-      {:ok, quiz} = Registry.new_quiz()
-      :ok = Registry.join_quiz(quiz.id, "Alice")
-      {:ok, view, _html} = live(conn, "/quiz/#{quiz.id}")
+    test "enables the join button and removes the flash if the name is valid", %{view: view} do
       view |> element("form") |> render_change(%{"name" => "Alice"})
       view |> element("form") |> render_change(%{"name" => "Bob"})
       assert has_element?(view, "button:not([disabled])")
       refute has_element?(view, ".alert-danger", ~r/./)
     end
+  end
 
-    test "shows a message after joining until the quiz starts", %{conn: conn} do
-      {:ok, quiz} = Registry.new_quiz()
-      {:ok, view, _html} = live(conn, "/quiz/#{quiz.id}")
-      view |> element("form") |> render_change(%{"name" => "Alice"})
-      html = view |> element("form") |> render_submit()
-      assert html =~ ~r/The quiz has not yet started/
-    end
-
-    test "shows each player's name, with 'me' highlighted", %{conn: conn} do
+  describe "QuizBuzzWeb.QuizLive, in the setup phase" do
+    setup %{conn: conn} do
       {:ok, quiz} = Registry.new_quiz()
       :ok = Registry.join_quiz(quiz.id, "Alice")
-      {:ok, view, _html} = live(conn, "/quiz/#{quiz.id}")
-      view |> element("form") |> render_change(%{"name" => "Bob"})
-      view |> element("form") |> render_submit()
-      #  Re-render to catch the update from the pubsub message
-      render(view)
-      assert has_element?(view, ".qb-player", "Alice")
-      assert has_element?(view, ".qb-player.qb-me", "Bob")
-    end
-
-    test "shows each team", %{conn: conn} do
-      {:ok, quiz} = Registry.new_quiz()
       :ok = Registry.add_team(quiz.id, "Team one")
       :ok = Registry.add_team(quiz.id, "Team two")
       {:ok, view, _html} = live(conn, "/quiz/#{quiz.id}")
       view |> element("form") |> render_change(%{"name" => "Bob"})
       view |> element("form") |> render_submit()
+      #  Re-render to catch the update from the pubsub message
+      render(view)
+      {:ok, view: view, quiz_id: quiz.id}
+    end
+
+    test "shows a message after joining until the quiz starts", %{view: view} do
+      assert render(view) =~ ~r/The quiz has not yet started/
+    end
+
+    test "shows each player's name, with 'me' highlighted", %{view: view} do
+      assert has_element?(view, ".qb-player", "Alice")
+      assert has_element?(view, ".qb-player.qb-me", "Bob")
+    end
+
+    test "shows each team", %{view: view} do
       assert has_element?(view, ".qb-team", "Team one")
       assert has_element?(view, ".qb-team", "Team two")
     end
 
-    test "moves the player's name to a team when they join one", %{conn: conn} do
-      {:ok, quiz} = Registry.new_quiz()
-      :ok = Registry.add_team(quiz.id, "Team one")
-      {:ok, view, _html} = live(conn, "/quiz/#{quiz.id}")
-      view |> element("form") |> render_change(%{"name" => "Bob"})
-      view |> element("form") |> render_submit()
+    test "moves the player's name to a team when they join one", %{view: view} do
       view |> element("button", "Join Team one") |> render_click()
       #  Re-render to catch the update from the pubsub message
       render(view)
