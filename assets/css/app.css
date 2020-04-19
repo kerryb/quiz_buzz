@@ -10,3 +10,9 @@
 .qb-me {
   font-weight: bold;
 }
+
+.qb-player, .qb-team-player {
+  display: inline;
+  text-decoration: none;
+  margin-right: 1rem;
+}

@@ -7,15 +7,17 @@
   </ul>
 
   <h2>Teams</h2>
-  <ul class="qb-teams">
     <%= for team <- @quiz.teams do %>
-      <li class="qb-team"><%= team.name %></li>
-      <ul class="qb-team-players">
-        <%= for player <- Enum.filter(@quiz.players, & &1.team == team) do %>
-          <li class="qb-team-player <%= if player.name == assigns[:player_name], do: "qb-me" %>"><%= player.name %></li>
+      <div>
+        <h3 class="qb-team"><%= team.name %>:</h3>
+        <ul class="qb-team-players">
+          <%= for player <- Enum.filter(@quiz.players, & &1.team == team) do %>
+            <li class="qb-team-player <%= if player.name == assigns[:player_name], do: "qb-me" %>"><%= player.name %></li>
+          <% end %>
+        </ul>
+        <%= if assigns[:player_name] do %>
+          <p><button phx-click="join-team" phx-value-team="<%= team.name %>">Join <%= team.name %></button></p>
         <% end %>
-        <button phx-click="join-team" phx-value-team="<%= team.name %>">Join <%= team.name %></button>
-      </ul>
+      </div>
     <% end %>
-  </ul>
 <% end %>
