@@ -39,24 +39,21 @@
   background-color: #888;
 }
 
-.qb-buzzed .qb-team {
-  margin: 1px 1px 4px 1px;
-}
-
 .qb-scoreboard .qb-team {
   border-bottom: 1px solid black;
+  padding: 1px 1px 4px 1px;
 }
 
 .qb-buzzed .qb-scoreboard .qb-team {
   border-bottom: none;
-  margin-bottom: 5px;
+  padding-bottom: 5px;
 }
 
 .qb-scoreboard .qb-team.qb-buzzed {
   background-color: white;
   border: 1px solid black;
   border-bottom: 5px solid red;
-  margin: 0;
+  padding: 0;
 }
 
 .qb-scoreboard .qb-team-player.qb-buzzed {
