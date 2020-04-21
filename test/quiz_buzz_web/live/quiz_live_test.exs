@@ -130,5 +130,10 @@ defmodule QuizBuzzWeb.QuizLiveTest do
       assert has_element?(view, ".qb-team.qb-buzzed", "Team one")
       assert has_element?(view, ".qb-team-player.qb-buzzed", "Bob")
     end
+
+    test "indicates when an individual player buzzes", %{view: view, quiz_id: quiz_id} do
+      :ok = Registry.buzz(quiz_id, "Alice")
+      assert has_element?(view, ".qb-team.qb-buzzed", "Alice")
+    end
   end
 end
