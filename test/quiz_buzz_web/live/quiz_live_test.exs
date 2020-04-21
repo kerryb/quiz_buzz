@@ -116,5 +116,12 @@ defmodule QuizBuzzWeb.QuizLiveTest do
       assert has_element?(view, ".qb-team-player", "Carol")
       assert has_element?(view, ".qb-team-player.qb-me", "Bob")
     end
+
+    test "indicates when a team player buzzes using the buzz button", %{view: view} do
+      view |> element("button", "Buzz") |> render_click()
+      assert has_element?(view, ".qb-scoreboard.qb-buzzed")
+      assert has_element?(view, ".qb-team.qb-buzzed", "Team one")
+      assert has_element?(view, ".qb-team-player.qb-buzzed", "Bob")
+    end
   end
 end

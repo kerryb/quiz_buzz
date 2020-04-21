@@ -48,6 +48,11 @@ defmodule QuizBuzzWeb.QuizLive do
     {:noreply, socket}
   end
 
+  def handle_event("buzz", _params, socket) do
+    :ok = Registry.buzz(socket.assigns.quiz_id, socket.assigns.player_name)
+    {:noreply, socket}
+  end
+
   @impl true
   def handle_info({:quiz, quiz}, socket) do
     {:noreply, assign(socket, :quiz, quiz)}
