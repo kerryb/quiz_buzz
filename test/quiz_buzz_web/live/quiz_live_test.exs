@@ -123,5 +123,12 @@ defmodule QuizBuzzWeb.QuizLiveTest do
       assert has_element?(view, ".qb-team.qb-buzzed", "Team one")
       assert has_element?(view, ".qb-team-player.qb-buzzed", "Bob")
     end
+
+    test "indicates when a team player buzzes using the space bar", %{view: view} do
+      view |> element("button", "Buzz") |> render_keyup(%{code: "Space"})
+      assert has_element?(view, ".qb-scoreboard.qb-buzzed")
+      assert has_element?(view, ".qb-team.qb-buzzed", "Team one")
+      assert has_element?(view, ".qb-team-player.qb-buzzed", "Bob")
+    end
   end
 end

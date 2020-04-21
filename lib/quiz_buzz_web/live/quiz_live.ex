@@ -49,6 +49,14 @@ defmodule QuizBuzzWeb.QuizLive do
   end
 
   def handle_event("buzz", _params, socket) do
+    buzz(socket)
+  end
+
+  def handle_event("keyup", %{"code" => "Space"}, socket) do
+    buzz(socket)
+  end
+
+  defp buzz(socket) do
     :ok = Registry.buzz(socket.assigns.quiz_id, socket.assigns.player_name)
     {:noreply, socket}
   end
