@@ -110,7 +110,7 @@ defmodule QuizBuzzWeb.QuizLiveTest do
       assert has_element?(view, ".qb-team", "Alice")
     end
 
-    test "shows each team, and its players (with the current player mighlighted)", %{view: view} do
+    test "shows each team, and its players (with the current player highlighted)", %{view: view} do
       assert has_element?(view, ".qb-team", "Team one")
       assert has_element?(view, ".qb-team", "Team two")
       assert has_element?(view, ".qb-team-player", "Carol")
