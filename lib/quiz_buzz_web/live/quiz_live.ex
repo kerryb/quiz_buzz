@@ -6,6 +6,7 @@ defmodule QuizBuzzWeb.QuizLive do
   use Phoenix.LiveView, layout: {QuizBuzzWeb.LayoutView, "live.html"}
 
   alias QuizBuzz.Registry
+  alias QuizBuzzWeb.Endpoint
 
   defmodule InvalidQuizIDError do
     defexception message: "Invalid quiz ID", plug_status: 404
@@ -56,7 +57,12 @@ defmodule QuizBuzzWeb.QuizLive do
     buzz(socket)
   end
 
+  def handle_event("keyup", _params, socket) do
+    {:noreply, socket}
+  end
+
   defp buzz(socket) do
+    Endpoint.broadcast!("buzzer", "sound", %{})
     :ok = Registry.buzz(socket.assigns.quiz_id, socket.assigns.player_name)
     {:noreply, socket}
   end

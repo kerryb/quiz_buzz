@@ -10,6 +10,7 @@
   </head>
   <body>
     <%= @inner_content %>
+    <audio id="buzzer" src="<%= Routes.static_path(@conn, "/sounds/buzzer.wav") %>"></audio>
     <script type="text/javascript" src="<%= Routes.static_path(@conn, "/js/app.js") %>"></script>
   </body>
 </html>
