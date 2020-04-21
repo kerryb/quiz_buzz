@@ -1,0 +1,20 @@
+<%= if @quiz do %>
+  <div class="qb-scoreboard">
+    <%= for %{team: team} = player when is_nil(team) <- @quiz.players do %>
+      <div class="qb-team">
+        <h2><%= player.name %></h2>
+      </div>
+    <% end %>
+
+    <%= for team <- @quiz.teams do %>
+      <div class="qb-team">
+        <h2><%= team.name %></h2>
+        <ul class="qb-team-players">
+          <%= for player <- Enum.filter(@quiz.players, & &1.team == team) do %>
+            <li class="qb-team-player <%= if player.name == assigns[:player_name], do: "qb-me" %>"><%= player.name %></li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+  </div>
+<% end %>

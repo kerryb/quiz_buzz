@@ -83,4 +83,38 @@ defmodule QuizBuzzWeb.QuizLiveTest do
       refute has_element?(view, ".qb-player", "Bob")
     end
   end
+
+  describe "QuizBuzzWeb.QuizLive, in the active phase" do
+    setup %{conn: conn} do
+      {:ok, quiz} = Registry.new_quiz()
+      :ok = Registry.join_quiz(quiz.id, "Alice")
+      :ok = Registry.join_quiz(quiz.id, "Carol")
+      :ok = Registry.add_team(quiz.id, "Team one")
+      :ok = Registry.add_team(quiz.id, "Team two")
+      :ok = Registry.join_team(quiz.id, "Team one", "Carol")
+      {:ok, view, _html} = live(conn, "/quiz/#{quiz.id}")
+      view |> element("form") |> render_change(%{"player_name" => "Bob"})
+      view |> element("form") |> render_submit()
+      view |> element("button", "Join Team one") |> render_click()
+      :ok = Registry.start_quiz(quiz.id)
+      #  Re-render to catch the update from the pubsub messages
+      render(view)
+      {:ok, view: view, quiz_id: quiz.id}
+    end
+
+    test "no longer shows the 'not started' message", %{view: view} do
+      refute render(view) =~ ~r/The quiz has not yet started/
+    end
+
+    test "shows each individual player as a team", %{view: view} do
+      assert has_element?(view, ".qb-team", "Alice")
+    end
+
+    test "shows each team, and its players (with the current player mighlighted)", %{view: view} do
+      assert has_element?(view, ".qb-team", "Team one")
+      assert has_element?(view, ".qb-team", "Team two")
+      assert has_element?(view, ".qb-team-player", "Carol")
+      assert has_element?(view, ".qb-team-player.qb-me", "Bob")
+    end
+  end
 end
