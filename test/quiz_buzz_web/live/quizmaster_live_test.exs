@@ -69,4 +69,28 @@ defmodule QuizBuzzWeb.QuizmasterLiveTest do
       refute html =~ ~r/The quiz has not yet started/
     end
   end
+
+  describe "QuizBuzzWeb.QuizmasterLive, in the active phase" do
+    setup %{conn: conn} do
+      {:ok, view, _html} = live(conn, "/quizmaster")
+
+      quiz_id =
+        view |> element(".qb-quiz-id") |> render() |> String.replace(~r/.*>(.*)<.*/, "\\1")
+
+      :ok = Registry.join_quiz(quiz_id, "Alice")
+      view |> element("button", "Start quiz") |> render_click()
+      {:ok, view: view, quiz_id: quiz_id}
+    end
+
+    test "indicates when a player buzzes", %{view: view, quiz_id: quiz_id} do
+      :ok = Registry.buzz(quiz_id, "Alice")
+      assert has_element?(view, ".qb-team.qb-buzzed", "Alice")
+    end
+
+    test "allows buzzers to be reset", %{view: view, quiz_id: quiz_id} do
+      :ok = Registry.buzz(quiz_id, "Alice")
+      view |> element("button", "Reset buzzers") |> render_click()
+      refute has_element?(view, ".qb-buzzed")
+    end
+  end
 end

@@ -51,6 +51,11 @@ defmodule QuizBuzzWeb.QuizmasterLive do
     {:noreply, socket}
   end
 
+  def handle_event("reset-buzzers", _params, socket) do
+    :ok = Registry.reset_buzzers(socket.assigns.quiz.id)
+    {:noreply, socket}
+  end
+
   @impl true
   def handle_info({:quiz, quiz}, socket) do
     {:noreply, assign(socket, :quiz, quiz)}
