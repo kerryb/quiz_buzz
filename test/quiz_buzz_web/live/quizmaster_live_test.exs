@@ -1,11 +1,29 @@
 defmodule QuizBuzzWeb.QuizmasterLiveTest do
   use QuizBuzzWeb.ConnCase
 
+  import ExUnit.CaptureLog
   import Phoenix.LiveViewTest
 
   alias QuizBuzz.Registry
 
   @endpoint QuizBuzzWeb.Endpoint
+
+  describe "QuizBuzzWeb.QuizmasterLive" do
+    test "logs and ignores unexpected events and messages", %{conn: conn} do
+      {:ok, view, _html} = live(conn, "/quizmaster")
+
+      quiz_id =
+        view |> element(".qb-quiz-id") |> render() |> String.replace(~r/.*>(.*)<.*/, "\\1")
+
+      assert capture_log(fn -> render_change(view, "foo", %{"bar" => "baz"}) end) =~
+               ~r/Received unexpected event: "foo" with params %{"bar" => "baz"}/
+
+      assert capture_log(fn -> send(view.pid, "foo") end) =~
+               ~r/Received unexpected message: "foo"/
+
+      assert render(view) =~ quiz_id
+    end
+  end
 
   describe "QuizBuzzWeb.QuizmasterLive, in the setup phase" do
     setup %{conn: conn} do

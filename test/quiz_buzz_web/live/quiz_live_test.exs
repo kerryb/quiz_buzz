@@ -1,12 +1,30 @@
 defmodule QuizBuzzWeb.QuizLiveTest do
   use QuizBuzzWeb.ConnCase
 
+  import ExUnit.CaptureLog
   import Phoenix.LiveViewTest
 
   alias QuizBuzz.Registry
   alias QuizBuzzWeb.QuizLive.InvalidQuizIDError
 
   @endpoint QuizBuzzWeb.Endpoint
+
+  describe "QuizBuzzWeb.QuizLive" do
+    test "logs and ignores unexpected events and messages", %{conn: conn} do
+      {:ok, quiz} = Registry.new_quiz()
+      {:ok, view, _html} = live(conn, "/quiz/#{quiz.id}")
+      view |> element("form") |> render_change(%{"player_name" => "Alice"})
+      view |> element("form") |> render_submit()
+
+      assert capture_log(fn -> render_change(view, "foo", %{"bar" => "baz"}) end) =~
+               ~r/Received unexpected event: "foo" with params %{"bar" => "baz"}/
+
+      assert capture_log(fn -> send(view.pid, "foo") end) =~
+               ~r/Received unexpected message: "foo"/
+
+      assert render(view) =~ "Alice"
+    end
+  end
 
   describe "QuizBuzzWeb.QuizLive, in the joining phase" do
     setup %{conn: conn} do

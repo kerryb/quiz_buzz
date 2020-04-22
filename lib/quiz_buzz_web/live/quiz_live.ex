@@ -8,6 +8,8 @@ defmodule QuizBuzzWeb.QuizLive do
   alias QuizBuzz.Registry
   alias QuizBuzzWeb.Endpoint
 
+  require Logger
+
   defmodule InvalidQuizIDError do
     defexception message: "Invalid quiz ID", plug_status: 404
   end
@@ -62,6 +64,11 @@ defmodule QuizBuzzWeb.QuizLive do
     {:noreply, socket}
   end
 
+  def handle_event(event, params, socket) do
+    Logger.warn("Received unexpected event: #{inspect(event)} with params #{inspect(params)}")
+    {:noreply, socket}
+  end
+
   defp buzz(socket) do
     Endpoint.broadcast!("buzzer", "sound", %{})
     :ok = Registry.buzz(socket.assigns.quiz_id, socket.assigns.player_name)
@@ -71,5 +78,10 @@ defmodule QuizBuzzWeb.QuizLive do
   @impl true
   def handle_info({:quiz, quiz}, socket) do
     {:noreply, assign(socket, :quiz, quiz)}
+  end
+
+  def handle_info(message, socket) do
+    Logger.warn("Received unexpected message: #{inspect(message)}")
+    {:noreply, socket}
   end
 end

@@ -11,6 +11,8 @@ defmodule QuizBuzzWeb.QuizmasterLive do
   # credo:disable-for-next-line Credo.Check.Readability.AliasAs
   alias QuizBuzzWeb.Router.Helpers, as: Routes
 
+  require Logger
+
   @impl true
   def mount(_params, _session, socket) do
     {:ok, init(socket)}
@@ -56,8 +58,18 @@ defmodule QuizBuzzWeb.QuizmasterLive do
     {:noreply, socket}
   end
 
+  def handle_event(event, params, socket) do
+    Logger.warn("Received unexpected event: #{inspect(event)} with params #{inspect(params)}")
+    {:noreply, socket}
+  end
+
   @impl true
   def handle_info({:quiz, quiz}, socket) do
     {:noreply, assign(socket, :quiz, quiz)}
+  end
+
+  def handle_info(message, socket) do
+    Logger.warn("Received unexpected message: #{inspect(message)}")
+    {:noreply, socket}
   end
 end
