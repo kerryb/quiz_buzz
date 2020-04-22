@@ -10,8 +10,9 @@ use Mix.Config
 # which you should run after static files are built and
 # before starting your production server.
 config :quiz_buzz, QuizBuzzWeb.Endpoint,
-  url: [host: "example.com", port: 80],
-  cache_static_manifest: "priv/static/cache_manifest.json"
+  url: [host: "quizbuzz.kerryb.org", port: 80],
+  cache_static_manifest: "priv/static/cache_manifest.json",
+  check_origin: ["//localhost", "//quizbuzz.kerryb.org", "//quizbuzz.gigalixirapp.com"]
 
 # Do not print debug messages in production
 config :logger, level: :info
