@@ -20,7 +20,8 @@ defmodule QuizBuzzWeb.ConnCase do
   using do
     quote do
       # Import conveniences for testing with connections
-      use Phoenix.ConnTest
+      import Plug.Conn
+      import Phoenix.ConnTest
       # credo:disable-for-next-line Credo.Check.Readability.AliasAs
       alias QuizBuzzWeb.Router.Helpers, as: Routes
 

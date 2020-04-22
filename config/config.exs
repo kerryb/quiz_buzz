@@ -12,7 +12,7 @@ config :quiz_buzz, QuizBuzzWeb.Endpoint,
   url: [host: "localhost"],
   secret_key_base: "xx9Y6r94MW/cBMf+704JlN1jWi/O8nx6x6izqmB2e8jopk4ATDQFk5jajV0FSZfK",
   render_errors: [view: QuizBuzzWeb.ErrorView, accepts: ~w(html json)],
-  pubsub: [name: QuizBuzz.PubSub, adapter: Phoenix.PubSub.PG2],
+  pubsub_server: QuizBuzz.PubSub,
   live_view: [signing_salt: "JIaeHshe"]
 
 # Configures Elixir's Logger

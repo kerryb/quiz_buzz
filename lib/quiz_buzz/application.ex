@@ -10,6 +10,7 @@ defmodule QuizBuzz.Application do
   def start(_type, _args) do
     # List all child processes to be supervised
     children = [
+      {Phoenix.PubSub, name: QuizBuzz.PubSub},
       QuizBuzzWeb.Endpoint,
       QuizBuzz.Core.RandomIDGenerator,
       QuizBuzz.Registry
