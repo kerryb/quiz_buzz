@@ -19,7 +19,10 @@ defmodule QuizBuzzWeb.QuizLiveTest do
       assert capture_log(fn -> render_change(view, "foo", %{"bar" => "baz"}) end) =~
                ~r/Received unexpected event: "foo" with params %{"bar" => "baz"}/
 
-      assert capture_log(fn -> send(view.pid, "foo") end) =~
+      assert capture_log(fn ->
+               send(view.pid, "foo")
+               render(view)
+             end) =~
                ~r/Received unexpected message: "foo"/
 
       assert render(view) =~ "Alice"
