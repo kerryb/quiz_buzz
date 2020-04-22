@@ -70,7 +70,6 @@ defmodule QuizBuzzWeb.QuizLive do
   end
 
   defp buzz(socket) do
-    Endpoint.broadcast!("buzzer", "sound", %{})
     :ok = Registry.buzz(socket.assigns.quiz_id, socket.assigns.player_name)
     {:noreply, socket}
   end
@@ -78,6 +77,11 @@ defmodule QuizBuzzWeb.QuizLive do
   @impl true
   def handle_info({:quiz, quiz}, socket) do
     {:noreply, assign(socket, :quiz, quiz)}
+  end
+
+  def handle_info(:buzz, socket) do
+    Endpoint.broadcast!("buzzer", "sound", %{})
+    {:noreply, socket}
   end
 
   def handle_info(message, socket) do

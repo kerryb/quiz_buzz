@@ -51,6 +51,7 @@ defmodule QuizBuzz.RegistryTest do
     |> quizmaster_starts_quiz()
     |> player_buzzes("Alice")
     |> assert_player_buzzed("Alice")
+    |> assert_buzzer_sounded()
     |> player_tries_to_buzz("Bob")
     |> assert_quiz_not_updated()
     |> quizmaster_resets_buzzers()
@@ -111,6 +112,11 @@ defmodule QuizBuzz.RegistryTest do
     assert_receive({:quiz, quiz} = message)
     assert quiz.state == :buzzed
     assert [%{name: ^player_name}] = Enum.filter(quiz.players, & &1.buzzed?)
+    id
+  end
+
+  defp assert_buzzer_sounded(id) do
+    assert_receive(:buzz)
     id
   end
 

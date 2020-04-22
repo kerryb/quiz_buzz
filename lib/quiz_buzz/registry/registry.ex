@@ -76,6 +76,7 @@ defmodule QuizBuzz.Registry do
   def buzz(id, player_name) do
     with quiz <- get_quiz(id),
          {:ok, quiz} <- Core.buzz(quiz, player_name),
+         :ok <- buzz(quiz),
          :ok <- update_quiz(id, quiz) do
       :ok
     end
@@ -101,5 +102,9 @@ defmodule QuizBuzz.Registry do
   defp update_quiz(id, quiz) do
     Phoenix.PubSub.broadcast(QuizBuzz.PubSub, "quiz:#{quiz.id}", {:quiz, quiz})
     Agent.update(__MODULE__, &Map.put(&1, id, quiz))
+  end
+
+  defp buzz(quiz) do
+    Phoenix.PubSub.broadcast(QuizBuzz.PubSub, "quiz:#{quiz.id}", :buzz)
   end
 end

@@ -1,3 +1,4 @@
+# credo:disable-for-this-file Credo.Check.Refactor.ModuleDependencies
 defmodule QuizBuzzWeb.QuizmasterLive do
   @moduledoc """
   LiveView for the quizmaster view of a quiz.
@@ -7,7 +8,7 @@ defmodule QuizBuzzWeb.QuizmasterLive do
   use Phoenix.LiveView, layout: {QuizBuzzWeb.LayoutView, "live.html"}
 
   alias QuizBuzz.Registry
-  alias QuizBuzzWeb.QuizLive
+  alias QuizBuzzWeb.{Endpoint, QuizLive}
   # credo:disable-for-next-line Credo.Check.Readability.AliasAs
   alias QuizBuzzWeb.Router.Helpers, as: Routes
 
@@ -66,6 +67,11 @@ defmodule QuizBuzzWeb.QuizmasterLive do
   @impl true
   def handle_info({:quiz, quiz}, socket) do
     {:noreply, assign(socket, :quiz, quiz)}
+  end
+
+  def handle_info(:buzz, socket) do
+    Endpoint.broadcast!("buzzer", "sound", %{})
+    {:noreply, socket}
   end
 
   def handle_info(message, socket) do

@@ -107,6 +107,8 @@ defmodule QuizBuzzWeb.QuizmasterLiveTest do
 
     test "allows buzzers to be reset", %{view: view, quiz_id: quiz_id} do
       :ok = Registry.buzz(quiz_id, "Alice")
+      #  Re-render to catch the update from the pubsub messages
+      render(view)
       view |> element("button", "Reset buzzers") |> render_click()
       refute has_element?(view, ".qb-buzzed")
     end
