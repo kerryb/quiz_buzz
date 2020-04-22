@@ -23,6 +23,7 @@ defmodule QuizBuzzWeb.QuizLive do
      assign(socket,
        quiz_id: params["quiz_id"],
        quiz: nil,
+       player_name: nil,
        player_name_valid: false
      )}
   end
