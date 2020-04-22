@@ -24,7 +24,7 @@ defmodule QuizBuzzWeb.QuizmasterLive do
       quiz: quiz,
       quiz_url: Routes.live_url(socket, QuizLive, quiz.id),
       team_name_valid: false,
-      page_title: "QuizzBuzz: #{quiz.id} (master)"
+      page_title: "QuizBuzz: #{quiz.id} (master)"
     )
   end
 
