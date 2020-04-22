@@ -38,6 +38,10 @@ defmodule QuizBuzzWeb.QuizLiveTest do
       assert_raise InvalidQuizIDError, fn -> live(conn, "/quiz/XXXX") end
     end
 
+    test "Ignores the case of the supplied ID", %{conn: conn, quiz_id: quiz_id} do
+      assert {:ok, _view, _html} = live(conn, "/quiz/#{String.downcase(quiz_id)}")
+    end
+
     test "prompts for the player's name, with the join button initially disabled, if they have not yet joined",
          %{view: view} do
       assert has_element?(view, "input[name=player_name]")

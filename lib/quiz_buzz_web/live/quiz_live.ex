@@ -16,14 +16,14 @@ defmodule QuizBuzzWeb.QuizLive do
 
   @impl true
   def mount(params, _session, socket) do
-    unless Registry.valid_id?(params["quiz_id"]), do: raise(InvalidQuizIDError)
+    unless Registry.valid_id?(String.upcase(params["quiz_id"])), do: raise(InvalidQuizIDError)
 
     if connected?(socket),
-      do: Phoenix.PubSub.subscribe(QuizBuzz.PubSub, "quiz:#{params["quiz_id"]}")
+      do: Phoenix.PubSub.subscribe(QuizBuzz.PubSub, "quiz:#{String.upcase(params["quiz_id"])}")
 
     {:ok,
      assign(socket,
-       quiz_id: params["quiz_id"],
+       quiz_id: String.upcase(params["quiz_id"]),
        quiz: nil,
        player_name: nil,
        player_name_valid: false
