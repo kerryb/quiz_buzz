@@ -43,12 +43,12 @@ defmodule QuizBuzzWeb.QuizLive do
   end
 
   def handle_event("join-quiz", _params, socket) do
-    :ok = Registry.join_quiz(socket.assigns.quiz_id, socket.assigns.player_name)
+    Registry.join_quiz(socket.assigns.quiz_id, socket.assigns.player_name)
     {:noreply, socket}
   end
 
   def handle_event("join-team", %{"team" => team}, socket) do
-    :ok = Registry.join_team(socket.assigns.quiz_id, team, socket.assigns.player_name)
+    Registry.join_team(socket.assigns.quiz_id, team, socket.assigns.player_name)
     {:noreply, socket}
   end
 
@@ -70,7 +70,7 @@ defmodule QuizBuzzWeb.QuizLive do
   end
 
   defp buzz(socket) do
-    :ok = Registry.buzz(socket.assigns.quiz_id, socket.assigns.player_name)
+    Registry.buzz(socket.assigns.quiz_id, socket.assigns.player_name)
     {:noreply, socket}
   end
 

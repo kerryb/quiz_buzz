@@ -45,17 +45,18 @@ defmodule QuizBuzzWeb.QuizmasterLive do
   end
 
   def handle_event("add-team", _params, socket) do
-    :ok = Registry.add_team(socket.assigns.quiz.id, socket.assigns.team_name)
+    # TODO (throughout all views): handle error responses
+    Registry.add_team(socket.assigns.quiz.id, socket.assigns.team_name)
     {:noreply, socket}
   end
 
   def handle_event("start-quiz", _params, socket) do
-    :ok = Registry.start_quiz(socket.assigns.quiz.id)
+    Registry.start_quiz(socket.assigns.quiz.id)
     {:noreply, socket}
   end
 
   def handle_event("reset-buzzers", _params, socket) do
-    :ok = Registry.reset_buzzers(socket.assigns.quiz.id)
+    Registry.reset_buzzers(socket.assigns.quiz.id)
     {:noreply, socket}
   end
 
