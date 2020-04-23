@@ -117,17 +117,6 @@ defmodule QuizBuzzWeb.QuizLiveTest do
       assert has_element?(view, ".qb-team-player.qb-me", "Bob")
       refute has_element?(view, ".qb-player", "Bob")
     end
-
-    test "removes a player if they are disconnected", %{
-      conn: conn,
-      view: view,
-      secret_id: secret_id
-    } do
-      Process.exit(view.pid, :normal)
-      {:ok, _another_view, _html} = live(conn, "/quizmaster/#{secret_id}")
-      # TODO: fix this test!
-      # refute render(another_view) =~ "Bob"
-    end
   end
 
   describe "QuizBuzzWeb.QuizLive, in the active phase" do
