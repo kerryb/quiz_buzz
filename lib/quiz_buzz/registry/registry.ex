@@ -10,14 +10,14 @@ defmodule QuizBuzz.Registry do
 
   @spec start_link(any()) :: Agent.on_start()
   def start_link(_arg) do
-    Agent.start_link(fn -> %{} end, name: __MODULE__)
+    Agent.start_link(fn -> %{quizzes: %{}, secrets: %{}} end, name: __MODULE__)
   end
 
   @spec valid_id?(String.t()) :: boolean()
   def valid_id?(id) do
-    case Agent.get(__MODULE__, &Map.fetch(&1, id)) do
-      {:ok, _quiz} -> true
-      :error -> false
+    case get_quiz(id) do
+      nil -> false
+      _quiz -> true
     end
   end
 
@@ -31,7 +31,10 @@ defmodule QuizBuzz.Registry do
 
   @spec quiz_from_secret_id(String.t()) :: {:ok, Quiz.t()} | {:error, String.t()}
   def quiz_from_secret_id(secret_id) do
-    {:ok, get_quiz(secret_id)}
+    Agent.get(__MODULE__, fn %{quizzes: quizzes, secrets: secrets} ->
+      {:ok, id} = Map.fetch(secrets, secret_id)
+      Map.fetch(quizzes, id)
+    end)
   end
 
   @spec add_team(String.t(), String.t()) :: :ok | {:error, String.t()}
@@ -99,17 +102,19 @@ defmodule QuizBuzz.Registry do
   defp register_quiz(quiz) do
     Agent.update(
       __MODULE__,
-      &(&1 |> Map.put_new(quiz.id, quiz) |> Map.put_new(quiz.secret_id, quiz))
+      &(&1
+        |> put_in([:quizzes, quiz.id], quiz)
+        |> put_in([:secrets, quiz.secret_id], quiz.id))
     )
   end
 
   defp get_quiz(id) do
-    Agent.get(__MODULE__, &Map.fetch!(&1, id))
+    Agent.get(__MODULE__, &get_in(&1, [:quizzes, id]))
   end
 
   defp update_quiz(id, quiz) do
     Phoenix.PubSub.broadcast(QuizBuzz.PubSub, "quiz:#{quiz.id}", {:quiz, quiz})
-    Agent.update(__MODULE__, &Map.put(&1, id, quiz))
+    Agent.update(__MODULE__, &put_in(&1, [:quizzes, id], quiz))
   end
 
   defp buzz(quiz) do

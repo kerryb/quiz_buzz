@@ -39,6 +39,14 @@ defmodule QuizBuzz.RegistryTest do
     end
   end
 
+  describe "QuizBuzz.Registry.quiz_from_secret_id/1" do
+    test "returns the quiz, in its current state" do
+      {:ok, quiz} = Registry.new_quiz()
+      :ok = Registry.join_quiz(quiz.id, "Alice")
+      assert {:ok, %{players: [%{name: "Alice"}]}} = Registry.quiz_from_secret_id(quiz.secret_id)
+    end
+  end
+
   test "a quiz can be set up and run" do
     quizmaster_creates_quiz()
     |> quizmaster_adds_team("Team one")
@@ -62,7 +70,6 @@ defmodule QuizBuzz.RegistryTest do
 
   defp quizmaster_creates_quiz do
     {:ok, quiz} = Registry.new_quiz()
-    {:ok, ^quiz} = Registry.quiz_from_secret_id(quiz.secret_id)
     :ok = Phoenix.PubSub.subscribe(QuizBuzz.PubSub, "quiz:#{quiz.id}")
     quiz.id
   end
