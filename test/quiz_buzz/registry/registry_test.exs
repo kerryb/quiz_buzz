@@ -55,6 +55,8 @@ defmodule QuizBuzz.RegistryTest do
     |> player_joins_team("Alice", "Team one")
     |> player_joins_quiz("Bob")
     |> player_joins_quiz("Carol")
+    |> player_joins_quiz("Dave")
+    |> player_leaves_quiz("Dave")
     |> player_joins_team("Bob", "Team one")
     |> quizmaster_starts_quiz()
     |> player_buzzes("Alice")
@@ -83,6 +85,12 @@ defmodule QuizBuzz.RegistryTest do
   defp player_joins_quiz(id, player_name) do
     flush_mailbox()
     :ok = Registry.join_quiz(id, player_name)
+    id
+  end
+
+  defp player_leaves_quiz(id, player_name) do
+    flush_mailbox()
+    :ok = Registry.leave_quiz(id, player_name)
     id
   end
 

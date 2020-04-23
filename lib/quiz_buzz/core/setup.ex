@@ -48,6 +48,12 @@ defmodule QuizBuzz.Core.Setup do
 
   def join_quiz(_quiz, _name), do: {:error, "The quiz has already started"}
 
+  @spec leave_quiz(Quiz.t(), String.t()) :: {:ok, Quiz.t()}
+  def leave_quiz(quiz, name) do
+    quiz = %{quiz | players: Enum.reject(quiz.players, &(&1.name == name))}
+    {:ok, quiz}
+  end
+
   @spec join_team(Quiz.t(), String.t(), String.t()) :: {:ok, Quiz.t()} | {:error, String.t()}
   def join_team(%{state: :setup} = quiz, player_name, team_name) do
     team = find_team(quiz, team_name)

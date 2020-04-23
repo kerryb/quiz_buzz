@@ -88,4 +88,10 @@ defmodule QuizBuzzWeb.QuizLive do
     Logger.warn("Received unexpected message: #{inspect(message)}")
     {:noreply, socket}
   end
+
+  @impl true
+  def terminate(_reason, socket) do
+    Registry.leave_quiz(socket.assigns.quiz_id, socket.assigns.player_name)
+    {:ok, socket}
+  end
 end

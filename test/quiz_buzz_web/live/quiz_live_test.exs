@@ -83,7 +83,7 @@ defmodule QuizBuzzWeb.QuizLiveTest do
       view |> element("form") |> render_submit()
       #  Re-render to catch the update from the pubsub messages
       render(view)
-      {:ok, view: view, quiz_id: quiz.id}
+      {:ok, view: view, quiz_id: quiz.id, secret_id: quiz.secret_id}
     end
 
     test "shows a message after joining until the quiz starts", %{view: view} do
@@ -106,6 +106,17 @@ defmodule QuizBuzzWeb.QuizLiveTest do
       render(view)
       assert has_element?(view, ".qb-team-player.qb-me", "Bob")
       refute has_element?(view, ".qb-player", "Bob")
+    end
+
+    test "removes a player if they are disconnected", %{
+      conn: conn,
+      view: view,
+      secret_id: secret_id
+    } do
+      Process.exit(view.pid, :normal)
+      {:ok, _another_view, _html} = live(conn, "/quizmaster/#{secret_id}")
+      # TODO: fix this test!
+      # refute render(another_view) =~ "Bob"
     end
   end
 

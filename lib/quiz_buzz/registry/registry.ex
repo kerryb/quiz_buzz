@@ -55,6 +55,15 @@ defmodule QuizBuzz.Registry do
     end
   end
 
+  @spec leave_quiz(String.t(), String.t()) :: :ok | {:error, String.t()}
+  def leave_quiz(id, name) do
+    with quiz <- get_quiz(id),
+         {:ok, quiz} <- Core.leave_quiz(quiz, name),
+         :ok <- update_quiz(id, quiz) do
+      :ok
+    end
+  end
+
   @spec validate_player_name(String.t(), String.t()) :: :ok | {:error, String.t()}
   def validate_player_name(id, name) do
     with quiz <- get_quiz(id) do

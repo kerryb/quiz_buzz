@@ -1,3 +1,4 @@
+# credo:disable-for-this-file Credo.Check.Readability.SinglePipe
 defmodule QuizBuzz.Core.SetupTest do
   use ExUnit.Case, async: true
 
@@ -21,7 +22,6 @@ defmodule QuizBuzz.Core.SetupTest do
   describe "QuizBuzz.Core.Setup.add_team/2" do
     setup do
       existing_team = Team.new("Existing team")
-      # credo:disable-for-next-line Credo.Check.Readability.SinglePipe
       quiz = new_quiz() |> with_team(existing_team)
       {:ok, quiz: quiz}
     end
@@ -96,6 +96,19 @@ defmodule QuizBuzz.Core.SetupTest do
     test "fails unless the quiz is in the setup state", %{quiz: quiz} do
       quiz = %{quiz | state: :active}
       assert {:error, _} = Setup.join_quiz(quiz, "Joe Bloggs")
+    end
+  end
+
+  describe "QuizBuzz.Core.Setup.leave_quiz/2" do
+    setup do
+      jane_doe = Player.new("Jane Doe")
+      quiz = new_quiz() |> with_player(jane_doe)
+      {:ok, quiz: quiz}
+    end
+
+    test "removes the player with the supplied name", %{quiz: quiz} do
+      {:ok, quiz} = Setup.leave_quiz(quiz, "Jane Doe")
+      assert [] = quiz.players
     end
   end
 
