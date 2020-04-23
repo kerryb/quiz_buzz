@@ -16,23 +16,23 @@ defmodule QuizBuzzWeb.QuizLive do
 
   @impl true
   def mount(params, _session, socket) do
-    unless Registry.valid_id?(String.upcase(params["quiz_id"])), do: raise(InvalidQuizIDError)
+    quiz_id = String.upcase(params["quiz_id"])
 
-    if connected?(socket),
-      do: Phoenix.PubSub.subscribe(QuizBuzz.PubSub, "quiz:#{String.upcase(params["quiz_id"])}")
+    case Registry.quiz_from_id(quiz_id) do
+      {:ok, quiz} ->
+        if connected?(socket), do: Phoenix.PubSub.subscribe(QuizBuzz.PubSub, "quiz:#{quiz_id}")
 
-    {:ok,
-     assign(socket,
-       quiz_id: String.upcase(params["quiz_id"]),
-       quiz: nil,
-       player_name: nil,
-       player_name_valid: false
-     )}
+        {:ok,
+         assign(socket, quiz: quiz, joined?: false, player_name: nil, player_name_valid: false)}
+
+      _error ->
+        raise(InvalidQuizIDError)
+    end
   end
 
   @impl true
   def handle_event("form-change", %{"player_name" => player_name}, socket) do
-    case Registry.validate_player_name(socket.assigns.quiz_id, player_name) do
+    case Registry.validate_player_name(socket.assigns.quiz.id, player_name) do
       :ok ->
         {:noreply,
          socket |> assign(player_name: player_name, player_name_valid: true) |> clear_flash()}
@@ -43,12 +43,14 @@ defmodule QuizBuzzWeb.QuizLive do
   end
 
   def handle_event("join-quiz", _params, socket) do
-    Registry.join_quiz(socket.assigns.quiz_id, socket.assigns.player_name)
-    {:noreply, socket}
+    case Registry.join_quiz(socket.assigns.quiz.id, socket.assigns.player_name) do
+      :ok -> {:noreply, assign(socket, joined?: true)}
+      _error -> {:noreply, socket}
+    end
   end
 
   def handle_event("join-team", %{"team" => team}, socket) do
-    Registry.join_team(socket.assigns.quiz_id, team, socket.assigns.player_name)
+    Registry.join_team(socket.assigns.quiz.id, team, socket.assigns.player_name)
     {:noreply, socket}
   end
 
@@ -70,7 +72,7 @@ defmodule QuizBuzzWeb.QuizLive do
   end
 
   defp buzz(socket) do
-    Registry.buzz(socket.assigns.quiz_id, socket.assigns.player_name)
+    Registry.buzz(socket.assigns.quiz.id, socket.assigns.player_name)
     {:noreply, socket}
   end
 
@@ -91,7 +93,7 @@ defmodule QuizBuzzWeb.QuizLive do
 
   @impl true
   def terminate(_reason, socket) do
-    Registry.leave_quiz(socket.assigns.quiz_id, socket.assigns.player_name)
+    Registry.leave_quiz(socket.assigns.quiz.id, socket.assigns.player_name)
     {:ok, socket}
   end
 end

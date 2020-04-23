@@ -1,4 +1,4 @@
-<%= if @quiz do %>
+<%= if @joined? do %>
   <%= case @quiz.state do %>
     <% :setup -> %>
       <p>The quiz has not yet started. Please join a team now if you wish.</p>

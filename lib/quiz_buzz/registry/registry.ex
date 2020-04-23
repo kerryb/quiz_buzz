@@ -13,19 +13,19 @@ defmodule QuizBuzz.Registry do
     Agent.start_link(fn -> %{quizzes: %{}, secrets: %{}} end, name: __MODULE__)
   end
 
-  @spec valid_id?(String.t()) :: boolean()
-  def valid_id?(id) do
-    case get_quiz(id) do
-      nil -> false
-      _quiz -> true
-    end
-  end
-
   @spec new_quiz :: {:ok, Quiz.t()} | {:error, String.t()}
   def new_quiz do
     with {:ok, quiz} <- Core.new_quiz() do
       register_quiz(quiz)
       {:ok, quiz}
+    end
+  end
+
+  @spec quiz_from_id(String.t()) :: {:ok, Quiz.t()} | {:error, String.t()}
+  def quiz_from_id(id) do
+    case get_quiz(id) do
+      nil -> {:error, "Quiz not found"}
+      quiz -> {:ok, quiz}
     end
   end
 

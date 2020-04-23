@@ -8,14 +8,14 @@ defmodule QuizBuzz.RegistryTest do
     :ok
   end
 
-  describe "QuizBuzz.Registry.valid_id?/1" do
-    test "returns true if a quiz exists with the supplied ID" do
+  describe "QuizBuzz.Registry.quiz_from_id/1" do
+    test "returns the quiz with the supplied ID" do
       {:ok, quiz} = Registry.new_quiz()
-      assert Registry.valid_id?(quiz.id)
+      assert {:ok, ^quiz} = Registry.quiz_from_id(quiz.id)
     end
 
-    test "returns false if no quiz exists with the supplied IDs" do
-      refute Registry.valid_id?("XXXX")
+    test "returns an error if no quiz exists with the supplied IDs" do
+      assert {:error, _} = Registry.quiz_from_id("XXXX")
     end
   end
 

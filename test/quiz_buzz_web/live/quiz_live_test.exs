@@ -51,6 +51,16 @@ defmodule QuizBuzzWeb.QuizLiveTest do
       assert has_element?(view, "button[disabled=disabled]")
     end
 
+    test "remains in the same state despite receiving quiz updates", %{
+      view: view,
+      quiz_id: quiz_id
+    } do
+      :ok = Registry.join_quiz(quiz_id, "Bob")
+      #  Re-render to catch the update from the pubsub message
+      render(view)
+      assert has_element?(view, "input[name=player_name]")
+    end
+
     test "disables the join button and shows a flash if the name is already taken", %{view: view} do
       view |> element("form") |> render_change(%{"player_name" => "Alice"})
       assert has_element?(view, "button[disabled=disabled]")
