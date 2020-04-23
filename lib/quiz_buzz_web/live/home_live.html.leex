@@ -11,5 +11,5 @@
 <p>
   Or
   <%# <a href="/quizmaster">start a new quiz</a> %>
-  <%= live_redirect "start a new quiz", to: Routes.live_path(@socket, QuizmasterLive) %>
+  <%= live_redirect "start a new quiz", to: Routes.quizmaster_path(@socket, :new) %>
 </p>

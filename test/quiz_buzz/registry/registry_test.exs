@@ -62,6 +62,7 @@ defmodule QuizBuzz.RegistryTest do
 
   defp quizmaster_creates_quiz do
     {:ok, quiz} = Registry.new_quiz()
+    {:ok, ^quiz} = Registry.quiz_from_secret_id(quiz.secret_id)
     :ok = Phoenix.PubSub.subscribe(QuizBuzz.PubSub, "quiz:#{quiz.id}")
     quiz.id
   end

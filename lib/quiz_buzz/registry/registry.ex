@@ -29,6 +29,11 @@ defmodule QuizBuzz.Registry do
     end
   end
 
+  @spec quiz_from_secret_id(String.t()) :: {:ok, Quiz.t()} | {:error, String.t()}
+  def quiz_from_secret_id(secret_id) do
+    {:ok, get_quiz(secret_id)}
+  end
+
   @spec add_team(String.t(), String.t()) :: :ok | {:error, String.t()}
   def add_team(id, name) do
     with quiz <- get_quiz(id),
@@ -92,7 +97,10 @@ defmodule QuizBuzz.Registry do
   end
 
   defp register_quiz(quiz) do
-    Agent.update(__MODULE__, &Map.put_new(&1, quiz.id, quiz))
+    Agent.update(
+      __MODULE__,
+      &(&1 |> Map.put_new(quiz.id, quiz) |> Map.put_new(quiz.secret_id, quiz))
+    )
   end
 
   defp get_quiz(id) do

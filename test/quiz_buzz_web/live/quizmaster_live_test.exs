@@ -10,10 +10,7 @@ defmodule QuizBuzzWeb.QuizmasterLiveTest do
 
   describe "QuizBuzzWeb.QuizmasterLive" do
     test "logs and ignores unexpected events and messages", %{conn: conn} do
-      {:ok, view, _html} = live(conn, "/quizmaster")
-
-      quiz_id =
-        view |> element(".qb-quiz-id") |> render() |> String.replace(~r/.*>(.*)<.*/, "\\1")
+      {view, quiz_id} = start_new_quiz(conn)
 
       assert capture_log(fn -> render_change(view, "foo", %{"bar" => "baz"}) end) =~
                ~r/Received unexpected event: "foo" with params %{"bar" => "baz"}/
@@ -30,11 +27,7 @@ defmodule QuizBuzzWeb.QuizmasterLiveTest do
 
   describe "QuizBuzzWeb.QuizmasterLive, in the setup phase" do
     setup %{conn: conn} do
-      {:ok, view, _html} = live(conn, "/quizmaster")
-
-      quiz_id =
-        view |> element(".qb-quiz-id") |> render() |> String.replace(~r/.*>(.*)<.*/, "\\1")
-
+      {view, quiz_id} = start_new_quiz(conn)
       :ok = Registry.add_team(quiz_id, "Team one")
       :ok = Registry.add_team(quiz_id, "Team two")
       :ok = Registry.join_quiz(quiz_id, "Alice")
@@ -93,11 +86,7 @@ defmodule QuizBuzzWeb.QuizmasterLiveTest do
 
   describe "QuizBuzzWeb.QuizmasterLive, in the active phase" do
     setup %{conn: conn} do
-      {:ok, view, _html} = live(conn, "/quizmaster")
-
-      quiz_id =
-        view |> element(".qb-quiz-id") |> render() |> String.replace(~r/.*>(.*)<.*/, "\\1")
-
+      {view, quiz_id} = start_new_quiz(conn)
       :ok = Registry.join_quiz(quiz_id, "Alice")
       view |> element("button", "Start quiz") |> render_click()
       {:ok, view: view, quiz_id: quiz_id}
@@ -115,5 +104,12 @@ defmodule QuizBuzzWeb.QuizmasterLiveTest do
       view |> element("button", "Reset buzzers") |> render_click()
       refute has_element?(view, ".qb-buzzed")
     end
+  end
+
+  defp start_new_quiz(conn) do
+    {:error, {:redirect, %{to: url}}} = live(conn, "/quizmaster")
+    {:ok, view, _html} = live(conn, url)
+    quiz_id = view |> element(".qb-quiz-id") |> render() |> String.replace(~r/.*>(.*)<.*/, "\\1")
+    {view, quiz_id}
   end
 end

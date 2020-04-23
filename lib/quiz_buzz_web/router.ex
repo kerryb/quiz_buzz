@@ -19,7 +19,8 @@ defmodule QuizBuzzWeb.Router do
 
     live "/", HomeLive
     live "/quiz/:quiz_id", QuizLive
-    live "/quizmaster", QuizmasterLive
+    live "/quizmaster", QuizmasterLive, :new
+    live "/quizmaster/:secret_id", QuizmasterLive, :show
   end
 
   # Other scopes may use custom stacks.

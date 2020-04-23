@@ -15,24 +15,22 @@ defmodule QuizBuzzWeb.QuizmasterLive do
   require Logger
 
   @impl true
-  def mount(_params, _session, socket) do
-    {:ok, init(socket)}
-  end
-
-  defp init(%{connected?: true} = socket) do
-    {:ok, quiz} = Registry.new_quiz()
+  def mount(%{"secret_id" => secret_id}, _session, socket) do
+    {:ok, quiz} = Registry.quiz_from_secret_id(secret_id)
     Phoenix.PubSub.subscribe(QuizBuzz.PubSub, "quiz:#{quiz.id}")
 
-    assign(socket,
-      quiz: quiz,
-      quiz_url: Routes.live_url(socket, QuizLive, quiz.id),
-      team_name_valid: false,
-      page_title: "QuizBuzz: #{quiz.id} (master)"
-    )
+    {:ok,
+     assign(socket,
+       quiz: quiz,
+       quiz_url: Routes.live_url(socket, QuizLive, quiz.id),
+       team_name_valid: false,
+       page_title: "QuizBuzz: #{quiz.id} (master)"
+     )}
   end
 
-  defp init(socket) do
-    assign(socket, quiz: nil)
+  def mount(_params, _session, socket) do
+    {:ok, quiz} = Registry.new_quiz()
+    {:ok, redirect(socket, to: Routes.quizmaster_path(socket, :show, quiz.secret_id))}
   end
 
   @impl true

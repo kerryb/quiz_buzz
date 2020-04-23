@@ -5,7 +5,7 @@ defmodule QuizBuzzWeb.HomeLive do
 
   use Phoenix.LiveView, layout: {QuizBuzzWeb.LayoutView, "live.html"}
 
-  alias QuizBuzzWeb.{QuizLive, QuizmasterLive}
+  alias QuizBuzzWeb.QuizLive
   # credo:disable-for-next-line Credo.Check.Readability.AliasAs
   alias QuizBuzzWeb.Router.Helpers, as: Routes
 

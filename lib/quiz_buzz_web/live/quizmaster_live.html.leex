@@ -3,6 +3,10 @@
     Quiz ID: <span class="qb-quiz-id"><%= @quiz.id %></span>
     (direct people to <%= link @quiz_url, to: @quiz_url, class: "qb-quiz-url" %>)
   </p>
+  <p>
+      <em>Note: the ID in the URL of the page you&rsquo;re currently looking at is
+        different, and is private to you as the quizmaster.</em>
+  </p>
 
   <%= case @quiz.state do %>
     <% :setup -> %>
