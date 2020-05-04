@@ -84,16 +84,15 @@ defmodule QuizBuzzWeb.QuizmasterLive do
     {:noreply, socket}
   end
 
-  if(Mix.env() == :test) do
-    @flash_persist_milliseconds 100
-  else
-    @flash_persist_milliseconds :timer.seconds(3)
-  end
-
   defp display_flash_if_error({:error, message}, socket) do
-    Process.send_after(self(), :clear_flash, @flash_persist_milliseconds)
+    Process.send_after(
+      self(),
+      :clear_flash,
+      Application.get_env(:quiz_buzz, :flash_persist_milliseconds)
+    )
+
     {:noreply, put_flash(socket, :error, message)}
   end
 
-  defp display_flash_if_error(_, socket), do: {:noreply, socket}
+  defp display_flash_if_error(_response, socket), do: {:noreply, socket}
 end
