@@ -43,11 +43,9 @@ defmodule QuizBuzzWeb.QuizmasterLive do
   end
 
   def handle_event("add-team", _params, socket) do
-    Registry.add_team(socket.assigns.quiz.id, socket.assigns.team_name)
-    |> case do
-      {:error, message} -> {:noreply, put_flash(socket, :error, message)}
-      _ -> {:noreply, socket}
-    end
+    socket.assigns.quiz.id
+    |> Registry.add_team(socket.assigns.team_name)
+    |> display_flash_if_error(socket)
   end
 
   def handle_event("start-quiz", _params, socket) do
@@ -79,4 +77,10 @@ defmodule QuizBuzzWeb.QuizmasterLive do
     Logger.warn("Received unexpected message: #{inspect(message)}")
     {:noreply, socket}
   end
+
+  defp display_flash_if_error({:error, message}, socket) do
+    {:noreply, put_flash(socket, :error, message)}
+  end
+
+  defp display_flash_if_error(_, socket), do: {:noreply, socket}
 end
