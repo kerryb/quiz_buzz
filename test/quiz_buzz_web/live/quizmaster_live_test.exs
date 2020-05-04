@@ -61,6 +61,13 @@ defmodule QuizBuzzWeb.QuizmasterLiveTest do
       assert has_element?(view, ".qb-team", "Team three")
     end
 
+    test "displays the error message if adding a team fails", %{view: view, quiz_id: quiz_id} do
+      view |> element("form") |> render_change(%{"team_name" => "Team three"})
+      Registry.add_team(quiz_id, "Team three")
+      view |> element("form") |> render_submit()
+      assert has_element?(view, ".alert-danger", "That name has already been taken")
+    end
+
     test "disables the add team button if the name is blank", %{view: view} do
       view |> element("form") |> render_change(%{"team_name" => ""})
       assert has_element?(view, "button[disabled=disabled]", "Add team")

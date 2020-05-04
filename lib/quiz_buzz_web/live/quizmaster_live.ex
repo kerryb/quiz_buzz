@@ -43,9 +43,11 @@ defmodule QuizBuzzWeb.QuizmasterLive do
   end
 
   def handle_event("add-team", _params, socket) do
-    # TODO (throughout all views): handle error responses
     Registry.add_team(socket.assigns.quiz.id, socket.assigns.team_name)
-    {:noreply, socket}
+    |> case do
+      {:error, message} -> {:noreply, put_flash(socket, :error, message)}
+      _ -> {:noreply, socket}
+    end
   end
 
   def handle_event("start-quiz", _params, socket) do
