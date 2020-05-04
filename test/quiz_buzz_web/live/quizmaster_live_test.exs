@@ -68,6 +68,30 @@ defmodule QuizBuzzWeb.QuizmasterLiveTest do
       assert has_element?(view, ".alert-danger", "That name has already been taken")
     end
 
+    test "clears the error message after a short time", %{
+      view: view,
+      quiz_id: quiz_id
+    } do
+      view |> element("form") |> render_change(%{"team_name" => "Team three"})
+      Registry.add_team(quiz_id, "Team three")
+      view |> element("form") |> render_submit()
+      #  persistence is set to 100ms in test env
+      Process.sleep(150)
+      render(view)
+      refute has_element?(view, ".alert-danger", "That name has already been taken")
+    end
+
+    test "clears the error message if they start editing the team name", %{
+      view: view,
+      quiz_id: quiz_id
+    } do
+      view |> element("form") |> render_change(%{"team_name" => "Team three"})
+      Registry.add_team(quiz_id, "Team three")
+      view |> element("form") |> render_submit()
+      view |> element("form") |> render_change(%{"team_name" => "Team four"})
+      refute has_element?(view, ".alert-danger", "That name has already been taken")
+    end
+
     test "disables the add team button if the name is blank", %{view: view} do
       view |> element("form") |> render_change(%{"team_name" => ""})
       assert has_element?(view, "button[disabled=disabled]", "Add team")

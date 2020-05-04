@@ -36,7 +36,9 @@ defmodule QuizBuzzWeb.QuizmasterLive do
   @impl true
   def handle_event("form-change", %{"team_name" => team_name}, socket) do
     {:noreply,
-     assign(socket,
+     socket
+     |> clear_flash()
+     |> assign(
        team_name: team_name,
        team_name_valid: not (team_name in ["" | Enum.map(socket.assigns.quiz.teams, & &1.name)])
      )}
@@ -73,12 +75,23 @@ defmodule QuizBuzzWeb.QuizmasterLive do
     {:noreply, socket}
   end
 
+  def handle_info(:clear_flash, socket) do
+    {:noreply, clear_flash(socket)}
+  end
+
   def handle_info(message, socket) do
     Logger.warn("Received unexpected message: #{inspect(message)}")
     {:noreply, socket}
   end
 
+  if(Mix.env() == :test) do
+    @flash_persist_milliseconds 100
+  else
+    @flash_persist_milliseconds :timer.seconds(3)
+  end
+
   defp display_flash_if_error({:error, message}, socket) do
+    Process.send_after(self(), :clear_flash, @flash_persist_milliseconds)
     {:noreply, put_flash(socket, :error, message)}
   end
 
