@@ -1,5 +1,8 @@
 all: style dialyzer test docs
-.PHONY: style dialyzer test
+.PHONY: update-deps style dialyzer test
+update-deps:
+	mix deps.update --all
+	npm update --prefix assets
 style:
 	mix format --check-formatted
 	mix credo
