@@ -1,5 +1,6 @@
 # credo:disable-for-this-file Credo.Check.Consistency.MultiAliasImportRequireUse
 # credo:disable-for-this-file Credo.Check.Readability.AliasAs
+# credo:disable-for-this-file Credo.Check.Readability.Specs
 # credo:disable-for-this-file Credo.Check.Refactor.ModuleDependencies
 
 defmodule QuizBuzzWeb do
