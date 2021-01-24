@@ -5,6 +5,7 @@ defmodule QuizBuzzWeb.QuizLiveTest do
   import Phoenix.LiveViewTest
 
   alias QuizBuzz.Registry
+  alias QuizBuzzWeb.QuizLive
   alias QuizBuzzWeb.QuizLive.InvalidQuizIDError
 
   @endpoint QuizBuzzWeb.Endpoint
@@ -174,6 +175,23 @@ defmodule QuizBuzzWeb.QuizLiveTest do
     test "indicates when an individual player buzzes", %{view: view, quiz_id: quiz_id} do
       :ok = Registry.buzz(quiz_id, "Alice")
       assert has_element?(view, ".qb-team.qb-buzzed", "Alice")
+    end
+  end
+
+  describe "QuizBuzzWeb.QuizLive, on termination" do
+    setup %{conn: conn} do
+      {:ok, quiz} = Registry.new_quiz()
+      {:ok, view, _html} = live(conn, "/quiz/#{quiz.id}")
+      view |> element("form") |> render_change(%{"player_name" => "Bob"})
+      view |> element("form") |> render_submit()
+      {:ok, view: view, quiz: quiz}
+    end
+
+    test "leaves the quiz", %{quiz: quiz} do
+      QuizLive.terminate(:normal, %{assigns: %{quiz: quiz, player_name: "Bob"}})
+      {:ok, quiz} = Registry.quiz_from_id(quiz.id)
+
+      assert quiz.players == []
     end
   end
 end
