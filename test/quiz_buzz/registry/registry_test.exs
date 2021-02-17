@@ -125,7 +125,7 @@ defmodule QuizBuzz.RegistryTest do
   end
 
   defp assert_player_buzzed(id, player_name) do
-    assert_receive({:quiz, quiz} = message)
+    assert_receive({:quiz, quiz})
     assert quiz.state == :buzzed
     assert [%{name: ^player_name}] = Enum.filter(quiz.players, & &1.buzzed?)
     id
