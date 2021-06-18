@@ -5,6 +5,7 @@
     "^lib/quiz_buzz/application.ex",
     "^lib/quiz_buzz_web.ex",
     "^lib/quiz_buzz_web/channels/user_socket.ex",
+    "^lib/quiz_buzz_web/channels/buzzer_channel.ex",
     "^lib/quiz_buzz_web/endpoint.ex",
     "^lib/quiz_buzz_web/gettext.ex",
     "^lib/quiz_buzz_web/router.ex",

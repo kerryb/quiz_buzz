@@ -44,8 +44,13 @@ defmodule QuizBuzzWeb.QuizLive do
 
   def handle_event("join-quiz", _params, socket) do
     case Registry.join_quiz(socket.assigns.quiz.id, socket.assigns.player_name) do
-      :ok -> {:noreply, assign(socket, joined?: true)}
-      _error -> {:noreply, socket}
+      :ok ->
+        {:noreply, assign(socket, joined?: true)}
+
+      # coveralls-ignore-start
+      _error ->
+        {:noreply, socket}
+        # coveralls-ignore-end
     end
   end
 
