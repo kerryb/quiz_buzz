@@ -40,7 +40,7 @@ defmodule QuizBuzzWeb.QuizmasterLive do
      |> clear_flash()
      |> assign(
        team_name: team_name,
-       team_name_valid: not (team_name in ["" | Enum.map(socket.assigns.quiz.teams, & &1.name)])
+       team_name_valid: team_name not in ["" | Enum.map(socket.assigns.quiz.teams, & &1.name)]
      )}
   end
 
