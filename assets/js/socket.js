@@ -1,5 +1,5 @@
 import {Socket} from "phoenix"
-import LiveSocket from "phoenix_live_view"
+import {LiveSocket} from "phoenix_live_view"
 import Buzzer from "./buzzer"
 
 let socket = new Socket("/socket", {})
