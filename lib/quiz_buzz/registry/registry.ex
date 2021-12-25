@@ -41,7 +41,7 @@ defmodule QuizBuzz.Registry do
   def add_team(id, name) do
     with quiz <- get_quiz(id),
          {:ok, quiz} <- Core.add_team(quiz, name) do
-      :ok = update_quiz(id, quiz)
+      update_quiz(id, quiz)
     end
   end
 
@@ -49,7 +49,7 @@ defmodule QuizBuzz.Registry do
   def join_quiz(id, name) do
     with quiz <- get_quiz(id),
          {:ok, quiz} <- Core.join_quiz(quiz, name) do
-      :ok = update_quiz(id, quiz)
+      update_quiz(id, quiz)
     end
   end
 
@@ -57,7 +57,7 @@ defmodule QuizBuzz.Registry do
   def leave_quiz(id, name) do
     with quiz <- get_quiz(id),
          {:ok, quiz} <- Core.leave_quiz(quiz, name) do
-      :ok = update_quiz(id, quiz)
+      update_quiz(id, quiz)
     end
   end
 
@@ -72,7 +72,7 @@ defmodule QuizBuzz.Registry do
   def join_team(id, team_name, player_name) do
     with quiz <- get_quiz(id),
          {:ok, quiz} <- Core.join_team(quiz, player_name, team_name) do
-      :ok = update_quiz(id, quiz)
+      update_quiz(id, quiz)
     end
   end
 
@@ -80,7 +80,7 @@ defmodule QuizBuzz.Registry do
   def start_quiz(id) do
     with quiz <- get_quiz(id),
          {:ok, quiz} <- Core.start(quiz) do
-      :ok = update_quiz(id, quiz)
+      update_quiz(id, quiz)
     end
   end
 
@@ -89,7 +89,7 @@ defmodule QuizBuzz.Registry do
     with quiz <- get_quiz(id),
          {:ok, quiz} <- Core.buzz(quiz, player_name),
          :ok <- buzz(quiz) do
-      :ok = update_quiz(id, quiz)
+      update_quiz(id, quiz)
     end
   end
 
@@ -97,7 +97,7 @@ defmodule QuizBuzz.Registry do
   def reset_buzzers(id) do
     with quiz <- get_quiz(id),
          {:ok, quiz} <- Core.reset_buzzers(quiz) do
-      :ok = update_quiz(id, quiz)
+      update_quiz(id, quiz)
     end
   end
 
