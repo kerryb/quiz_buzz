@@ -4,7 +4,7 @@
       <p>The quiz has not yet started. Please join a team now if you wish.</p>
       <.setup quiz={@quiz} player_name={@player_name} />
     <% :active -> %>
-      <button phx-click="buzz" phx-window-keyup="keyup">
+      <button phx-click="buzz" phx-window-keydown="keydown">
         Buzz
         <span class="qb-button-note">(or press the space bar)</span>
       </button>

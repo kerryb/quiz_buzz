@@ -65,11 +65,11 @@ defmodule QuizBuzzWeb.QuizLive do
     buzz(socket)
   end
 
-  def handle_event("keyup", %{"key" => " "}, socket) do
+  def handle_event("keydown", %{"key" => " "}, socket) do
     buzz(socket)
   end
 
-  def handle_event("keyup", _params, socket) do
+  def handle_event("keydown", _params, socket) do
     {:noreply, socket}
   end
 
