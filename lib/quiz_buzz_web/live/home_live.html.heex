@@ -4,12 +4,11 @@
       <input type="text" name="quiz_id" autofocus="true" placeholder="Quiz ID">
     </div>
     <div class="column">
-      <button <%= unless @quiz_id_valid, do: "disabled" %>>Join quiz</button>
+      <button disabled={not @quiz_id_valid}>Join quiz</button>
     </div>
   </div>
 </form>
 <p>
   Or
-  <%# <a href="/quizmaster">start a new quiz</a> %>
   <%= live_redirect "start a new quiz", to: Routes.quizmaster_path(@socket, :new) %>
 </p>

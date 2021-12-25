@@ -5,6 +5,8 @@ defmodule QuizBuzzWeb.QuizLive do
 
   use Phoenix.LiveView, layout: {QuizBuzzWeb.LayoutView, "live.html"}
 
+  import QuizBuzzWeb.Components
+
   alias QuizBuzz.Registry
   alias QuizBuzzWeb.Endpoint
 
@@ -63,7 +65,7 @@ defmodule QuizBuzzWeb.QuizLive do
     buzz(socket)
   end
 
-  def handle_event("keyup", %{"code" => "Space"}, socket) do
+  def handle_event("keyup", %{"key" => " "}, socket) do
     buzz(socket)
   end
 

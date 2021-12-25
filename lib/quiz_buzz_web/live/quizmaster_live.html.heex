@@ -18,19 +18,19 @@
             <input type="text" name="team_name" autofocus="true" placeholder="Team name">
           </div>
           <div class="column">
-            <button type="submit" class="button" <%= unless @team_name_valid, do: "disabled" %>>Add team</button>
+            <button type="submit" class="button" disabled={not @team_name_valid}>Add team</button>
           </div>
           <div class="column">
             <button type="button" class="button" phx-click="start-quiz">Start quiz</button>
           </div>
         </div>
       </form>
-      <%= live_component QuizBuzzWeb.SetupComponent, quiz: @quiz %>      
+      <.setup quiz={@quiz} />
     <% :active -> %>
       <button type="button" class="button" disabled>Reset buzzers</button>
-      <%= live_component QuizBuzzWeb.ScoreboardComponent, quiz: @quiz, player_name: nil %>      
+      <.scoreboard quiz={@quiz} player_name={nil} />
     <% :buzzed -> %>
       <button type="button" class="button" phx-click="reset-buzzers">Reset buzzers</button>
-      <%= live_component QuizBuzzWeb.ScoreboardComponent, quiz: @quiz, player_name: nil %>      
+      <.scoreboard quiz={@quiz} player_name={nil} />
   <% end %>
 <% end %>

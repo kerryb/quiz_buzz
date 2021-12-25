@@ -7,6 +7,8 @@ defmodule QuizBuzzWeb.QuizmasterLive do
   use Phoenix.HTML
   use Phoenix.LiveView, layout: {QuizBuzzWeb.LayoutView, "live.html"}
 
+  import QuizBuzzWeb.Components
+
   alias QuizBuzz.Registry
   alias QuizBuzzWeb.{Endpoint, QuizLive}
   # credo:disable-for-next-line Credo.Check.Readability.AliasAs
