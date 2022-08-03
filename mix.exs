@@ -7,7 +7,6 @@ defmodule QuizBuzz.MixProject do
       version: "0.4.1",
       elixir: "~> 1.5",
       elixirc_paths: elixirc_paths(Mix.env()),
-      compilers: [:phoenix, :gettext] ++ Mix.compilers(),
       elixirc_options: elixirc_options(Mix.env()),
       start_permanent: Mix.env() == :prod,
       preferred_cli_env: preferred_cli_env(),
