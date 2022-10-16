@@ -47,7 +47,7 @@ defmodule QuizBuzzWeb do
 
       import QuizBuzzWeb.ErrorHelpers
       import QuizBuzzWeb.Gettext
-      import Phoenix.LiveView.Helpers
+      import Phoenix.Component
       alias QuizBuzzWeb.Router.Helpers, as: Routes
     end
   end
