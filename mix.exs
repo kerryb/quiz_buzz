@@ -5,7 +5,7 @@ defmodule QuizBuzz.MixProject do
     [
       app: :quiz_buzz,
       version: "0.4.1",
-      elixir: "~> 1.5",
+      elixir: "~> 1.14",
       elixirc_paths: elixirc_paths(Mix.env()),
       elixirc_options: elixirc_options(Mix.env()),
       start_permanent: Mix.env() == :prod,
