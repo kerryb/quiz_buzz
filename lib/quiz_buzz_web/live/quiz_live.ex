@@ -3,7 +3,7 @@ defmodule QuizBuzzWeb.QuizLive do
   LiveView for the player view of a quiz.
   """
 
-  use Phoenix.LiveView, layout: {QuizBuzzWeb.LayoutView, "live.html"}
+  use Phoenix.LiveView, layout: {QuizBuzzWeb.LayoutView, :live}
 
   import QuizBuzzWeb.Components
 

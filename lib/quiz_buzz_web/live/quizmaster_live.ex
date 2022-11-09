@@ -5,7 +5,7 @@ defmodule QuizBuzzWeb.QuizmasterLive do
   """
 
   use Phoenix.HTML
-  use Phoenix.LiveView, layout: {QuizBuzzWeb.LayoutView, "live.html"}
+  use Phoenix.LiveView, layout: {QuizBuzzWeb.LayoutView, :live}
 
   import QuizBuzzWeb.Components
 
