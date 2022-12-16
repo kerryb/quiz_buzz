@@ -64,10 +64,16 @@ defmodule QuizBuzz.RegistryTest do
     |> assert_buzzer_sounded()
     |> player_tries_to_buzz("Bob")
     |> assert_quiz_not_updated()
+    |> quizmaster_adds_a_point()
+    |> assert_player_score("Alice", 1)
+    |> quizmaster_adds_a_point()
+    |> assert_team_score("Team one", 2)
     |> quizmaster_resets_buzzers()
     |> assert_no_player_buzzed()
     |> player_buzzes("Carol")
     |> assert_player_buzzed("Carol")
+    |> quizmaster_subtracts_a_point()
+    |> assert_player_score("Carol", -1)
   end
 
   defp quizmaster_creates_quiz do
@@ -118,6 +124,18 @@ defmodule QuizBuzz.RegistryTest do
     id
   end
 
+  defp quizmaster_adds_a_point(id) do
+    flush_mailbox()
+    :ok = Registry.add_point(id)
+    id
+  end
+
+  defp quizmaster_subtracts_a_point(id) do
+    flush_mailbox()
+    :ok = Registry.subtract_point(id)
+    id
+  end
+
   defp quizmaster_resets_buzzers(id) do
     flush_mailbox()
     :ok = Registry.reset_buzzers(id)
@@ -128,6 +146,18 @@ defmodule QuizBuzz.RegistryTest do
     assert_receive({:quiz, quiz})
     assert quiz.state == :buzzed
     assert [%{name: ^player_name}] = Enum.filter(quiz.players, & &1.buzzed?)
+    id
+  end
+
+  defp assert_player_score(id, player_name, score) do
+    assert_receive({:quiz, quiz})
+    assert [%{score: ^score}] = Enum.filter(quiz.players, &(&1.name == player_name))
+    id
+  end
+
+  defp assert_team_score(id, team_name, score) do
+    assert_receive({:quiz, quiz})
+    assert [%{score: ^score}] = Enum.filter(quiz.teams, &(&1.name == team_name))
     id
   end
 

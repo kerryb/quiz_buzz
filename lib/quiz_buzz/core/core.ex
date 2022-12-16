@@ -14,5 +14,7 @@ defmodule QuizBuzz.Core do
   defdelegate start(quiz), to: Setup
 
   defdelegate buzz(quiz, player), to: Play
+  defdelegate add_point(quiz), to: Play
+  defdelegate subtract_point(quiz), to: Play
   defdelegate reset_buzzers(quiz), to: Play
 end

@@ -93,6 +93,22 @@ defmodule QuizBuzz.Registry do
     end
   end
 
+  @spec add_point(String.t()) :: :ok | {:error, String.t()}
+  def add_point(id) do
+    with quiz <- get_quiz(id),
+         {:ok, quiz} <- Core.add_point(quiz) do
+      update_quiz(id, quiz)
+    end
+  end
+
+  @spec subtract_point(String.t()) :: :ok | {:error, String.t()}
+  def subtract_point(id) do
+    with quiz <- get_quiz(id),
+         {:ok, quiz} <- Core.subtract_point(quiz) do
+      update_quiz(id, quiz)
+    end
+  end
+
   @spec reset_buzzers(String.t()) :: :ok | {:error, String.t()}
   def reset_buzzers(id) do
     with quiz <- get_quiz(id),
