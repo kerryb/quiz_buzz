@@ -3,8 +3,8 @@ defmodule QuizBuzz.Core.PlayTest do
 
   import QuizBuzz.Factory
 
-  alias QuizBuzz.Core.Play
-  alias QuizBuzz.Schema.Player
+  alias QuizBuzz.Core.{Play, Setup}
+  alias QuizBuzz.Schema.{Player, Team}
 
   describe "QuizBuzz.Core.Play.buzz/2" do
     setup do
@@ -55,6 +55,22 @@ defmodule QuizBuzz.Core.PlayTest do
     test "fails unless the quiz is in the buzzed state", %{quiz: quiz} do
       quiz = %{quiz | state: :active}
       assert {:error, _} = Play.reset_buzzers(quiz)
+    end
+  end
+
+  describe "QuizBuzz.Core.Play.add_points/3" do
+    setup do
+      jane_doe = %{Player.new("Jane Doe") | buzzed?: true}
+      team = Team.new("A team")
+      quiz = new_quiz() |> with_player(jane_doe) |> with_team(team)
+      {:ok, quiz} = Setup.join_team(quiz, "Jane Doe", "A team")
+      {:ok, quiz: quiz}
+    end
+
+    test "adds the score to the team's points", %{quiz: quiz} do
+      quiz = Play.add_points(quiz, "A team", 1)
+      [team] = quiz.teams
+      assert team.points == 1
     end
   end
 end

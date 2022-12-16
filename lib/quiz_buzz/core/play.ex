@@ -34,4 +34,14 @@ defmodule QuizBuzz.Core.Play do
   defp mark_all_as_not_buzzed(players) do
     Enum.map(players, &%{&1 | buzzed?: false})
   end
+
+  @spec add_points(Quiz.t(), String.t(), integer()) :: Quiz.t()
+  def add_points(quiz, team_name, points) do
+    Map.update!(quiz, :teams, fn teams ->
+      Enum.map(teams, fn
+        %{name: ^team_name} = team -> Map.update!(team, :points, &(&1 + points))
+        team -> team
+      end)
+    end)
+  end
 end

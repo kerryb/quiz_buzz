@@ -60,3 +60,7 @@
 .qb-scoreboard.qb-buzzed .qb-team-player.qb-buzzed {
   text-decoration: underline red;
 }
+
+.qb-scoreboard .qb-team .points {
+  margin-left: 4rem;
+}
