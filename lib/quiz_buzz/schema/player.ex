@@ -6,13 +6,18 @@ defmodule QuizBuzz.Schema.Player do
 
   alias QuizBuzz.Schema.Team
 
-  @enforce_keys [:name, :buzzed?]
-  defstruct [:name, :team, buzzed?: false]
+  @enforce_keys [:name, :buzzed?, :score]
+  defstruct [:name, :team, buzzed?: false, score: 0]
 
-  @type t :: %__MODULE__{name: String.t(), team: Team.t() | nil, buzzed?: boolean()}
+  @type t :: %__MODULE__{
+          name: String.t(),
+          team: Team.t() | nil,
+          buzzed?: boolean(),
+          score: integer()
+        }
 
   @spec new(String.t()) :: t()
   def new(name) do
-    %__MODULE__{name: name, team: nil, buzzed?: false}
+    %__MODULE__{name: name, team: nil, buzzed?: false, score: 0}
   end
 end
