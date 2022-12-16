@@ -44,7 +44,7 @@ defmodule QuizBuzzWeb.Components do
 
       <%= for team <- @quiz.teams do %>
         <div class={"qb-team #{if Enum.any?(@quiz.players, & &1.team == team and &1.buzzed?), do: "qb-buzzed"}"}>
-      <h2><%= team.name %> <span class="points"><%= team.points %></span></h2>
+      <h2><%= team.name %> <span class="qb-points"><%= team.points %></span></h2>
           <ul class="qb-team-players">
             <%= for player <- Enum.filter(@quiz.players, & &1.team == team) do %>
               <li class={"qb-team-player #{if player.name == assigns[:player_name], do: "qb-me"} #{if player.buzzed?, do: "qb-buzzed"}"}><%= player.name %></li>
