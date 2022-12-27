@@ -10,14 +10,10 @@ defmodule QuizBuzzWeb.Router do
     plug :put_secure_browser_headers
   end
 
-  pipeline :api do
-    plug :accepts, ["json"]
-  end
-
   scope "/", QuizBuzzWeb do
     pipe_through :browser
 
-    get "/", PageController, :home
+    live "/", QuizLive
   end
 
   # Other scopes may use custom stacks.
