@@ -48,8 +48,7 @@ config :quiz_buzz, QuizBuzzWeb.Endpoint,
     patterns: [
       ~r"priv/static/.*(js|css|png|jpeg|jpg|gif|svg)$",
       ~r"priv/gettext/.*(po)$",
-      ~r"lib/quiz_buzz_web/(live|views)/.*(ex)$",
-      ~r"lib/quiz_buzz_web/templates/.*(eex)$"
+      ~r"lib/quiz_buzz_web/(controllers|live|components)/.*(ex|heex)$"
     ]
   ]
 
