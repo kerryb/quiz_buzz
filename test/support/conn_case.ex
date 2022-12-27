@@ -19,14 +19,15 @@ defmodule QuizBuzzWeb.ConnCase do
 
   using do
     quote do
+      # The default endpoint for testing
+      @endpoint QuizBuzzWeb.Endpoint
+
+      use QuizBuzzWeb, :verified_routes
+
       # Import conveniences for testing with connections
       import Plug.Conn
       import Phoenix.ConnTest
-      # credo:disable-for-next-line Credo.Check.Readability.AliasAs
-      alias QuizBuzzWeb.Router.Helpers, as: Routes
-
-      # The default endpoint for testing
-      @endpoint QuizBuzzWeb.Endpoint
+      import QuizBuzzWeb.ConnCase
     end
   end
 

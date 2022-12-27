@@ -1,4 +1,3 @@
-# credo:disable-for-this-file Credo.Check.Refactor.ModuleDependencies
 defmodule QuizBuzzWeb.Endpoint do
   use Phoenix.Endpoint, otp_app: :quiz_buzz
 
@@ -8,12 +7,9 @@ defmodule QuizBuzzWeb.Endpoint do
   @session_options [
     store: :cookie,
     key: "_quiz_buzz_key",
-    signing_salt: "yDIApnU8"
+    signing_salt: "sWPMibwC",
+    same_site: "Lax"
   ]
-
-  socket "/socket", QuizBuzzWeb.UserSocket,
-    websocket: true,
-    longpoll: false
 
   socket "/live", Phoenix.LiveView.Socket, websocket: [connect_info: [session: @session_options]]
 
@@ -25,7 +21,7 @@ defmodule QuizBuzzWeb.Endpoint do
     at: "/",
     from: :quiz_buzz,
     gzip: false,
-    only: ~w(css fonts images js sounds favicon.ico robots.txt)
+    only: QuizBuzzWeb.static_paths()
 
   # Code reloading can be explicitly enabled under the
   # :code_reloader configuration of your endpoint.
@@ -34,6 +30,10 @@ defmodule QuizBuzzWeb.Endpoint do
     plug Phoenix.LiveReloader
     plug Phoenix.CodeReloader
   end
+
+  plug Phoenix.LiveDashboard.RequestLogger,
+    param_key: "request_logger",
+    cookie_key: "request_logger"
 
   plug Plug.RequestId
   plug Plug.Telemetry, event_prefix: [:phoenix, :endpoint]

@@ -1,5 +1,5 @@
 # This file is responsible for configuring your application
-# and its dependencies with the aid of the Mix.Config module.
+# and its dependencies with the aid of the Config module.
 #
 # This configuration file is loaded before any dependency and
 # is restricted to this project.
@@ -10,12 +10,43 @@ import Config
 # Configures the endpoint
 config :quiz_buzz, QuizBuzzWeb.Endpoint,
   url: [host: "localhost"],
-  secret_key_base: "xx9Y6r94MW/cBMf+704JlN1jWi/O8nx6x6izqmB2e8jopk4ATDQFk5jajV0FSZfK",
-  render_errors: [view: QuizBuzzWeb.ErrorView, accepts: ~w(html json)],
+  render_errors: [
+    formats: [html: QuizBuzzWeb.ErrorHTML, json: QuizBuzzWeb.ErrorJSON],
+    layout: false
+  ],
   pubsub_server: QuizBuzz.PubSub,
-  live_view: [signing_salt: "JIaeHshe"]
+  live_view: [signing_salt: "jHXc74ed"]
 
-config :quiz_buzz, flash_persist_milliseconds: :timer.seconds(3)
+# Configures the mailer
+#
+# By default it uses the "Local" adapter which stores the emails
+# locally. You can see the emails in your browser, at "/dev/mailbox".
+#
+# For production it's recommended to configure a different adapter
+# at the `config/runtime.exs`.
+config :quiz_buzz, QuizBuzz.Mailer, adapter: Swoosh.Adapters.Local
+
+# Configure esbuild (the version is required)
+config :esbuild,
+  version: "0.14.41",
+  default: [
+    args:
+      ~w(js/app.js --bundle --target=es2017 --outdir=../priv/static/assets --external:/fonts/* --external:/images/*),
+    cd: Path.expand("../assets", __DIR__),
+    env: %{"NODE_PATH" => Path.expand("../deps", __DIR__)}
+  ]
+
+# Configure tailwind (the version is required)
+config :tailwind,
+  version: "3.1.8",
+  default: [
+    args: ~w(
+      --config=tailwind.config.js
+      --input=css/app.css
+      --output=../priv/static/assets/app.css
+    ),
+    cd: Path.expand("../assets", __DIR__)
+  ]
 
 # Configures Elixir's Logger
 config :logger, :console,
@@ -27,4 +58,4 @@ config :phoenix, :json_library, Jason
 
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.
-import_config "#{Mix.env()}.exs"
+import_config "#{config_env()}.exs"
