@@ -1,3 +1,4 @@
+# credo:disable-for-this-file Credo.Check.Readability.ModuleDoc
 defmodule QuizBuzzWeb.Telemetry do
   use Supervisor
   import Telemetry.Metrics
