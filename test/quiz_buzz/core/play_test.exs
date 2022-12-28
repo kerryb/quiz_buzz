@@ -1,3 +1,4 @@
+# credo:disable-for-this-file Credo.Check.Refactor.VariableRebinding
 defmodule QuizBuzz.Core.PlayTest do
   use ExUnit.Case, async: true
 
