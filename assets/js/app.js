@@ -22,16 +22,19 @@ import {Socket} from "phoenix"
 import {LiveSocket} from "phoenix_live_view"
 import topbar from "../vendor/topbar"
 
+function loadName(liveview) {
+    let name = localStorage.getItem("player-name")
+    if (name === null) {
+      liveview.pushEvent("edit-name", {})      
+    } else {
+      liveview.pushEvent("load-name", {name: name})      
+    }
+}
+
 let hooks = {
   saveName: {
-    mounted() {
-      let name = localStorage.getItem("player-name")
-      if (name === null) {
-        this.pushEvent("edit-name", {})      
-      } else {
-        this.pushEvent("load-name", {name: name})      
-      }
-    }
+    mounted() { loadName(this) },
+    reconnected() { loadName(this) }
   }
 }
 
