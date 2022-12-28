@@ -1,0 +1,17 @@
+<h1 class="text-5xl font-bold mb-4">QuizBuzz</h1>
+<%= if @name do %>
+  <h2 class="text-xl flex items-center">
+    <span>Playing as&nbsp;</span>
+    <span class="font-bold"><%= @name %></span>
+    <a href="#"><Heroicons.pencil_square mini class="h-4 w-4 ml-2" /></a>
+  </h2>
+<% else %>
+  <div id="modal-bg" class="fixed inset-0 bg-zinc-50/90 transition-opacity" aria-hidden="true" />
+  <div class="fixed inset-0 overflow-y-auto" role="dialog" aria-modal="true" tabindex="0">
+    <div class="flex min-h-full items-center justify-center border">
+      <div>
+        Hello
+      </div>
+    </div>
+  </div>
+<% end %>
