@@ -22,8 +22,26 @@ import {Socket} from "phoenix"
 import {LiveSocket} from "phoenix_live_view"
 import topbar from "../vendor/topbar"
 
+let hooks = {
+  saveName: {
+    mounted() {
+      let name = localStorage.getItem("player-name")
+      if (name === null) {
+        this.pushEvent("edit-name", {})      
+      } else {
+        this.pushEvent("load-name", {name: name})      
+      }
+    }
+  }
+}
+
+window.addEventListener("phx:save-name", e => localStorage.setItem("player-name", e.detail.name))
+
 let csrfToken = document.querySelector("meta[name='csrf-token']").getAttribute("content")
-let liveSocket = new LiveSocket("/live", Socket, {params: {_csrf_token: csrfToken}})
+let liveSocket = new LiveSocket("/live", Socket, {
+  params: {_csrf_token: csrfToken},
+  hooks: hooks
+})
 
 // Show progress bar on live navigation and form submits
 topbar.config({barColors: {0: "#29d"}, shadowColor: "rgba(0, 0, 0, .3)"})
