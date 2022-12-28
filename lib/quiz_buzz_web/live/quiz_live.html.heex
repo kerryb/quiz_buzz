@@ -10,7 +10,7 @@
   <div class="fixed inset-0 overflow-y-auto" role="dialog" aria-modal="true" tabindex="0">
     <div class="flex min-h-full items-center justify-center border">
       <div class="p-8 border bg-white border-black rounded-xl shadow-xl">
-        <form class="flex flex-col sm:flex-row">
+        <form class="flex flex-col sm:flex-row" phx-submit="save-name">
           <label for="name" class="font-bold px-4 py-3">Your name:</label>
           <input name="name" id="name" class="border border-black max-sm:rounded sm:rounded-tl sm:rounded-bl px-4 py-2 max-sm:mb-6" />
           <button class="bg-black sm:rounded-br sm:rounded-tr max-sm:rounded-lg text-white px-4 py-2 max-sm:mb-3">Save</button>
