@@ -5,7 +5,7 @@ import Config
 config :quiz_buzz, QuizBuzzWeb.Endpoint,
   http: [ip: {127, 0, 0, 1}, port: 4002],
   secret_key_base: "1OIJBJS9hOauUqN4ekJ9L0NjHV9p29KgUWAaLSzwZgzvehw7qBR+Z1CuqG98w7vw",
-  server: false
+  server: true
 
 # In test we don't send emails.
 config :quiz_buzz, QuizBuzz.Mailer, adapter: Swoosh.Adapters.Test

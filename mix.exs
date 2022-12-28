@@ -58,7 +58,8 @@ defmodule QuizBuzz.MixProject do
       {:swoosh, "~> 1.3"},
       {:tailwind, "~> 0.1.8", runtime: Mix.env() == :dev},
       {:telemetry_metrics, "~> 0.6"},
-      {:telemetry_poller, "~> 1.0"}
+      {:telemetry_poller, "~> 1.0"},
+      {:wallaby, "~> 0.30", only: :test, runtime: false}
     ]
   end
 
@@ -71,7 +72,8 @@ defmodule QuizBuzz.MixProject do
   defp aliases do
     [
       setup: ["deps.get"],
-      "assets.deploy": ["tailwind default --minify", "esbuild default --minify", "phx.digest"]
+      "assets.deploy": ["tailwind default --minify", "esbuild default --minify", "phx.digest"],
+      test: ["esbuild default", "test"]
     ]
   end
 end

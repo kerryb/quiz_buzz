@@ -10,6 +10,9 @@ style:
 	mix credo
 dialyzer:
 	mix dialyzer
+restart-chromedriver:
+	(pgrep -q chromedriver && pkill chromedriver) || :
+	nohup chromedriver &> /dev/null &	
 test:
 	mix coveralls.html
 docs:

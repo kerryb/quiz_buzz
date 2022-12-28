@@ -32,3 +32,6 @@ quiz_buzz-*.tar
 npm-debug.log
 /assets/node_modules/
 
+log
+nohup.out
+screenshots
