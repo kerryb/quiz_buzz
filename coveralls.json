@@ -1,0 +1,9 @@
+{
+  "skip_files": [
+    "application.ex",
+    "quiz_buzz_web.ex",
+    "core_components.ex",
+    "telemetry.ex",
+    "test/support"
+  ]
+}
