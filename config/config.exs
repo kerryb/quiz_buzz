@@ -11,7 +11,7 @@ import Config
 config :quiz_buzz, QuizBuzzWeb.Endpoint,
   url: [host: "localhost"],
   render_errors: [
-    formats: [html: QuizBuzzWeb.ErrorHTML, json: QuizBuzzWeb.ErrorJSON],
+    formats: [html: QuizBuzzWeb.ErrorHTML],
     layout: false
   ],
   pubsub_server: QuizBuzz.PubSub,
