@@ -4,7 +4,6 @@ outdated:
 	mix hex.outdated --all | grep -v 'Up-to-date'
 update-deps:
 	mix deps.update --all
-	cd assets && rm -f yarn.lock && yarn install
 style:
 	mix format --check-formatted
 	mix credo
