@@ -63,7 +63,7 @@ defmodule QuizBuzzWeb.QuizmasterLive do
   end
 
   def handle_event(event, params, socket) do
-    Logger.warn("Received unexpected event: #{inspect(event)} with params #{inspect(params)}")
+    Logger.warning("Received unexpected event: #{inspect(event)} with params #{inspect(params)}")
     {:noreply, socket}
   end
 
@@ -82,7 +82,7 @@ defmodule QuizBuzzWeb.QuizmasterLive do
   end
 
   def handle_info(message, socket) do
-    Logger.warn("Received unexpected message: #{inspect(message)}")
+    Logger.warning("Received unexpected message: #{inspect(message)}")
     {:noreply, socket}
   end
 
