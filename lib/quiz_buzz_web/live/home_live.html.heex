@@ -10,5 +10,5 @@
 </form>
 <p>
   Or
-  <%= live_redirect "start a new quiz", to: Routes.quizmaster_path(@socket, :new) %>
+  <.link patch={Routes.quizmaster_path(@socket, :new)}>start a new quiz</.link>
 </p>

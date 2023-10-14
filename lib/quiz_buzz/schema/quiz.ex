@@ -23,7 +23,7 @@ defmodule QuizBuzz.Schema.Quiz do
         }
   @type state :: :setup | :active | :buzzed
 
-  @spec new((() -> String.t())) :: t()
+  @spec new((-> String.t())) :: t()
   def new(id_generator) do
     %__MODULE__{
       id: id_generator.(),
