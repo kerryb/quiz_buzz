@@ -2,7 +2,7 @@ all: style dialyzer test docs
 .PHONY: update-deps style dialyzer test
 update-deps:
 	mix deps.update --all
-	cd assets && rm -f yarn.lock && yarn install
+	cd assets && npm update
 style:
 	mix format --check-formatted
 	mix credo
