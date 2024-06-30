@@ -3,7 +3,8 @@ defmodule QuizBuzz.Core do
   Entry point for the Core context.
   """
 
-  alias QuizBuzz.Core.{Play, Setup}
+  alias QuizBuzz.Core.Play
+  alias QuizBuzz.Core.Setup
 
   defdelegate new_quiz, to: Setup
   defdelegate add_team(quiz, name), to: Setup

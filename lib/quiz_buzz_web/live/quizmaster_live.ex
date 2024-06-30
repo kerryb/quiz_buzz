@@ -4,13 +4,14 @@ defmodule QuizBuzzWeb.QuizmasterLive do
   LiveView for the quizmaster view of a quiz.
   """
 
-  use Phoenix.HTML
+  use PhoenixHTMLHelpers
   use Phoenix.LiveView, layout: {QuizBuzzWeb.LayoutView, :live}
 
   import QuizBuzzWeb.Components
 
   alias QuizBuzz.Registry
-  alias QuizBuzzWeb.{Endpoint, QuizLive}
+  alias QuizBuzzWeb.Endpoint
+  alias QuizBuzzWeb.QuizLive
   # credo:disable-for-next-line Credo.Check.Readability.AliasAs
   alias QuizBuzzWeb.Router.Helpers, as: Routes
 
@@ -62,10 +63,13 @@ defmodule QuizBuzzWeb.QuizmasterLive do
     {:noreply, socket}
   end
 
+  # coveralls-ignore-start
   def handle_event(event, params, socket) do
     Logger.warning("Received unexpected event: #{inspect(event)} with params #{inspect(params)}")
     {:noreply, socket}
   end
+
+  # coveralls-ignore-stop
 
   @impl true
   def handle_info({:quiz, quiz}, socket) do
@@ -81,10 +85,13 @@ defmodule QuizBuzzWeb.QuizmasterLive do
     {:noreply, clear_flash(socket)}
   end
 
+  # coveralls-ignore-start
   def handle_info(message, socket) do
     Logger.warning("Received unexpected message: #{inspect(message)}")
     {:noreply, socket}
   end
+
+  # coveralls-ignore-stop
 
   defp display_flash_if_error({:error, message}, socket) do
     Process.send_after(

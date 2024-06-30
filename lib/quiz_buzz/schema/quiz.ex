@@ -9,7 +9,8 @@ defmodule QuizBuzz.Schema.Quiz do
   * a state (:setup or :active)
   """
 
-  alias QuizBuzz.Schema.{Player, Team}
+  alias QuizBuzz.Schema.Player
+  alias QuizBuzz.Schema.Team
 
   @enforce_keys [:id, :secret_id, :teams, :players, :state]
   defstruct [:id, :secret_id, teams: [], players: [], state: []]

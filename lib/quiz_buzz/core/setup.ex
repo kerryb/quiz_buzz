@@ -4,7 +4,9 @@ defmodule QuizBuzz.Core.Setup do
   """
 
   alias QuizBuzz.Core.RandomIDGenerator
-  alias QuizBuzz.Schema.{Player, Quiz, Team}
+  alias QuizBuzz.Schema.Player
+  alias QuizBuzz.Schema.Quiz
+  alias QuizBuzz.Schema.Team
 
   @spec new_quiz :: {:ok, Quiz.t()}
   def new_quiz do
@@ -70,8 +72,7 @@ defmodule QuizBuzz.Core.Setup do
     Enum.map(players, &update_player_team(&1, player, team))
   end
 
-  defp update_player_team(%{name: player_name} = player, player_name, team),
-    do: %{player | team: team}
+  defp update_player_team(%{name: player_name} = player, player_name, team), do: %{player | team: team}
 
   defp update_player_team(player, _player_to_update, _team), do: player
 

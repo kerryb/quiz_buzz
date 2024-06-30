@@ -13,6 +13,7 @@ defmodule QuizBuzzWeb.QuizLive do
   require Logger
 
   defmodule InvalidQuizIDError do
+    @moduledoc false
     defexception message: "Invalid quiz ID", plug_status: 404
   end
 
@@ -24,8 +25,7 @@ defmodule QuizBuzzWeb.QuizLive do
       {:ok, quiz} ->
         if connected?(socket), do: Phoenix.PubSub.subscribe(QuizBuzz.PubSub, "quiz:#{quiz_id}")
 
-        {:ok,
-         assign(socket, quiz: quiz, joined?: false, player_name: nil, player_name_valid: false)}
+        {:ok, assign(socket, quiz: quiz, joined?: false, player_name: nil, player_name_valid: false)}
 
       _error ->
         raise(InvalidQuizIDError)
@@ -36,8 +36,7 @@ defmodule QuizBuzzWeb.QuizLive do
   def handle_event("form-change", %{"player_name" => player_name}, socket) do
     case Registry.validate_player_name(socket.assigns.quiz.id, player_name) do
       :ok ->
-        {:noreply,
-         socket |> assign(player_name: player_name, player_name_valid: true) |> clear_flash()}
+        {:noreply, socket |> assign(player_name: player_name, player_name_valid: true) |> clear_flash()}
 
       {:error, message} ->
         {:noreply, socket |> assign(player_name_valid: false) |> put_flash(:error, message)}

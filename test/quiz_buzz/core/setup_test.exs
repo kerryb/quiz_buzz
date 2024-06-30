@@ -3,8 +3,11 @@ defmodule QuizBuzz.Core.SetupTest do
   use ExUnit.Case, async: true
 
   import QuizBuzz.Factory
-  alias QuizBuzz.Core.{RandomIDGenerator, Setup}
-  alias QuizBuzz.Schema.{Player, Team}
+
+  alias QuizBuzz.Core.RandomIDGenerator
+  alias QuizBuzz.Core.Setup
+  alias QuizBuzz.Schema.Player
+  alias QuizBuzz.Schema.Team
 
   describe "QuizBuzz.Core.Setup.new_quiz/0" do
     setup do
@@ -22,7 +25,7 @@ defmodule QuizBuzz.Core.SetupTest do
   describe "QuizBuzz.Core.Setup.add_team/2" do
     setup do
       existing_team = Team.new("Existing team")
-      quiz = new_quiz() |> with_team(existing_team)
+      quiz = with_team(new_quiz(), existing_team)
       {:ok, quiz: quiz}
     end
 
@@ -49,7 +52,7 @@ defmodule QuizBuzz.Core.SetupTest do
     setup do
       jane_doe = Player.new("Jane Doe")
       # credo:disable-for-next-line Credo.Check.Readability.SinglePipe
-      quiz = new_quiz() |> with_player(jane_doe)
+      quiz = with_player(new_quiz(), jane_doe)
       {:ok, quiz: quiz}
     end
 
@@ -102,7 +105,7 @@ defmodule QuizBuzz.Core.SetupTest do
   describe "QuizBuzz.Core.Setup.leave_quiz/2" do
     setup do
       jane_doe = Player.new("Jane Doe")
-      quiz = new_quiz() |> with_player(jane_doe)
+      quiz = with_player(new_quiz(), jane_doe)
       {:ok, quiz: quiz}
     end
 

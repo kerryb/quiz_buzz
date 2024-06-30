@@ -5,7 +5,9 @@ defmodule QuizBuzzWeb.ErrorHelpers do
   Conveniences for translating and building error messages.
   """
 
-  use Phoenix.HTML
+  use PhoenixHTMLHelpers
+
+  import Phoenix.HTML.Form
 
   @doc """
   Generates tag for inlined form input errors.

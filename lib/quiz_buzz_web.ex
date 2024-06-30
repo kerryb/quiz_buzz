@@ -29,6 +29,7 @@ defmodule QuizBuzzWeb do
       import Phoenix.LiveView.Controller
       import Plug.Conn
       import QuizBuzzWeb.Gettext
+
       alias QuizBuzzWeb.Router.Helpers, as: Routes
     end
   end
@@ -39,15 +40,18 @@ defmodule QuizBuzzWeb do
         root: "lib/quiz_buzz_web/templates",
         namespace: QuizBuzzWeb
 
+      use PhoenixHTMLHelpers
+
+      import Phoenix.Component
+      import Phoenix.HTML
+      import Phoenix.HTML.Form
+
       # Import convenience functions from controllers
-      import Phoenix.Controller, only: [get_flash: 1, get_flash: 2, view_module: 1]
 
       # Use all HTML functionality (forms, tags, etc)
-      use Phoenix.HTML
-
       import QuizBuzzWeb.ErrorHelpers
       import QuizBuzzWeb.Gettext
-      import Phoenix.Component
+
       alias QuizBuzzWeb.Router.Helpers, as: Routes
     end
   end
@@ -55,15 +59,17 @@ defmodule QuizBuzzWeb do
   def router do
     quote do
       use Phoenix.Router
+
+      import Phoenix.Controller
       import Phoenix.LiveView.Router
       import Plug.Conn
-      import Phoenix.Controller
     end
   end
 
   def channel do
     quote do
       use Phoenix.Channel
+
       import QuizBuzzWeb.Gettext
     end
   end

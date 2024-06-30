@@ -5,7 +5,10 @@ defmodule QuizBuzzWeb.Components do
 
   use Phoenix.Component
 
-  @spec setup(assigns :: Phoenix.LiveView.Socket.assigns()) :: Phoenix.LiveView.Rendered.t()
+  alias Phoenix.LiveView.Rendered
+  alias Phoenix.LiveView.Socket
+
+  @spec setup(assigns :: Socket.assigns()) :: Rendered.t()
   def setup assigns do
     ~H"""
     <h2>Individual players</h2>
@@ -32,7 +35,7 @@ defmodule QuizBuzzWeb.Components do
     """
   end
 
-  @spec scoreboard(assigns :: Phoenix.LiveView.Socket.assigns()) :: Phoenix.LiveView.Rendered.t()
+  @spec scoreboard(assigns :: Socket.assigns()) :: Rendered.t()
   def scoreboard(assigns) do
     ~H"""
     <div class={"qb-scoreboard #{if @quiz.state == :buzzed, do: "qb-buzzed"}"}>

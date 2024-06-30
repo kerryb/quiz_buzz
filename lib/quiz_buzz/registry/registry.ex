@@ -39,55 +39,60 @@ defmodule QuizBuzz.Registry do
 
   @spec add_team(String.t(), String.t()) :: :ok | {:error, String.t()}
   def add_team(id, name) do
-    with quiz <- get_quiz(id),
-         {:ok, quiz} <- Core.add_team(quiz, name) do
+    quiz = get_quiz(id)
+
+    with {:ok, quiz} <- Core.add_team(quiz, name) do
       update_quiz(id, quiz)
     end
   end
 
   @spec join_quiz(String.t(), String.t()) :: :ok | {:error, String.t()}
   def join_quiz(id, name) do
-    with quiz <- get_quiz(id),
-         {:ok, quiz} <- Core.join_quiz(quiz, name) do
+    quiz = get_quiz(id)
+
+    with {:ok, quiz} <- Core.join_quiz(quiz, name) do
       update_quiz(id, quiz)
     end
   end
 
   @spec leave_quiz(String.t(), String.t()) :: :ok | {:error, String.t()}
   def leave_quiz(id, name) do
-    with quiz <- get_quiz(id),
-         {:ok, quiz} <- Core.leave_quiz(quiz, name) do
+    quiz = get_quiz(id)
+
+    with {:ok, quiz} <- Core.leave_quiz(quiz, name) do
       update_quiz(id, quiz)
     end
   end
 
   @spec validate_player_name(String.t(), String.t()) :: :ok | {:error, String.t()}
   def validate_player_name(id, name) do
-    with quiz <- get_quiz(id) do
-      Core.validate_player_name(quiz, name)
-    end
+    quiz = get_quiz(id)
+    Core.validate_player_name(quiz, name)
   end
 
   @spec join_team(String.t(), String.t(), String.t()) :: :ok | {:error, String.t()}
   def join_team(id, team_name, player_name) do
-    with quiz <- get_quiz(id),
-         {:ok, quiz} <- Core.join_team(quiz, player_name, team_name) do
+    quiz = get_quiz(id)
+
+    with {:ok, quiz} <- Core.join_team(quiz, player_name, team_name) do
       update_quiz(id, quiz)
     end
   end
 
   @spec start_quiz(String.t()) :: :ok | {:error, String.t()}
   def start_quiz(id) do
-    with quiz <- get_quiz(id),
-         {:ok, quiz} <- Core.start(quiz) do
+    quiz = get_quiz(id)
+
+    with {:ok, quiz} <- Core.start(quiz) do
       update_quiz(id, quiz)
     end
   end
 
   @spec buzz(String.t(), String.t()) :: :ok | {:error, String.t()}
   def buzz(id, player_name) do
-    with quiz <- get_quiz(id),
-         {:ok, quiz} <- Core.buzz(quiz, player_name),
+    quiz = get_quiz(id)
+
+    with {:ok, quiz} <- Core.buzz(quiz, player_name),
          :ok <- buzz(quiz) do
       update_quiz(id, quiz)
     end
@@ -95,8 +100,9 @@ defmodule QuizBuzz.Registry do
 
   @spec reset_buzzers(String.t()) :: :ok | {:error, String.t()}
   def reset_buzzers(id) do
-    with quiz <- get_quiz(id),
-         {:ok, quiz} <- Core.reset_buzzers(quiz) do
+    quiz = get_quiz(id)
+
+    with {:ok, quiz} <- Core.reset_buzzers(quiz) do
       update_quiz(id, quiz)
     end
   end
