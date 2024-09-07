@@ -25,10 +25,10 @@ defmodule QuizBuzzWeb do
   def controller do
     quote do
       use Phoenix.Controller, namespace: QuizBuzzWeb
+      use Gettext, backend: QuizBuzz.Gettext
 
       import Phoenix.LiveView.Controller
       import Plug.Conn
-      import QuizBuzzWeb.Gettext
 
       alias QuizBuzzWeb.Router.Helpers, as: Routes
     end
@@ -41,6 +41,7 @@ defmodule QuizBuzzWeb do
         namespace: QuizBuzzWeb
 
       use PhoenixHTMLHelpers
+      use Gettext, backend: QuizBuzz.Gettext
 
       import Phoenix.Component
       import Phoenix.HTML
@@ -50,7 +51,6 @@ defmodule QuizBuzzWeb do
 
       # Use all HTML functionality (forms, tags, etc)
       import QuizBuzzWeb.ErrorHelpers
-      import QuizBuzzWeb.Gettext
 
       alias QuizBuzzWeb.Router.Helpers, as: Routes
     end
@@ -69,8 +69,7 @@ defmodule QuizBuzzWeb do
   def channel do
     quote do
       use Phoenix.Channel
-
-      import QuizBuzzWeb.Gettext
+      use Gettext, backend: QuizBuzz.Gettext
     end
   end
 
