@@ -11,7 +11,6 @@ defmodule QuizBuzz.MixProject do
       start_permanent: Mix.env() == :prod,
       preferred_cli_env: preferred_cli_env(),
       test_coverage: [tool: ExCoveralls],
-      dialyzer: dialyzer(),
       docs: docs(),
       deps: deps()
     ]
@@ -39,13 +38,6 @@ defmodule QuizBuzz.MixProject do
       coveralls: :test,
       "coveralls.detail": :test,
       "coveralls.html": :test
-    ]
-  end
-
-  defp dialyzer do
-    [
-      plt_add_deps: :app_tree,
-      ignore_warnings: "config/dialyzer.ignore-warnings"
     ]
   end
 
