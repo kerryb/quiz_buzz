@@ -35,16 +35,16 @@ defmodule QuizBuzz.Core.SetupTest do
     end
 
     test "rejects blank names", %{quiz: quiz} do
-      assert {:error, _} = Setup.add_team(quiz, "")
+      assert {:error, _message} = Setup.add_team(quiz, "")
     end
 
     test "rejects duplicate names", %{quiz: quiz} do
-      assert {:error, _} = Setup.add_team(quiz, "Existing team")
+      assert {:error, _message} = Setup.add_team(quiz, "Existing team")
     end
 
     test "fails unless the quiz is in the setup state", %{quiz: quiz} do
       quiz = %{quiz | state: :active}
-      assert {:error, _} = Setup.add_team(quiz, "My team")
+      assert {:error, _message} = Setup.add_team(quiz, "My team")
     end
   end
 
@@ -89,16 +89,16 @@ defmodule QuizBuzz.Core.SetupTest do
     end
 
     test "rejects blank names", %{quiz: quiz} do
-      assert {:error, _} = Setup.join_quiz(quiz, "")
+      assert {:error, _message} = Setup.join_quiz(quiz, "")
     end
 
     test "rejects duplicate names", %{quiz: quiz} do
-      assert {:error, _} = Setup.join_quiz(quiz, "Jane Doe")
+      assert {:error, _message} = Setup.join_quiz(quiz, "Jane Doe")
     end
 
     test "fails unless the quiz is in the setup state", %{quiz: quiz} do
       quiz = %{quiz | state: :active}
-      assert {:error, _} = Setup.join_quiz(quiz, "Joe Bloggs")
+      assert {:error, _message} = Setup.join_quiz(quiz, "Joe Bloggs")
     end
   end
 
@@ -136,7 +136,7 @@ defmodule QuizBuzz.Core.SetupTest do
 
     test "fails unless the quiz is in the setup state", %{quiz: quiz} do
       quiz = %{quiz | state: :active}
-      assert {:error, _} = Setup.join_team(quiz, "Jane Doe", "A team")
+      assert {:error, _message} = Setup.join_team(quiz, "Jane Doe", "A team")
     end
   end
 
@@ -152,7 +152,7 @@ defmodule QuizBuzz.Core.SetupTest do
 
     test "fails unless the quiz is in the setup state", %{quiz: quiz} do
       quiz = %{quiz | state: :active}
-      assert {:error, _} = Setup.start(quiz)
+      assert {:error, _message} = Setup.start(quiz)
     end
   end
 end

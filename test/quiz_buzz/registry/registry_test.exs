@@ -4,7 +4,7 @@ defmodule QuizBuzz.RegistryTest do
   alias QuizBuzz.Registry
 
   setup_all do
-    {:ok, _} = Application.ensure_all_started(:quiz_buzz)
+    {:ok, _pid} = Application.ensure_all_started(:quiz_buzz)
     :ok
   end
 
@@ -15,7 +15,7 @@ defmodule QuizBuzz.RegistryTest do
     end
 
     test "returns an error if no quiz exists with the supplied IDs" do
-      assert {:error, _} = Registry.quiz_from_id("XXXX")
+      assert {:error, _message} = Registry.quiz_from_id("XXXX")
     end
   end
 
@@ -114,7 +114,7 @@ defmodule QuizBuzz.RegistryTest do
 
   defp player_tries_to_buzz(id, player_name) do
     # Don't flush mailbox, because we want to check there's no update broadcast
-    {:error, _} = Registry.buzz(id, player_name)
+    {:error, _message} = Registry.buzz(id, player_name)
     id
   end
 
@@ -144,13 +144,13 @@ defmodule QuizBuzz.RegistryTest do
   end
 
   defp assert_quiz_not_updated(id) do
-    refute_receive {:quiz, _}
+    refute_receive {:quiz, _quiz}
     id
   end
 
   defp flush_mailbox do
     receive do
-      __message -> flush_mailbox()
+      _message -> flush_mailbox()
     after
       0 -> :ok
     end

@@ -31,7 +31,7 @@ defmodule QuizBuzz.Core.PlayTest do
 
     test "fails unless the quiz is in the active state", %{quiz: quiz} do
       quiz = %{quiz | state: :buzzed}
-      assert {:error, _} = Play.buzz(quiz, "Jane Doe")
+      assert {:error, _message} = Play.buzz(quiz, "Jane Doe")
     end
   end
 
@@ -55,7 +55,7 @@ defmodule QuizBuzz.Core.PlayTest do
 
     test "fails unless the quiz is in the buzzed state", %{quiz: quiz} do
       quiz = %{quiz | state: :active}
-      assert {:error, _} = Play.reset_buzzers(quiz)
+      assert {:error, _message} = Play.reset_buzzers(quiz)
     end
   end
 end
