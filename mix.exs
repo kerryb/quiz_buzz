@@ -61,7 +61,7 @@ defmodule QuizBuzz.MixProject do
       {:floki, "~> 0.26", only: :test},
       {:hashids, "~> 2.0"},
       {:phoenix, "~> 1.7"},
-      {:phoenix_live_view, "~> 0.11"},
+      {:phoenix_live_view, "~> 1.0"},
       {:phoenix_pubsub, "~> 2.0"},
       {:phoenix_live_reload, "~> 1.2", only: :dev},
       {:phoenix_html_helpers, "~> 1.0"},
@@ -69,7 +69,7 @@ defmodule QuizBuzz.MixProject do
       {:gettext, "~> 0.11"},
       {:jason, "~> 1.0"},
       {:plug_cowboy, "~> 2.1"},
-      {:styler, "~> 1.0.0-rc.1", only: [:dev, :test], runtime: false}
+      {:styler, "~> 1.0", only: [:dev, :test], runtime: false}
     ]
   end
 end
