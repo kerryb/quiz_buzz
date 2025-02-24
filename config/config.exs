@@ -21,7 +21,7 @@ config :quiz_buzz, QuizBuzzWeb.Endpoint,
   pubsub_server: QuizBuzz.PubSub,
   live_view: [signing_salt: "JIaeHshe"]
 
-config :quiz_buzz, flash_persist_milliseconds: :timer.seconds(3)
+config :quiz_buzz, flash_persist_milliseconds: to_timeout(second: 3)
 
 # Configures Elixir's Logger
 
